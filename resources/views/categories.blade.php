@@ -23,7 +23,7 @@
                     </thead>
                     <tbody>
                         @foreach ($categories as $category)
-                            <tr onclick="$('#editModal').modal()">
+                            <tr>
                                 <th scope="row">{{ $category->category }}</th>
                                 <td><a href="#" id="{{ $category->category }}" class="btn" style="background-color: {{ $category->colour }}">{{ $category->colour }}</a></td>
                             </tr>
