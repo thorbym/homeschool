@@ -162,6 +162,7 @@
             navLinks: true,
             locale: 'en-gb',
             firstDay: 1,
+            allDaySlot: false,
             views: {
                 timeGridWeek: {
                     columnHeaderFormat: { weekday: 'short', month: 'short', day: 'numeric', omitCommas: true }
