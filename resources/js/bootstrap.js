@@ -16,6 +16,7 @@ try {
     window.Calendar = require('@fullcalendar/core');
     require('@fullcalendar/timegrid');
     require('@fullcalendar/interaction');
+    require('@fullcalendar/core/locale/en-gb');
 } catch (e) {}
 
 /**

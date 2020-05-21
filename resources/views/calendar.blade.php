@@ -116,6 +116,17 @@
             editable: isAdmin ? true : false,
             nowIndicator: true,
             slotEventOverlap: false,
+            navLinks: true,
+            locale: 'en-gb',
+            firstDay: 1,
+            views: {
+                timeGridWeek: {
+                    columnHeaderFormat: { weekday: 'short', month: 'short', day: 'numeric', omitCommas: true }
+                }
+            },
+            navLinkDayClick: function(date, jsEvent) {
+                calendar.changeView('timeGridDay', date);
+            },
             eventRender: function(info) {
                 // find the event's category
                 var category = info.event.extendedProps.category;
