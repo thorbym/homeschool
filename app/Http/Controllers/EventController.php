@@ -47,7 +47,12 @@ class EventController extends Controller
             'start_time' => $request->get('start_time'),
             'end_time' => $request->get('end_time'),
             'days_of_week' => json_encode($request->get('days_of_week')),
-            'category_id' => $request->get('category_id')
+            'category_id' => $request->get('category_id'),
+            'requires_supervision' => $request->get('requires_supervision') ? 1 : 0,
+            'dfe_approved' => $request->get('dfe_approved') ? 1 : 0,
+            'catchup_link' => $request->get('catchup_link'),
+            'minimum_age' => $request->get('minimum_age'),
+            'maximum_age' => $request->get('maximum_age')
         ]);
         $event->save();
 

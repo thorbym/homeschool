@@ -13,6 +13,11 @@ class Event extends Model
         'start_time',
         'end_time',
         'days_of_week',
-        'category_id'
+        'category_id',
+        'requires_supervision',
+        'dfe_approved',
+        'catchup_link',
+        'minimum_age',
+        'maximum_age'
     ];
 }
