@@ -86,6 +86,131 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./node_modules/@fullcalendar/bootstrap/main.esm.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/@fullcalendar/bootstrap/main.esm.js ***!
+  \**********************************************************/
+/*! exports provided: default, BootstrapTheme */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BootstrapTheme", function() { return BootstrapTheme; });
+/* harmony import */ var _fullcalendar_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fullcalendar/core */ "./node_modules/@fullcalendar/core/main.esm.js");
+/*!
+FullCalendar Bootstrap Plugin v4.4.0
+Docs & License: https://fullcalendar.io/
+(c) 2019 Adam Shaw
+*/
+
+
+
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var BootstrapTheme = /** @class */ (function (_super) {
+    __extends(BootstrapTheme, _super);
+    function BootstrapTheme() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return BootstrapTheme;
+}(_fullcalendar_core__WEBPACK_IMPORTED_MODULE_0__["Theme"]));
+BootstrapTheme.prototype.classes = {
+    widget: 'fc-bootstrap',
+    tableGrid: 'table-bordered',
+    tableList: 'table',
+    tableListHeading: 'table-active',
+    buttonGroup: 'btn-group',
+    button: 'btn btn-primary',
+    buttonActive: 'active',
+    today: 'alert alert-info',
+    popover: 'card card-primary',
+    popoverHeader: 'card-header',
+    popoverContent: 'card-body',
+    // day grid
+    // for left/right border color when border is inset from edges (all-day in timeGrid view)
+    // avoid `table` class b/c don't want margins/padding/structure. only border color.
+    headerRow: 'table-bordered',
+    dayRow: 'table-bordered',
+    // list view
+    listView: 'card card-primary'
+};
+BootstrapTheme.prototype.baseIconClass = 'fa';
+BootstrapTheme.prototype.iconClasses = {
+    close: 'fa-times',
+    prev: 'fa-chevron-left',
+    next: 'fa-chevron-right',
+    prevYear: 'fa-angle-double-left',
+    nextYear: 'fa-angle-double-right'
+};
+BootstrapTheme.prototype.iconOverrideOption = 'bootstrapFontAwesome';
+BootstrapTheme.prototype.iconOverrideCustomButtonOption = 'bootstrapFontAwesome';
+BootstrapTheme.prototype.iconOverridePrefix = 'fa-';
+var main = Object(_fullcalendar_core__WEBPACK_IMPORTED_MODULE_0__["createPlugin"])({
+    themeClasses: {
+        bootstrap: BootstrapTheme
+    }
+});
+
+/* harmony default export */ __webpack_exports__["default"] = (main);
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@fullcalendar/core/locales/en-gb.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/@fullcalendar/core/locales/en-gb.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function (global, factory) {
+     true ? module.exports = factory() :
+    undefined;
+}(this, function () { 'use strict';
+
+    var enGb = {
+        code: "en-gb",
+        week: {
+            dow: 1,
+            doy: 4 // The week that contains Jan 4th is the first week of the year.
+        }
+    };
+
+    return enGb;
+
+}));
+
+
+/***/ }),
+
 /***/ "./node_modules/@fullcalendar/core/main.esm.js":
 /*!*****************************************************!*\
   !*** ./node_modules/@fullcalendar/core/main.esm.js ***!
@@ -70833,6 +70958,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fullcalendar_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fullcalendar/core */ "./node_modules/@fullcalendar/core/main.esm.js");
 /* harmony import */ var _fullcalendar_timegrid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fullcalendar/timegrid */ "./node_modules/@fullcalendar/timegrid/main.esm.js");
 /* harmony import */ var _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fullcalendar/interaction */ "./node_modules/@fullcalendar/interaction/main.esm.js");
+/* harmony import */ var _fullcalendar_bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @fullcalendar/bootstrap */ "./node_modules/@fullcalendar/bootstrap/main.esm.js");
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -70855,6 +70981,10 @@ try {
   __webpack_require__(/*! @fullcalendar/timegrid */ "./node_modules/@fullcalendar/timegrid/main.esm.js");
 
   __webpack_require__(/*! @fullcalendar/interaction */ "./node_modules/@fullcalendar/interaction/main.esm.js");
+
+  __webpack_require__(/*! @fullcalendar/core/locales/en-gb */ "./node_modules/@fullcalendar/core/locales/en-gb.js");
+
+  __webpack_require__(/*! @fullcalendar/bootstrap */ "./node_modules/@fullcalendar/bootstrap/main.esm.js");
 } catch (e) {}
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -70885,8 +71015,10 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 
 
+
 window.timeGridPlugin = _fullcalendar_timegrid__WEBPACK_IMPORTED_MODULE_1__["default"];
 window.interaction = _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_2__["default"];
+window.bootstrapPlugin = _fullcalendar_bootstrap__WEBPACK_IMPORTED_MODULE_3__["default"];
 
 /***/ }),
 

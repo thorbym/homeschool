@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use \DB;
+use App\Category;
 use App\Event;
 use Illuminate\Http\Request;
 
@@ -78,13 +79,27 @@ class EventController extends Controller
      */
     public function get($id)
     {
-        $event = DB::table('events')
-            ->join('categories', 'categories.id', '=', 'events.category_id')
-            ->select('events.id', 'events.title', 'events.description', 'events.link', 'events.start_time AS startTime', 'events.end_time AS endTime', 'events.days_of_week AS daysOfWeek', 'categories.category', 'categories.colour')
-            ->where('events.id', '=', $id)
-            ->first();
 
-        return response()->json($event);
+        $categories = Category::get();
+
+        if ($id > 0) {
+            $event = DB::table('events')
+                ->join('categories', 'categories.id', '=', 'events.category_id')
+                ->select('events.id', 'events.title', 'events.description', 'events.link', 'events.start_time', 'events.end_time', 'events.days_of_week', 'events.requires_supervision', 'events.dfe_approved', 'events.catchup_link', 'events.minimum_age', 'events.maximum_age', 'events.category_id', 'categories.category', 'categories.colour')
+                ->where('events.id', '=', $id)
+                ->first();
+
+            $view = view('modals.eventUpdate', compact('categories', 'event'))->render();
+
+        } else {
+
+            $view = view('modals.eventNew', compact('categories'))->render();
+
+        }
+
+        return response()->json($view);
+
+        
     }
 
     /**
@@ -107,7 +122,24 @@ class EventController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $event = Event::find($id);
+
+        $event->title = $request->get('title');
+        $event->description = $request->get('description');
+        $event->link = $request->get('link');
+        $event->start_time = $request->get('start_time');
+        $event->end_time = $request->get('end_time');
+        $event->days_of_week = json_encode($request->get('days_of_week'));
+        $event->category_id = $request->get('category_id');
+        $event->requires_supervision = $request->get('requires_supervision') ? 1 : 0;
+        $event->dfe_approved = $request->get('dfe_approved') ? 1 : 0;
+        $event->catchup_link = $request->get('catchup_link');
+        $event->minimum_age = $request->get('minimum_age');
+        $event->maximum_age = $request->get('maximum_age');
+
+        $event->save();
+
+        return redirect('calendar');
     }
 
     /**

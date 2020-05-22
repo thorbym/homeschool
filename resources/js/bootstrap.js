@@ -16,7 +16,8 @@ try {
     window.Calendar = require('@fullcalendar/core');
     require('@fullcalendar/timegrid');
     require('@fullcalendar/interaction');
-    require('@fullcalendar/core/locale/en-gb');
+    require('@fullcalendar/core/locales/en-gb');
+    require('@fullcalendar/bootstrap');
 } catch (e) {}
 
 /**
@@ -51,6 +52,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 import { Calendar } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interaction from '@fullcalendar/interaction';
+import bootstrapPlugin from '@fullcalendar/bootstrap';
 
 window.timeGridPlugin = timeGridPlugin;
 window.interaction = interaction;
+window.bootstrapPlugin = bootstrapPlugin;
