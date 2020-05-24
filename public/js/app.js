@@ -70976,7 +70976,7 @@ try {
 
   __webpack_require__(/*! jquery-timepicker/jquery.timepicker.js */ "./node_modules/jquery-timepicker/jquery.timepicker.js");
 
-  window.Calendar = __webpack_require__(/*! @fullcalendar/core */ "./node_modules/@fullcalendar/core/main.esm.js");
+  __webpack_require__(/*! @fullcalendar/core */ "./node_modules/@fullcalendar/core/main.esm.js");
 
   __webpack_require__(/*! @fullcalendar/timegrid */ "./node_modules/@fullcalendar/timegrid/main.esm.js");
 
@@ -71016,6 +71016,9 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 
 
+window.Calendar = {
+  Calendar: _fullcalendar_core__WEBPACK_IMPORTED_MODULE_0__["Calendar"]
+};
 window.timeGridPlugin = _fullcalendar_timegrid__WEBPACK_IMPORTED_MODULE_1__["default"];
 window.interaction = _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_2__["default"];
 window.bootstrapPlugin = _fullcalendar_bootstrap__WEBPACK_IMPORTED_MODULE_3__["default"];

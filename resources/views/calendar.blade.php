@@ -6,10 +6,42 @@
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header">
-                    Click to filter:&nbsp
-                    @foreach ($data['categories'] as $category)
-                        <a href="#" id="{{ str_replace(' ', '', $category->category) }}" class="btn btn-sm" style="background-color: {{ $category->colour }}; margin: 3px">{{ $category->category }}</a>
-                    @endforeach
+                    <div class="filter-buttons form-inline">
+                        <button type="button" class="btn btn-outline-secondary disabled" id="subjectFilter">
+                            Subject 
+                            <i class="fas fa-caret-down"></i>
+                        </button>&nbsp&nbsp
+                        <button type="button" class="btn btn-outline-secondary disabled" id="ageFilter">
+                            Age 
+                            <i class="fas fa-caret-down"></i>
+                        </button>&nbsp&nbsp
+                        <button type="button" class="btn btn-outline-secondary disabled" id="otherFilters">
+                            Other 
+                            <i class="fas fa-caret-down"></i>
+                        </button>&nbsp&nbsp
+                        <!--<div class="input-group mb-3" style="margin-bottom: 0px !important">
+                            <input type="text" id="search" class="form-control">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" id="searchBtn" type="button"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>-->
+                    </div>
+                    <div class="filters">
+                        <div class="subjectFilter" style="display: none; padding: 20px 0px 10px 0px">
+                            @foreach ($data['categories'] as $category)
+                                <a href="#" id="{{ str_replace(' ', '', $category->category) }}" class="btn disabled" style="background-color: {{ $category->colour }}; margin: 3px; pointer-events: auto">{{ $category->category }}</a>
+                            @endforeach
+                        </div>
+                        <div class="ageFilter" style="display: none; padding: 20px 0px 10px 0px">
+                            <a href="#" id="littleKids" class="btn btn-warning disabled" style="margin: 3px; pointer-events: auto">6 and under</a>
+                            <a href="#" id="middleKids" class="btn disabled" style="margin: 3px; pointer-events: auto; background-color: orange">7 to 11</a>
+                            <a href="#" id="bigKids" class="btn btn-info disabled" style="margin: 3px; pointer-events: auto">12 and older</a>
+                        </div>
+                        <div class="otherFilters" style="display: none; padding: 20px 0px 10px 0px">
+                            <a href="#" id="dfe_approved" class="btn btn-secondary disabled" style="margin: 3px; pointer-events: auto">DfE approved</a>
+                            <!--<a href="#" id="requires_supervision" class="btn btn-secondary disabled" style="margin: 3px; pointer-events: auto">Require supervision</a>-->
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     @if (session('status'))
@@ -29,7 +61,10 @@
 @endsection
 
 <script>
-
+/*
+                     || 
+                    ($('.ageFilter #middleKids').hasClass('disabled') && (info.event.extendedProps.minimum_age >= 6 && info.event.extendedProps.maximum_age <= 12))
+*/
     var isAdmin = @json(Auth::user()->isAdmin());
     var events = @json($data['events']);
 
@@ -75,17 +110,59 @@
                 calendar.changeView('timeGridDay', date);
             },
             eventRender: function(info) {
+                // resize the rows
                 $(calendarEl).find('tr[data-time]').css('height', '2.5em');
-                // find the event's category
-                var category = info.event.extendedProps.category;
-                // remove the spaces, so it matches with the id of the corresponding button
-                category = category.replace(/ /g, '');
-                var colour = info.event.extendedProps.colour;
-                //info.event.setProp('eventBackgroundColor', colour);
-                $(info.el).css({'background-color': colour, 'border-color': colour});
-                // check if the matching filter button is disabled - if yes, don't show the event
-                var filterButton = $('a#' + category);
-                return !(filterButton.hasClass('disabled'))
+
+                // colour the event based on the category's colour
+                $(info.el).css({
+                    'background-color': info.event.extendedProps.colour,
+                    'border-color': info.event.extendedProps.colour
+                });
+
+                // SUBJECT FILTER
+                if (!$('#subjectFilter').hasClass('disabled')) {
+
+                    // if subject filter is engaged, find the event's category (remove any spaces, just in case)
+                    var category = info.event.extendedProps.category.replace(/ /g, '');
+                    // if the filter is active and the subject button is disabled, don't show
+                    if ($('.subjectFilter a#' + category).hasClass('disabled')) {
+                        return false;
+                    }
+                }
+
+                // AGE FILTER
+                if (!$('#ageFilter').hasClass('disabled')) {
+                    // if the age filter is engaged, do the following:
+                    if (
+                        // if "6 or under" is selected and the event's maximum age is <= 6, allow through
+                        (!$('#littleKids').hasClass('disabled') && info.event.extendedProps.maximum_age <= 6) || 
+                        // if "7 - 12" is selected and the event's min age is => 7 OR max age is <= 11, allow through
+                        (!$('#middleKids').hasClass('disabled') && (info.event.extendedProps.minimum_age >= 7 && info.event.extendedProps.maximum_age <= 11)) || 
+                        // if "12 and over" is selected and the event's minimum age is => 12, allow through
+                        (!$('#bigKids').hasClass('disabled') && info.event.extendedProps.minimum_age >= 12)
+                    ) {
+                        // these events are to be displayed - done this way for readability
+                    } else {
+                        return false;
+                    }
+                }
+
+                // OTHER FILTERS
+                if (!$('#otherFilters').hasClass('disabled')) {
+                    if (!$('#dfe_approved').hasClass('disabled') && info.event.extendedProps.dfe_approved === 0) {
+                        return false;
+                    }
+                }
+
+                // SEARCH BOX
+                var searchTerm = $('#search').val().toLowerCase();
+                if (searchTerm !== '') {
+                    if (info.event.title.toLowerCase().indexOf(searchTerm) > -1) {
+                        
+                    } else {
+                        return false;
+                    }
+                }
             },
             dateClick: function(info) {
                 if (isAdmin) {
@@ -112,15 +189,66 @@
 
         calendar.render();
 
-        $("a[class^='btn']").on('click', function(e){
+        // attach event handlers to MAIN filter buttons, to show which one is active etc
+        $(".filter-buttons button").on('click', function(e){
+            // find the button that was actually clicked
+            var filterButton = $(e.currentTarget);
+            // locate the div that relates to the clicked button
+            var filterDiv = filterButton.attr('id');
+            // ensure the button doesn't stay focused, and replace the caret (up or down)
+            filterButton.blur().children().toggleClass('fa-caret-up fa-caret-down');
+
+            // loop around all the filters, and hide those that AREN'T the one clicked
+            // to give the impression of one replacing another
+            $('.filters div').each(function(e){
+                // the class of the div should match the id of the clicked button
+                var className = $(this).attr('class');
+
+                if (className !== filterDiv) {
+                    // hide the div not related to the clicked button
+                    $(this).hide(300);
+                } else {
+                    // toggle the clicked one
+                    $(this).toggle(300);
+                }
+            });
+        });
+
+        // attach event handlers to specific filter buttons ("a") to ensure correct disabling/enabling functionality
+        $('.filters a').on('click', function(e){
             e.preventDefault();
+
+            // find the relevant button
             var button = $(e.currentTarget);
             if (button.hasClass('disabled')) {
+                // if it's disabled, reenable and remove blur
                 button.removeClass('disabled').blur();
             } else {
+                // if it wasn't disabled, disable it but keep the pointer events (so it's still clickable)
                 button.addClass('disabled').css('pointer-events', 'auto').blur();
             }
+
+            var filterIsOn = false;
+            var parentDivClassName = button.parent().attr('class');
+
+            $('.' + parentDivClassName + ' a').each(function(f){
+                if ($(this).hasClass('disabled') === false) {
+                    filterIsOn = true;
+                    return false;
+                }
+            });
+
+            if (filterIsOn) {
+                $('#' + parentDivClassName).attr('class', 'btn btn-success');
+            } else {
+                $('#' + parentDivClassName).attr('class', 'btn btn-outline-secondary disabled');
+            }
             calendar.rerenderEvents();
+        });
+
+        // if the search box is used...
+        $("#searchBtn").on('click', function(e){
+           calendar.rerenderEvents();
         });
 
     });

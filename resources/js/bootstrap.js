@@ -13,7 +13,7 @@ try {
     require('bootstrap');
     require('bootstrap-colorpicker');
     require('jquery-timepicker/jquery.timepicker.js');
-    window.Calendar = require('@fullcalendar/core');
+    require('@fullcalendar/core');
     require('@fullcalendar/timegrid');
     require('@fullcalendar/interaction');
     require('@fullcalendar/core/locales/en-gb');
@@ -54,6 +54,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interaction from '@fullcalendar/interaction';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 
+window.Calendar = { Calendar };
 window.timeGridPlugin = timeGridPlugin;
 window.interaction = interaction;
 window.bootstrapPlugin = bootstrapPlugin;

@@ -51,7 +51,7 @@ class EventController extends Controller
             'category_id' => $request->get('category_id'),
             'requires_supervision' => $request->get('requires_supervision') ? 1 : 0,
             'dfe_approved' => $request->get('dfe_approved') ? 1 : 0,
-            'catchup_link' => $request->get('catchup_link'),
+            'catchup_link' => $request->get('catchup_link') ? $request->get('catchup_link') : null,
             'minimum_age' => $request->get('minimum_age'),
             'maximum_age' => $request->get('maximum_age')
         ]);
