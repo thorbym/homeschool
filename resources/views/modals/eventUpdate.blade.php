@@ -3,7 +3,7 @@
     {{ csrf_field() }}
         <div class="modal-content">
             <div class="modal-body">
-                <h4>Event</h4>
+                <h4>{{ $event->title }}</h4>
                 <br />
                 <div class="form-group">
                     <label for="title">Title</label>

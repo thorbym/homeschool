@@ -79,6 +79,14 @@
             zindex: 9999999
         });
 
+        function mobileCheck() {
+            if (window.innerWidth >= 768 ) {
+                return false;
+            } else {
+                return true;
+            }
+        };
+
         // fullcalendar stuff
         var calendarEl = document.getElementById('calendar');
 
@@ -87,9 +95,9 @@
             minTime: "07:00:00",
             maxTime: "20:00:00",
             header: {
-                left: 'prev,next',
+                left: mobileCheck() ? 'prev' : 'prev,next',
                 center: 'title',
-                right: 'timeGridDay,timeGridWeek'
+                right: mobileCheck() ? 'next' : 'timeGridDay,timeGridWeek'
             },
             plugins: [ bootstrapPlugin, timeGridPlugin, isAdmin ? interaction : '' ],
             themeSystem: 'bootstrap',
@@ -220,10 +228,10 @@
             var button = $(e.currentTarget);
             if (button.hasClass('disabled')) {
                 // if it's disabled, reenable and remove blur
-                button.removeClass('disabled').blur();
+                button.removeClass('disabled').addClass('btn-lg').blur();
             } else {
                 // if it wasn't disabled, disable it but keep the pointer events (so it's still clickable)
-                button.addClass('disabled').css('pointer-events', 'auto').blur();
+                button.addClass('disabled').removeClass('btn-lg').css('pointer-events', 'auto').blur();
             }
 
             var filterIsOn = false;
