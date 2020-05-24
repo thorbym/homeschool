@@ -19,25 +19,25 @@
                             Other 
                             <i class="fas fa-caret-down"></i>
                         </button>&nbsp&nbsp
-                        <!--<div class="input-group mb-3" style="margin-bottom: 0px !important">
+                        <div class="input-group mb-3" style="margin-bottom: 0px !important">
                             <input type="text" id="search" class="form-control">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" id="searchBtn" type="button"><i class="fas fa-search"></i></button>
+                                <button class="btn btn-outline-secondary disabled" id="searchBtn" type="button"><i class="fas fa-search"></i></button>
                             </div>
-                        </div>-->
+                        </div>
                     </div>
                     <div class="filters">
-                        <div class="subjectFilter" style="display: none; padding: 20px 0px 10px 0px">
+                        <div class="subjectFilter" style="display: none; padding: 15px 0px 10px 0px">
                             @foreach ($data['categories'] as $category)
                                 <a href="#" id="{{ str_replace(' ', '', $category->category) }}" class="btn disabled" style="background-color: {{ $category->colour }}; margin: 3px; pointer-events: auto">{{ $category->category }}</a>
                             @endforeach
                         </div>
-                        <div class="ageFilter" style="display: none; padding: 20px 0px 10px 0px">
+                        <div class="ageFilter" style="display: none; padding: 15px 0px 10px 0px">
                             <a href="#" id="littleKids" class="btn btn-warning disabled" style="margin: 3px; pointer-events: auto">6 and under</a>
                             <a href="#" id="middleKids" class="btn disabled" style="margin: 3px; pointer-events: auto; background-color: orange">7 to 11</a>
                             <a href="#" id="bigKids" class="btn btn-info disabled" style="margin: 3px; pointer-events: auto">12 and older</a>
                         </div>
-                        <div class="otherFilters" style="display: none; padding: 20px 0px 10px 0px">
+                        <div class="otherFilters" style="display: none; padding: 15px 0px 10px 0px">
                             <a href="#" id="dfe_approved" class="btn btn-secondary disabled" style="margin: 3px; pointer-events: auto">DfE approved</a>
                             <!--<a href="#" id="requires_supervision" class="btn btn-secondary disabled" style="margin: 3px; pointer-events: auto">Require supervision</a>-->
                         </div>
@@ -155,11 +155,9 @@
                 }
 
                 // SEARCH BOX
-                var searchTerm = $('#search').val().toLowerCase();
+                var searchTerm = $('#search').val();
                 if (searchTerm !== '') {
-                    if (info.event.title.toLowerCase().indexOf(searchTerm) > -1) {
-                        
-                    } else {
+                    if (info.event.title.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0) {
                         return false;
                     }
                 }
@@ -246,8 +244,31 @@
             calendar.rerenderEvents();
         });
 
+        $('#search').on('keyup', function(e){
+            if ($(e.currentTarget).val() === '') {
+                $("#searchBtn").attr('class', 'btn btn-outline-secondary disabled');
+            }
+        });
+
         // if the search box is used...
         $("#searchBtn").on('click', function(e){
+            var searchBtn = $(e.currentTarget);
+            if ($('#search').val() === '') {
+                if (searchBtn.hasClass('disabled')) {
+                    return false;
+                } else {
+                    searchBtn.attr('class', 'btn btn-outline-secondary disabled');
+                    return false
+                }
+            } else {
+                if (searchBtn.hasClass('disabled')) {
+                    searchBtn.attr('class', 'btn btn-success');
+                } else {
+                    $('#search').val('');
+                    searchBtn.attr('class', 'btn btn-outline-secondary disabled');
+                }                
+            }
+
            calendar.rerenderEvents();
         });
 
