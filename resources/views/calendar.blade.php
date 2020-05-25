@@ -58,13 +58,12 @@
 </div>
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 </div>
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+</div>
 @endsection
 
 <script>
-/*
-                     || 
-                    ($('.ageFilter #middleKids').hasClass('disabled') && (info.event.extendedProps.minimum_age >= 6 && info.event.extendedProps.maximum_age <= 12))
-*/
+
     var isAdmin = @json(Auth::user()->isAdmin());
     var events = @json($data['events']);
 
@@ -185,7 +184,7 @@
                 var id = info.event.id;
                 axios.get('/api/event/' + id)
                     .then(function (response) {
-                        $('#editModal').html(response.data).modal();
+                        $('#viewModal').html(response.data).modal();
                     })
                     .catch(function (error) {
                         console.log(error);
