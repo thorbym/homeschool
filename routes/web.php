@@ -26,6 +26,6 @@ Route::get('/calendar', 'HomeController@showCalendar')->name('calendar');
 Route::get('/categories', 'HomeController@listCategories')->name('categories');
 Route::post('/event', 'EventController@store')->name('storeEvent');
 Route::post('/event/{id}', 'EventController@update')->name('updateEvent');
-Route::post('/category', 'CategoryController@store')->name('storeCategory');
+Route::post('/category', 'CategoryController@store')->name('category');
 
 Route::get('/api/event/{id}', 'EventController@get');

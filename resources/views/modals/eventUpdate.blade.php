@@ -42,9 +42,8 @@
                     </div>
                     <div class="col-md-6">
                         @if ($event->requires_supervision)
-                            <i class="fas fa-binoculars fa-lg" style="color: orange"></i>
-                            &nbsp Adult supervision required! &nbsp
-                            <i class="fas fa-binoculars fa-lg" style="color: orange"></i>
+                            <i class="fas fa-binoculars fa-lg" style="color: orange"></i> &nbsp
+                            Adult supervision required!
                         @endif
                     </div>
                 </div>

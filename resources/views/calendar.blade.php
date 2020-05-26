@@ -69,15 +69,6 @@
 
     document.addEventListener('DOMContentLoaded', function() {
 
-        // timepicker for modal
-        $('.timepicker').timepicker({
-            timeFormat: 'HH:mm',
-            minTime: '07:00',
-            maxTime: '18:00',
-            interval: 30,
-            zindex: 9999999
-        });
-
         function mobileCheck() {
             if (window.innerWidth >= 768 ) {
                 return false;

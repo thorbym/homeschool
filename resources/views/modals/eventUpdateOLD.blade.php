@@ -95,3 +95,18 @@
         </div>
     </form>
 </div>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        // timepicker for modal
+        $('.timepicker').timepicker({
+            timeFormat: 'HH:mm',
+            minTime: '07:00',
+            maxTime: '18:00',
+            interval: 30,
+            zindex: 9999999
+        });
+
+    });
+</script>
