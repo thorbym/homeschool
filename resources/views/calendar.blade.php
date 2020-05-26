@@ -83,7 +83,7 @@
         var calendar = new Calendar.Calendar(calendarEl, {
             defaultView: 'timeGridDay',
             minTime: "07:00:00",
-            maxTime: "20:00:00",
+            maxTime: "21:00:00",
             header: {
                 left: mobileCheck() ? 'prev' : 'prev,next',
                 center: 'title',
