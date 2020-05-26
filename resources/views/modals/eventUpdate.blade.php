@@ -25,10 +25,10 @@
                 Days: {{ Helper::convertDaysOfWeek($event->days_of_week) }}
             </p>
             <p>
-                Link: <a href="{{ $event->link }}">{{ $event->link }}</a>
+                Link: <a href="{{ $event->link }}" target="_blank">{{ $event->link }}</a>
             </p>
             <p>
-                Watch again: <a href="{{ $event->link }}">{{ $event->catchup_link }}</a>
+                Watch again: <a href="{{ $event->catchup_link }}" target="_blank">{{ $event->catchup_link }}</a>
             </p>
             <p>
                 <div class="row">

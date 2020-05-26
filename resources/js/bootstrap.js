@@ -12,6 +12,8 @@ try {
 
     require('bootstrap');
     require('bootstrap-colorpicker');
+    require('datatables.net');
+    require('datatables.net-bs4');
     require('jquery-timepicker/jquery.timepicker.js');
     require('@fullcalendar/core');
     require('@fullcalendar/timegrid');
