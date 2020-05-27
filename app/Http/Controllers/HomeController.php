@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Category;
 use App\Event;
+use App\Favourite;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -40,7 +42,26 @@ class HomeController extends Controller
         $categories = Category::get();
         $events = DB::table('events')
             ->join('categories', 'categories.id', '=', 'events.category_id')
-            ->select('events.id', 'events.title', 'events.description', 'events.link', 'events.start_time AS startTime', 'events.end_time AS endTime', 'events.days_of_week AS daysOfWeek', 'events.minimum_age', 'events.maximum_age', 'events.dfe_approved', 'events.requires_supervision', 'categories.category', 'categories.colour')
+            ->leftJoin('favourites', function($join)
+                {
+                    $join->on('favourites.event_id', '=', 'events.id');
+                    $join->where('favourites.user_id', '=', Auth::user()->id);
+                })
+            ->select(
+                'events.id',
+                'events.title',
+                'events.description',
+                'events.link',
+                'events.start_time AS startTime',
+                'events.end_time AS endTime',
+                'events.days_of_week AS daysOfWeek',
+                'events.minimum_age',
+                'events.maximum_age',
+                'events.dfe_approved',
+                'events.requires_supervision',
+                'categories.category',
+                'categories.colour',
+                DB::raw('(case when favourites.id is null then 0 else favourites.id end) as favourite_id'))
             ->get();
         $data = [
             'categories' => $categories,
@@ -54,7 +75,25 @@ class HomeController extends Controller
         $categories = Category::get();
         $events = DB::table('events')
             ->join('categories', 'categories.id', '=', 'events.category_id')
-            ->select('events.id', 'events.title', 'events.description', 'events.link', 'events.start_time AS startTime', 'events.end_time AS endTime', 'events.days_of_week AS daysOfWeek', 'events.minimum_age', 'events.maximum_age', 'events.dfe_approved', 'events.requires_supervision', 'categories.category', 'categories.colour')
+            ->leftJoin('favourites', function($join)
+                {
+                    $join->on('favourites.event_id', '=', 'events.id');
+                    $join->where('favourites.user_id', '=', Auth::user()->id);
+                })
+            ->select(                'events.id',
+                'events.title',
+                'events.description',
+                'events.link',
+                'events.start_time AS startTime',
+                'events.end_time AS endTime',
+                'events.days_of_week AS daysOfWeek',
+                'events.minimum_age',
+                'events.maximum_age',
+                'events.dfe_approved',
+                'events.requires_supervision',
+                'categories.category',
+                'categories.colour',
+                DB::raw('(case when favourites.id is null then 0 else favourites.id end) as favourite_id'))
             ->get();
         $data = [
             'categories' => $categories,

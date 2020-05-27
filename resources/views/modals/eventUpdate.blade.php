@@ -51,7 +51,47 @@
             <!--<a href="#" class="tooltip-test" title="Tooltip">This link</a> and <a href="#" class="tooltip-test" title="Tooltip">that link</a> have tooltips on hover.</p>-->
         </div>
         <div class="modal-footer">
+            <a id="favourite" href="#">
+                @if ($event->favourite_id)
+                    <i class="fas fa-heart fa-2x" id="{{ $event->favourite_id }}" style="color: red"></i>
+                @else
+                    <i class="far fa-heart fa-2x" style="color: gray"></i>
+                @endif
+            </a>
+            &nbsp&nbsp
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
+<script>
+
+    var user_id = @json(Auth::user()->id);
+    var event_id = @json($event->id);
+
+    $(document).ready(function(){
+        $('#favourite').on('click', function(e){
+            var heart = $(e.currentTarget).children();
+            if (heart.hasClass('fas')) {
+                var id = heart.attr('id');
+                axios.delete('/api/favourite/' + id)
+                    .then(function (response) {
+                        heart.toggleClass('fas far').css('color', 'gray');
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                });
+            } else {
+                axios.post('/api/favourite', {
+                        event_id: event_id,
+                        user_id: user_id
+                    })
+                    .then(function (response) {
+                        heart.toggleClass('fas far').css('color', 'red');
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                });
+            }
+        });
+    })
+</script>

@@ -29,3 +29,5 @@ Route::post('/event/{id}', 'EventController@update')->name('updateEvent');
 Route::post('/category', 'CategoryController@store')->name('category');
 
 Route::get('/api/event/{id}', 'EventController@get');
+Route::post('/api/favourite', 'FavouriteController@store');
+Route::delete('/api/favourite/{id}', 'FavouriteController@destroy');
