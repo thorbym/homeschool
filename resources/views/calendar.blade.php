@@ -19,6 +19,9 @@
                             Other 
                             <i class="fas fa-caret-down"></i>
                         </button>&nbsp&nbsp
+                        <button type="button" class="btn btn-outline-secondary disabled" id="showFavourites">
+                            &nbsp<i class="far fa-heart"></i>&nbsp
+                        </button>&nbsp&nbsp
                         <div class="input-group mb-3" style="margin-bottom: 0px !important">
                             <input type="text" id="search" class="form-control">
                             <div class="input-group-append">
@@ -152,6 +155,13 @@
                     }
                 }
 
+                // FAVOURITES FILTER
+                if (!$('#showFavourites').hasClass('disabled')) {
+                    if (info.event.extendedProps.favourite_id === 0) {
+                        return false;
+                    }
+                }
+
                 // SEARCH BOX
                 var searchTerm = $('#search').val();
                 if (searchTerm !== '') {
@@ -268,6 +278,20 @@
             }
 
            calendar.rerenderEvents();
+        });
+
+        // if the favourites button is
+        $("#showFavourites").on('click', function(e){
+            var favouritesBtn = $(e.currentTarget);
+            var heart = favouritesBtn.children();
+            if (favouritesBtn.hasClass('disabled')) {
+                favouritesBtn.attr('class', 'btn btn-success');
+                heart.toggleClass('fas far').css('color', 'red');
+            } else {
+                favouritesBtn.attr('class', 'btn btn-outline-secondary disabled');
+                heart.toggleClass('fas far').css('color', 'gray');
+            }
+            calendar.rerenderEvents();
         });
 
     });
