@@ -76,6 +76,10 @@
                 axios.delete('/api/favourite/' + id)
                     .then(function (response) {
                         heart.toggleClass('fas far').css('color', 'gray');
+                        if ($('table tr#' + event_id + ' td.favouriteTd')) {
+                            var tableIcon = $('table tr#' + event_id + ' td.favouriteTd');
+                            tableIcon.attr('data-search', '0').children().children().toggleClass('fas far').css('color', 'gray').remove('id');
+                        }
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -87,6 +91,10 @@
                     })
                     .then(function (response) {
                         heart.toggleClass('fas far').css('color', 'red');
+                        if ($('table tr#' + event_id + ' td.favouriteTd')) {
+                            var tableIcon = $('table tr#' + event_id + ' td.favouriteTd');
+                            tableIcon.attr('data-search', '1').children().children().toggleClass('fas far').css('color', 'red').attr('id', response.data.id);
+                        }
                     })
                     .catch(function (error) {
                         console.log(error);

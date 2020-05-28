@@ -24,6 +24,9 @@
                             Other 
                             <i class="fas fa-caret-down"></i>
                         </button>&nbsp&nbsp
+                        <button type="button" class="btn btn-outline-secondary disabled" id="showFavourites">
+                            &nbsp<i class="far fa-heart"></i>&nbsp
+                        </button>&nbsp&nbsp
                         <!--<div class="input-group mb-3" style="margin-bottom: 0px !important">
                             <input type="text" id="search" placeholder="Search title" class="form-control">
                             <div class="input-group-append">
@@ -34,7 +37,7 @@
                     <div class="filters">
                         <div class="subjectFilter" style="display: none; padding: 15px 0px 10px 0px">
                             @foreach ($data['categories'] as $category)
-                                <a href="#" id="{{ str_replace(' ', '', $category->category) }}" class="btn disabled" style="background-color: {{ $category->colour }}; margin: 3px; pointer-events: auto">{{ $category->category }}</a>
+                                <a href="#" id="{{ str_replace(' ', '', strtolower($category->category)) }}" class="btn disabled" style="background-color: {{ $category->colour }}; margin: 3px; pointer-events: auto">{{ $category->category }}</a>
                             @endforeach
                         </div>
                         <div class="ageFilter" style="display: none; padding: 15px 0px 10px 0px">
@@ -50,26 +53,38 @@
                 </div>
                 <div class="card-body">
                     <div id="list">
-                        <table id="nonLiveList" class="table table-hover" style="line-height: 3rem; font-size: 0.9rem">
+                        <table id="nonLiveList" class="table table-hover">
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">Title</th>
-                                    <th scope="col">Description</th>
                                     <th scope="col">Subject</th>
                                     <th scope="col">Age group</th>
-                                    <th scope="col">DfE approved</th>
-                                    <th scope="col">Supervision required</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($events as $event)
                                     <tr id="{{ $event->id }}">
                                         <th scope="row">{{ $event->title }}</th>
-                                        <td>{{ $event->description }}</td>
                                         <td><span class="badge badge-pill" style="background-color: {{ $event->colour }}">{{ $event->category }}</span></td>
-                                        <td>{{ $event->minimum_age }} to {{ $event->maximum_age }}</td>
-                                        <td>{!! $event->dfe_approved ? '<i class="fas fa-check"></i>' : '' !!}</td>
+                                        <td data-min="{{ $event->minimum_age }}" data-max="{{ $event->maximum_age }}">{{ $event->minimum_age }} to {{ $event->maximum_age }}</td>
+                                        <td>{!! $event->dfe_approved ? '&#x2714' : '' !!}</td>
                                         <td>{!! $event->requires_supervision ? '<i class="fas fa-binoculars"></i>' : '' !!}</td>
+                                        @if ($event->favourite_id)
+                                            <td class="favouriteTd" data-search="1">
+                                                <a class="favourite" href="#">
+                                                    <i class="fas fa-heart" id="{{ $event->favourite_id }}" style="color: red"></i>
+                                                </a>
+                                            </td>
+                                        @else
+                                            <td class="favouriteTd" data-search="0">
+                                                <a class="favourite" href="#">
+                                                    <i class="far fa-heart" style="color: gray"></i>
+                                                </a>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -90,10 +105,25 @@
 
     var isAdmin = @json(Auth::user()->isAdmin());
     var events = @json($data['events']);
-
+    var table = false;
     document.addEventListener('DOMContentLoaded', function() {
 
-        $('#nonLiveList').DataTable();
+        table = $('#nonLiveList').DataTable({
+            "columnDefs": [
+                { "orderable": false, "targets": [3, 4, 5] },
+                { "orderable": true, "targets": [0, 1, 2] }
+            ]
+        });
+
+        loadDatatableFunctions();
+        
+        $('ul.pagination li').on('click', function(){
+            console.log('cunty');
+            loadDatatableFunctions();
+        });
+
+    });
+    var loadDatatableFunctions = function() {
 
         // attach event handlers to MAIN filter buttons, to show which one is active etc
         $(".filter-buttons button").on('click', function(e){
@@ -120,9 +150,8 @@
             });
         });
 
-        $('tbody tr').on('click', function(e){
-            var id = $(e.currentTarget).attr('id');
-            console.log(id);
+        $('tbody tr td:not(.favouriteTd)').on('click', function(e){
+            var id = $(e.currentTarget).closest('tr').attr('id');
             axios.get('/api/event/' + id)
                 .then(function (response) {
                     $('#viewModal').html(response.data).modal();
@@ -133,7 +162,7 @@
         });
 
         // attach event handlers to specific filter buttons ("a") to ensure correct disabling/enabling functionality
-        $('.filters a').on('click', function(e){
+        $('.subjectFilter a').on('click', function(e){
             e.preventDefault();
 
             // find the relevant button
@@ -148,49 +177,164 @@
 
             var filterIsOn = false;
             var parentDivClassName = button.parent().attr('class');
-
-            $('.' + parentDivClassName + ' a').each(function(f){
+            var filterString = "";
+            var prefix = "";
+            $('.' + parentDivClassName + ' a').each(function(){
                 if ($(this).hasClass('disabled') === false) {
+                    // filter is enabled
                     filterIsOn = true;
-                    return false;
+                    // build the string that will filter the table
+                    filterString += prefix + "^" + $(this).text() + "$";
+                    prefix = "|";
                 }
             });
+
+            // do the do
+            table
+            .column(1)
+            .search(filterString, true, false)
+            .draw();
 
             if (filterIsOn) {
                 $('#' + parentDivClassName).attr('class', 'btn btn-success');
             } else {
                 $('#' + parentDivClassName).attr('class', 'btn btn-outline-secondary disabled');
             }
-            calendar.rerenderEvents();
-        });
-/*
-        $('#search').on('keyup', function(e){
-            if ($(e.currentTarget).val() === '') {
-                $("#searchBtn").attr('class', 'btn btn-outline-secondary disabled');
-            }
+
         });
 
-        // if the search box is used...
-        $("#searchBtn").on('click', function(e){
-            var searchBtn = $(e.currentTarget);
-            if ($('#search').val() === '') {
-                if (searchBtn.hasClass('disabled')) {
-                    return false;
-                } else {
-                    searchBtn.attr('class', 'btn btn-outline-secondary disabled');
-                    return false
-                }
+        // attach event handlers to specific filter buttons ("a") to ensure correct disabling/enabling functionality
+        /*$('.ageFilter a').on('click', function(e){
+            e.preventDefault();
+
+            // find the relevant button
+            var button = $(e.currentTarget);
+            if (button.hasClass('disabled')) {
+                // if it's disabled, reenable and remove blur
+                button.removeClass('disabled').addClass('btn-lg').blur();
             } else {
-                if (searchBtn.hasClass('disabled')) {
-                    searchBtn.attr('class', 'btn btn-success');
-                } else {
-                    $('#search').val('');
-                    searchBtn.attr('class', 'btn btn-outline-secondary disabled');
-                }                
+                // if it wasn't disabled, disable it but keep the pointer events (so it's still clickable)
+                button.addClass('disabled').removeClass('btn-lg').css('pointer-events', 'auto').blur();
             }
 
-           calendar.rerenderEvents();
+            var filterIsOn = false;
+            var parentDivClassName = button.parent().attr('class');
+            var filterString = "";
+            var prefix = "";
+            $('.' + parentDivClassName + ' a').each(function(){
+                if ($(this).hasClass('disabled') === false) {
+                    // filter is enabled
+                    filterIsOn = true;
+                    // build the string that will filter the table
+                    filterString += prefix + "^" + $(this).text() + "$";
+                    prefix = "|";
+                }
+            });
+
+            // do the do
+            table
+            .column(2)
+            .search(filterString, true, false)
+            .draw();
+
+            if (filterIsOn) {
+                $('#' + parentDivClassName).attr('class', 'btn btn-success');
+            } else {
+                $('#' + parentDivClassName).attr('class', 'btn btn-outline-secondary disabled');
+            }
+
+        });*/
+
+        // attach event handlers to specific filter buttons ("a") to ensure correct disabling/enabling functionality
+        $('.otherFilters a').on('click', function(e){
+            e.preventDefault();
+
+            // find the relevant button
+            var button = $(e.currentTarget);
+            if (button.hasClass('disabled')) {
+                // if it's disabled, reenable and remove blur
+                button.removeClass('disabled').addClass('btn-lg').blur();
+            } else {
+                // if it wasn't disabled, disable it but keep the pointer events (so it's still clickable)
+                button.addClass('disabled').removeClass('btn-lg').css('pointer-events', 'auto').blur();
+            }
+
+            var filterIsOn = false;
+            var parentDivClassName = button.parent().attr('class');
+            var filterString = "";
+            $('.' + parentDivClassName + ' a').each(function(){
+                if ($(this).hasClass('disabled') === false) {
+                    // filter is enabled
+                    filterIsOn = true;
+                    // build the string that will filter the table
+                    filterString = '✔';
+                    return false;
+                }
+            });
+
+            // do the do
+            table
+            .column(3)
+            .search(filterString)
+            .draw();
+
+            if (filterIsOn) {
+                $('#' + parentDivClassName).attr('class', 'btn btn-success');
+            } else {
+                $('#' + parentDivClassName).attr('class', 'btn btn-outline-secondary disabled');
+            }
+
         });
-*/
-    });
+
+         // if the favourites button is
+        $("#showFavourites").on('click', function(e){
+            var favouritesBtn = $(e.currentTarget);
+            var heart = favouritesBtn.children();
+            if (favouritesBtn.hasClass('disabled')) {
+                favouritesBtn.attr('class', 'btn btn-success');
+                heart.toggleClass('fas far').css('color', 'red');
+                table
+                .column(5)
+                .search('1')
+                .draw();
+            } else {
+                favouritesBtn.attr('class', 'btn btn-outline-secondary disabled');
+                heart.toggleClass('fas far').css('color', 'gray');
+                table
+                .column(5)
+                .search('')
+                .draw();
+            }
+        });
+
+        var user_id = @json(Auth::user()->id);
+
+        $('.favourite').on('click', function(e){
+            var heart = $(e.currentTarget).children();
+            if (heart.hasClass('fas')) {
+                var id = heart.attr('id');
+                axios.delete('/api/favourite/' + id)
+                    .then(function (response) {
+                        heart.toggleClass('fas far').css('color', 'gray');
+                        heart.closest('td').attr('data-search', '0');
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                });
+            } else {
+                event_id = $(e.currentTarget).closest('tr').attr('id');
+                axios.post('/api/favourite', {
+                        event_id: event_id,
+                        user_id: user_id
+                    })
+                    .then(function (response) {
+                        heart.toggleClass('fas far').css('color', 'red');
+                        heart.closest('td').attr('data-search', '1');
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                });
+            }
+        });
+    }
 </script>
