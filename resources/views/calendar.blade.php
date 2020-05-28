@@ -157,8 +157,7 @@
 
                 // FAVOURITES FILTER
                 if (!$('#showFavourites').hasClass('disabled')) {
-                    console.log(info.event.extendedProps);
-                    if (info.event.extendedProps.favourite_id === 0) {
+                    if (info.event.extendedProps.favourite_id == 0) {
                         return false;
                     }
                 }
