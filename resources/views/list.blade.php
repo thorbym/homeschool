@@ -68,7 +68,7 @@
                                 @foreach ($events as $event)
                                     <tr id="{{ $event->id }}">
                                         <th scope="row">{{ $event->title }}</th>
-                                        <td><span class="badge badge-pill" style="background-color: {{ $event->colour }}">{{ $event->category }}</span></td>
+                                        <td style="font-size: 1.3rem"><span class="badge badge-pill" style="background-color: {{ $event->colour }}">{{ $event->category }}</span></td>
                                         <td data-min="{{ $event->minimum_age }}" data-max="{{ $event->maximum_age }}">{{ $event->minimum_age }} to {{ $event->maximum_age }}</td>
                                         <td>{!! $event->dfe_approved ? '&#x2714' : '' !!}</td>
                                         <td>{!! $event->requires_supervision ? '<i class="fas fa-binoculars"></i>' : '' !!}</td>
@@ -115,16 +115,6 @@
             ]
         });
 
-        loadDatatableFunctions();
-        
-        $('ul.pagination li').on('click', function(){
-            console.log('cunty');
-            loadDatatableFunctions();
-        });
-
-    });
-    var loadDatatableFunctions = function() {
-
         // attach event handlers to MAIN filter buttons, to show which one is active etc
         $(".filter-buttons button").on('click', function(e){
             // find the button that was actually clicked
@@ -147,17 +137,6 @@
                     // toggle the clicked one
                     $(this).toggle(300);
                 }
-            });
-        });
-
-        $('tbody tr td:not(.favouriteTd)').on('click', function(e){
-            var id = $(e.currentTarget).closest('tr').attr('id');
-            axios.get('/api/event/' + id)
-                .then(function (response) {
-                    $('#viewModal').html(response.data).modal();
-                })
-                .catch(function (error) {
-                    console.log(error);
             });
         });
 
@@ -286,7 +265,7 @@
 
         });
 
-         // if the favourites button is
+         // if the favourites filter is clicked
         $("#showFavourites").on('click', function(e){
             var favouritesBtn = $(e.currentTarget);
             var heart = favouritesBtn.children();
@@ -307,9 +286,34 @@
             }
         });
 
+        loadDatatableFunctions();
+        
+        $('ul.pagination li').on('click', function(){
+            loadDatatableFunctions();
+        });
+
+        $('.custom-select').on('change', function(){
+            loadDatatableFunctions();
+        });
+
+    });
+    
+    var loadDatatableFunctions = function() {
+
+        $('tbody tr th,td:not(.favouriteTd)').off('click').on('click', function(e){
+            var id = $(e.currentTarget).closest('tr').attr('id');
+            axios.get('/api/event/' + id)
+                .then(function (response) {
+                    $('#viewModal').html(response.data).modal();
+                })
+                .catch(function (error) {
+                    console.log(error);
+            });
+        });
+
         var user_id = @json(Auth::user()->id);
 
-        $('.favourite').on('click', function(e){
+        $('.favourite').off('click').on('click', function(e){
             var heart = $(e.currentTarget).children();
             if (heart.hasClass('fas')) {
                 var id = heart.attr('id');
@@ -335,6 +339,7 @@
                         console.log(error);
                 });
             }
+            return false;
         });
     }
 </script>

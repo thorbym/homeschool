@@ -112,7 +112,11 @@ class EventController extends Controller
                 ->where('events.id', '=', $id)
                 ->first();
 
-            $view = view('modals.eventUpdate', compact('categories', 'event'))->render();
+            if (Auth::user()->isAdmin()) {
+                $view = view('modals.eventUpdate', compact('categories', 'event'))->render();
+            } else {
+                $view = view('modals.eventView', compact('categories', 'event'))->render();
+            }
 
         } else {
 
