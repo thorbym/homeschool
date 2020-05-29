@@ -113,8 +113,11 @@
                 { "orderable": false, "targets": [3, 4, 5] },
                 { "orderable": true, "targets": [0, 1, 2] }
             ],
-            language: {
+            "language": {
                 searchPlaceholder: "Search title"
+            },
+            "drawCallback": function() {
+                loadDatatableFunctions();
             }
         });
 
@@ -182,7 +185,6 @@
             } else {
                 $('#' + parentDivClassName).attr('class', 'btn btn-outline-secondary disabled');
             }
-            loadDatatableFunctions();
 
         });
 
@@ -240,7 +242,6 @@
             } else {
                 $('#' + parentDivClassName).attr('class', 'btn btn-outline-secondary disabled');
             }
-            loadDatatableFunctions();
 
         });
 
@@ -282,7 +283,6 @@
             } else {
                 $('#' + parentDivClassName).attr('class', 'btn btn-outline-secondary disabled');
             }
-            loadDatatableFunctions();
 
         });
 

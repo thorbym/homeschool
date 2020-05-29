@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="live_instagram_link">LIVE Instgram Link</label>
+                    <label for="live_instagram_link">LIVE Instagram Link</label>
                     <input type="text" class="form-control" name="live_instagram_link" id="live_instagram_link"  value="{{ $event->live_instagram_link }}">
                 </div>
 
