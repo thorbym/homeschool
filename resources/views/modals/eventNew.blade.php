@@ -70,7 +70,7 @@
 
                 <div class="form-group">
                     <label for="days">Days</label>
-                    <select required multiple class="form-control" name="days_of_week[]" id="days_of_week">
+                    <select multiple class="form-control" name="days_of_week[]" id="days_of_week">
                         <option value="1">Monday</option>
                         <option value="2">Tuesday</option>
                         <option value="3">Wednesday</option>
@@ -94,11 +94,11 @@
                     <div class="row">
                         <div class="col">
                             <label for="minimum_age">Minimum age</label>
-                            <input required type="number" class="form-control" name="minimum_age" id="minimum_age" min=0 max=16>
+                            <input type="number" class="form-control" name="minimum_age" id="minimum_age" min=0 max=16>
                         </div>
                         <div class="col">
                             <label for="maximum_age">Maximum age</label>
-                            <input required type="number" class="form-control" name="maximum_age" id="maximum_age" min=0 max=16>
+                            <input type="number" class="form-control" name="maximum_age" id="maximum_age" min=0 max=16>
                         </div>
                     </div>
                 </div>

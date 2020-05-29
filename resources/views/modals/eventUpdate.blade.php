@@ -15,8 +15,6 @@
                     <textarea class="form-control" rows="3" name="description" id="description">{{ $event->description }}</textarea>
                 </div>
 
-                <div class="clearfix"></div>
-
                 <div class="form-group">
                     <label for="live_youtube_link">LIVE YouTube Link</label>
                     <input  type="text" class="form-control" name="live_youtube_link" id="live_youtube_link"  value="{{ $event->live_youtube_link }}">
@@ -36,8 +34,6 @@
                     <label for="live_web_link">LIVE Web Link</label>
                     <input type="text" class="form-control" name="live_web_link" id="live_web_link"  value="{{ $event->live_web_link }}">
                 </div>
-
-                <div class="clearfix"></div>
 
                 <div class="form-group">
                     <label for="youtube_link">YouTube Link</label>
