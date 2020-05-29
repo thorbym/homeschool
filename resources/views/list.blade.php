@@ -112,7 +112,10 @@
             "columnDefs": [
                 { "orderable": false, "targets": [3, 4, 5] },
                 { "orderable": true, "targets": [0, 1, 2] }
-            ]
+            ],
+            language: {
+                searchPlaceholder: "Search title"
+            }
         });
 
         // attach event handlers to MAIN filter buttons, to show which one is active etc
@@ -183,7 +186,7 @@
         });
 
         // attach event handlers to specific filter buttons ("a") to ensure correct disabling/enabling functionality
-        /*$('.ageFilter a').on('click', function(e){
+        $('.ageFilter a').on('click', function(e){
             e.preventDefault();
 
             // find the relevant button
@@ -204,16 +207,31 @@
                 if ($(this).hasClass('disabled') === false) {
                     // filter is enabled
                     filterIsOn = true;
-                    // build the string that will filter the table
-                    filterString += prefix + "^" + $(this).text() + "$";
-                    prefix = "|";
+                    if ($(this).attr('id') == "littleKids") {
+                        if (filterString != "") {
+                            filterString += "|";
+                        }
+                        filterString += "^0 to |^1 to |^2 to |^3 to |^4 to |^5 to |^6 to ";
+                    }
+                    if ($(this).attr('id') == "middleKids") {
+                        if (filterString != "") {
+                            filterString += "|";
+                        }
+                        filterString += " to 16| to 15| to 14| to 13| to 12| to 11| to 10| to 9| to 8| to 7";
+                    }
+                    if ($(this).attr('id') == "bigKids") {
+                        if (filterString != "") {
+                            filterString += "|";
+                        }
+                        filterString += " to 16| to 15| to 14| to 13| to 12";
+                    }
                 }
             });
 
             // do the do
             table
             .column(2)
-            .search(filterString, true, false)
+            .search(filterString, true, false, true)
             .draw();
 
             if (filterIsOn) {
@@ -222,7 +240,7 @@
                 $('#' + parentDivClassName).attr('class', 'btn btn-outline-secondary disabled');
             }
 
-        });*/
+        });
 
         // attach event handlers to specific filter buttons ("a") to ensure correct disabling/enabling functionality
         $('.otherFilters a').on('click', function(e){
