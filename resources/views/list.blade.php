@@ -182,6 +182,7 @@
             } else {
                 $('#' + parentDivClassName).attr('class', 'btn btn-outline-secondary disabled');
             }
+            loadDatatableFunctions();
 
         });
 
@@ -239,6 +240,7 @@
             } else {
                 $('#' + parentDivClassName).attr('class', 'btn btn-outline-secondary disabled');
             }
+            loadDatatableFunctions();
 
         });
 
@@ -280,6 +282,7 @@
             } else {
                 $('#' + parentDivClassName).attr('class', 'btn btn-outline-secondary disabled');
             }
+            loadDatatableFunctions();
 
         });
 
@@ -302,6 +305,7 @@
                 .search('')
                 .draw();
             }
+            loadDatatableFunctions();
         });
 
         loadDatatableFunctions();
