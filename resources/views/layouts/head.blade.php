@@ -7,6 +7,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- favicon -->
+    <link rel="icon" href="{{ URL::asset('teachem-favicon-48.png') }}" type="image/x-icon"/>
+
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->

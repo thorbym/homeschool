@@ -70,41 +70,43 @@
 </div>
 <script>
 
-    var user_id = @json(Auth::user()->id);
+    var user_id = @json(Auth::check() ? Auth::user()->id : 0);
     var event_id = @json($event->id);
 
     $(document).ready(function(){
-        $('#favourite').on('click', function(e){
-            var heart = $(e.currentTarget).children();
-            if (heart.hasClass('fas')) {
-                var id = heart.attr('id');
-                axios.delete('/api/favourite/' + id)
-                    .then(function (response) {
-                        heart.toggleClass('fas far').css('color', 'gray');
-                        if ($('table tr#' + event_id + ' td.favouriteTd')) {
-                            var tableIcon = $('table tr#' + event_id + ' td.favouriteTd');
-                            tableIcon.attr('data-search', '0').children().children().toggleClass('fas far').css('color', 'gray').remove('id');
-                        }
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                });
-            } else {
-                axios.post('/api/favourite', {
-                        event_id: event_id,
-                        user_id: user_id
-                    })
-                    .then(function (response) {
-                        heart.toggleClass('fas far').css('color', 'red');
-                        if ($('table tr#' + event_id + ' td.favouriteTd')) {
-                            var tableIcon = $('table tr#' + event_id + ' td.favouriteTd');
-                            tableIcon.attr('data-search', '1').children().children().toggleClass('fas far').css('color', 'red').attr('id', response.data.id);
-                        }
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                });
-            }
-        });
+        if (user_id) {
+            $('#favourite').on('click', function(e){
+                var heart = $(e.currentTarget).children();
+                if (heart.hasClass('fas')) {
+                    var id = heart.attr('id');
+                    axios.delete('/api/favourite/' + id)
+                        .then(function (response) {
+                            heart.toggleClass('fas far').css('color', 'gray');
+                            if ($('table tr#' + event_id + ' td.favouriteTd')) {
+                                var tableIcon = $('table tr#' + event_id + ' td.favouriteTd');
+                                tableIcon.attr('data-search', '0').children().children().toggleClass('fas far').css('color', 'gray').remove('id');
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                    });
+                } else {
+                    axios.post('/api/favourite', {
+                            event_id: event_id,
+                            user_id: user_id
+                        })
+                        .then(function (response) {
+                            heart.toggleClass('fas far').css('color', 'red');
+                            if ($('table tr#' + event_id + ' td.favouriteTd')) {
+                                var tableIcon = $('table tr#' + event_id + ' td.favouriteTd');
+                                tableIcon.attr('data-search', '1').children().children().toggleClass('fas far').css('color', 'red').attr('id', response.data.id);
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                    });
+                }
+            });
+        }
     })
 </script>

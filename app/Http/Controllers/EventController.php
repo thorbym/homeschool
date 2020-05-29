@@ -85,34 +85,36 @@ class EventController extends Controller
         $categories = Category::get();
 
         if ($id > 0) {
-            $event = DB::table('events')
-                ->join('categories', 'categories.id', '=', 'events.category_id')
-                ->leftJoin('favourites', function($join)
-                    {
-                        $join->on('favourites.event_id', '=', 'events.id');
-                        $join->where('favourites.user_id', '=', Auth::user()->id);
-                    })
-                ->select(
-                    'events.id',
-                    'events.title',
-                    'events.description',
-                    'events.link',
-                    'events.start_time',
-                    'events.end_time',
-                    'events.days_of_week',
-                    'events.requires_supervision',
-                    'events.dfe_approved',
-                    'events.catchup_link',
-                    'events.minimum_age',
-                    'events.maximum_age',
-                    'events.category_id',
-                    'categories.category',
-                    'categories.colour',
-                    DB::raw('(case when favourites.id is null then 0 else favourites.id end) as favourite_id'))
-                ->where('events.id', '=', $id)
-                ->first();
+            $query = DB::table('events')
+                ->join('categories', 'categories.id', '=', 'events.category_id');
+            if (Auth::check()) {
+                $query->leftJoin('favourites', function($join) {
+                    $join->on('favourites.event_id', '=', 'events.id');
+                    $join->where('favourites.user_id', '=', Auth::user()->id);
+                });
+            }
+            $query->select(
+                'events.id',
+                'events.title',
+                'events.description',
+                'events.link',
+                'events.start_time',
+                'events.end_time',
+                'events.days_of_week',
+                'events.requires_supervision',
+                'events.dfe_approved',
+                'events.catchup_link',
+                'events.minimum_age',
+                'events.maximum_age',
+                'events.category_id',
+                'categories.category',
+                'categories.colour',
+                Auth::check() ? DB::raw('(case when favourites.id is null then 0 else favourites.id end) as favourite_id') : DB::raw('0 AS favourite_id')
+            );
+            $query->where('events.id', '=', $id);
+            $event = $query->first();
 
-            if (Auth::user()->isAdmin()) {
+            if (Auth::check() && Auth::user()->isAdmin()) {
                 $view = view('modals.eventUpdate', compact('categories', 'event'))->render();
             } else {
                 $view = view('modals.eventView', compact('categories', 'event'))->render();

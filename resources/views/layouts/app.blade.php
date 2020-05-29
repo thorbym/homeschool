@@ -61,6 +61,24 @@
         </nav>
 
         <main class="py-4">
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link {{ last(request()->segments()) == 'calendar' ? 'active' : '' }}" href="{{ route('calendar') }}">Watch live</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ last(request()->segments()) == 'list' ? 'active' : '' }}" href="{{ route('list') }}">Watch any time</a>
+                        </li>
+                        @if (Auth::check() && Auth::user()->isAdmin())
+                            <li class="nav-item">
+                                <a class="nav-link {{ last(request()->segments()) == 'categories' ? 'active' : '' }}" href="{{ route('categories') }}">Categories</a>
+                            </li>
+                        @endif
+                    </ul>
+                </div>
+            </div>
+            <br />
             @yield('content')
         </main>
     </div>

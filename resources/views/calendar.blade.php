@@ -67,7 +67,7 @@
 
 <script>
 
-    var isAdmin = @json(Auth::user()->isAdmin());
+    var isAdmin = @json(Auth::check() ? Auth::user()->isAdmin() : 0);
     var events = @json($data['events']);
 
     document.addEventListener('DOMContentLoaded', function() {

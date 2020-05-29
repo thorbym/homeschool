@@ -20,6 +20,7 @@ Auth::routes();
 Route::get('protected', ['middleware' => ['auth', 'admin'], function() {
     return "this page requires that you be logged in and an Admin";
 }]);
+Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/calendar', 'HomeController@showCalendar')->name('calendar');
 Route::get('/list', 'HomeController@showList')->name('list');
