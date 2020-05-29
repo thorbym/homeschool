@@ -97,13 +97,19 @@ class EventController extends Controller
                 'events.id',
                 'events.title',
                 'events.description',
-                'events.link',
+                'events.live_youtube_link',
+                'events.live_facebook_link',
+                'events.live_instagram_link',
+                'events.live_web_link',
+                'events.youtube_link',
+                'events.facebook_link',
+                'events.instagram_link',
+                'events.web_link',
                 'events.start_time',
                 'events.end_time',
                 'events.days_of_week',
                 'events.requires_supervision',
                 'events.dfe_approved',
-                'events.catchup_link',
                 'events.minimum_age',
                 'events.maximum_age',
                 'events.category_id',
@@ -155,14 +161,20 @@ class EventController extends Controller
 
         $event->title = $request->get('title');
         $event->description = $request->get('description');
-        $event->link = $request->get('link');
-        $event->start_time = $request->get('start_time');
-        $event->end_time = $request->get('end_time');
+        $event->start_time = $request->get('start_time') ? $request->get('start_time') : null;
+        $event->end_time = $request->get('end_time') ? $request->get('end_time') : null;
         $event->days_of_week = json_encode($request->get('days_of_week'));
         $event->category_id = $request->get('category_id');
         $event->requires_supervision = $request->get('requires_supervision') ? 1 : 0;
         $event->dfe_approved = $request->get('dfe_approved') ? 1 : 0;
-        $event->catchup_link = $request->get('catchup_link');
+        $event->live_youtube_link = $request->get('live_youtube_link') ? $request->get('live_youtube_link') : null;
+        $event->live_facebook_link = $request->get('live_facebook_link') ? $request->get('live_facebook_link') : null;
+        $event->live_instagram_link = $request->get('live_instagram_link') ? $request->get('live_instagram_link') : null;
+        $event->live_web_link = $request->get('live_web_link') ? $request->get('live_web_link') : null;
+        $event->youtube_link = $request->get('youtube_link') ? $request->get('youtube_link') : null;
+        $event->facebook_link = $request->get('facebook_link') ? $request->get('facebook_link') : null;
+        $event->instagram_link = $request->get('instagram_link') ? $request->get('instagram_link') : null;
+        $event->web_link = $request->get('web_link') ? $request->get('web_link') : null;
         $event->minimum_age = $request->get('minimum_age');
         $event->maximum_age = $request->get('maximum_age');
 

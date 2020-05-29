@@ -16,13 +16,43 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="link">Link</label>
-                    <input required type="text" class="form-control" name="link" id="link">
+                    <label for="live_youtube_link">LIVE YouTube Link</label>
+                    <input  type="text" class="form-control" name="live_youtube_link" id="live_youtube_link">
                 </div>
 
                 <div class="form-group">
-                    <label for="catchup_link">Watch later</label>
-                    <input type="text" class="form-control" name="catchup_link" id="catchup_link">
+                    <label for="live_facebook_link">LIVE Facebook Link</label>
+                    <input type="text" class="form-control" name="live_facebook_link" id="live_facebook_link">
+                </div>
+
+                <div class="form-group">
+                    <label for="live_instagram_link">LIVE Instgram Link</label>
+                    <input type="text" class="form-control" name="live_instagram_link" id="live_instagram_link">
+                </div>
+
+                <div class="form-group">
+                    <label for="live_web_link">LIVE Web Link</label>
+                    <input type="text" class="form-control" name="live_web_link" id="live_web_link">
+                </div>
+
+                <div class="form-group">
+                    <label for="youtube_link">YouTube Link</label>
+                    <input type="text" class="form-control" name="youtube_link" id="youtube_link">
+                </div>
+
+                <div class="form-group">
+                    <label for="facebook_link">Facebook Link</label>
+                    <input type="text" class="form-control" name="facebook_link" id="facebook_link">
+                </div>
+
+                <div class="form-group">
+                    <label for="instagram_link">Instagram Link</label>
+                    <input type="text" class="form-control" name="instagram_link" id="instagram_link">
+                </div>
+
+                <div class="form-group">
+                    <label for="web_link">Web Link</label>
+                    <input type="text" class="form-control" name="web_link" id="web_link">
                 </div>
 
                 <div class="form-group">
