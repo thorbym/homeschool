@@ -2,58 +2,81 @@
     <div class="modal-content">
         <div class="modal-header gray">
             <h4 class="modal-title">{{ $event->title }}</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+            <button type="button" class="close align-middle" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"><i class="fas fa-times fa-lg align-middle" style="color: gray"></i></span>
             </button>
         </div>
         <div class="modal-body">
-            <h5>Description</h5>
+            <h5><u>Description</u></h5>
             <p>{{ $event->description }}</p>
+            <p>
+                <small>Suitable for {{ $event->minimum_age }} to {{ $event->maximum_age }} years old
+                    <br />
+                    @if ($event->dfe_approved)
+                    DfE Approved: &nbsp
+                        <i class="fas fa-check" style="color: green"></i><br />
+                    @endif
+                    @if ($event->requires_supervision)
+                        <i class="fas fa-binoculars fa-lg" style="color: orange"></i> &nbsp
+                        Supervision required!
+                    @endif
+                </small>
+            </p>
+            @if ($event->start_time && $event->start_time != "00:00")
             <br />
             <hr>
-            <h5>Details</h5>
+            <h5><u>Watch live</u></h5><br />
             <p>
-                <div class="row">
-                    <div class="col-md-6">
-                        Time: {{ $event->start_time }} to {{ $event->end_time }}
-                    </div>
-                    <div class="col-md-6">
-                        Suitable for ages: {{ $event->minimum_age }} to {{ $event->maximum_age }}
-                    </div>
-                </div>
+                {{ $event->start_time }} to {{ $event->end_time }} (UK time), {{ Helper::convertDaysOfWeek($event->days_of_week) }}
             </p>
             <p>
-                Days: {{ Helper::convertDaysOfWeek($event->days_of_week) }}
+                @if ($event->live_web_link)
+                <a href="{{ $event->live_youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
+                    <span class="align-middle">YouTube <i class="fab fa-youtube fa-2x align-middle"></i></span>
+                </a>&nbsp
+                @endif
+                @if ($event->live_web_link)
+                <a href="{{ $event->live_facebook_link }}" target="_blank" class="btn btn-sm" style="background-color: #3b5998; color: white">
+                    <span class="align-middle">Facebook <i class="fab fa-facebook fa-2x align-middle"></i></span>
+                </a>&nbsp
+                @endif
+                @if ($event->live_web_link)
+                <a href="{{ $event->live_instagram_link }}" target="_blank" class="btn btn-sm" style="background-color: #517fa4; color: white">
+                    <span class="align-middle">Instagram <i class="fab fa-instagram fa-2x align-middle"></i></span>
+                </a>&nbsp
+                @endif
+                @if ($event->live_web_link)
+                <a href="{{ $event->live_web_link }}" target="_blank" class="btn btn-sm" style="background-color: blue; color: white;">
+                    <span class="align-middle">Web <i class="fas fa-globe fa-2x align-middle"></i></span>
+                </a>&nbsp
+                @endif
             </p>
-            <p>
-                <div class="row">
-                    <div class="col-md-6">
-                        DfE Approved: &nbsp
-                        @if ($event->dfe_approved)
-                            <i class="fas fa-check fa-lg" style="color: green"></i>
-                        @else
-                            <i class="fas fa-times fa-lg" style="color: gray"></i>
-                        @endif
-                    </div>
-                    <div class="col-md-6">
-                        @if ($event->requires_supervision)
-                            <i class="fas fa-binoculars fa-lg" style="color: orange"></i> &nbsp
-                            Adult supervision required!
-                        @endif
-                    </div>
-                </div>
-            </p>
+            @endif
             <br />
             <hr>
-            <h5>Viewing info</h5>
-            <br />
+            <h5><u>Watch anytime</u></h5><br />
             <p>
-                <a href="{{ $event->link }}" target="_blank">Click here for the LIVE event</a>
+                @if ($event->live_web_link)
+                <a href="{{ $event->live_youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
+                    <span class="align-middle">YouTube <i class="fab fa-youtube fa-2x align-middle"></i></span>
+                </a>&nbsp
+                @endif
+                @if ($event->live_web_link)
+                <a href="{{ $event->live_facebook_link }}" target="_blank" class="btn btn-sm" style="background-color: #3b5998; color: white">
+                    <span class="align-middle">Facebook <i class="fab fa-facebook fa-2x align-middle"></i></span>
+                </a>&nbsp
+                @endif
+                @if ($event->live_web_link)
+                <a href="{{ $event->live_instagram_link }}" target="_blank" class="btn btn-sm" style="background-color: #517fa4; color: white">
+                    <span class="align-middle">Instagram <i class="fab fa-instagram fa-2x align-middle"></i></span>
+                </a>&nbsp
+                @endif
+                @if ($event->live_web_link)
+                <a href="{{ $event->live_web_link }}" target="_blank" class="btn btn-sm" style="background-color: blue; color: white;">
+                    <span class="align-middle">Web <i class="fas fa-globe fa-2x align-middle"></i></span>
+                </a>&nbsp
+                @endif
             </p>
-            <p>
-                <a href="{{ $event->catchup_link }}" target="_blank">Click here to watch anytime</a>
-            </p>
-            <!--<a href="#" class="tooltip-test" title="Tooltip">This link</a> and <a href="#" class="tooltip-test" title="Tooltip">that link</a> have tooltips on hover.</p>-->
         </div>
         <div class="modal-footer">
             <a id="favourite" href="#">

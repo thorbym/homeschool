@@ -103,7 +103,6 @@
 
 <script>
 
-    var isAdmin = @json(Auth::user()->isAdmin());
     var events = @json($data['events']);
     var table = false;
     document.addEventListener('DOMContentLoaded', function() {
@@ -333,33 +332,35 @@
             });
         });
 
-        var user_id = @json(Auth::user()->id);
+        var user_id = @json(Auth::check() ? Auth::user()->id : 0);
 
         $('.favourite').off('click').on('click', function(e){
-            var heart = $(e.currentTarget).children();
-            if (heart.hasClass('fas')) {
-                var id = heart.attr('id');
-                axios.delete('/api/favourite/' + id)
-                    .then(function (response) {
-                        heart.toggleClass('fas far').css('color', 'gray');
-                        heart.closest('td').attr('data-search', '0');
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                });
-            } else {
-                event_id = $(e.currentTarget).closest('tr').attr('id');
-                axios.post('/api/favourite', {
-                        event_id: event_id,
-                        user_id: user_id
-                    })
-                    .then(function (response) {
-                        heart.toggleClass('fas far').css('color', 'red');
-                        heart.closest('td').attr('data-search', '1');
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                });
+            if (user_id) {
+                var heart = $(e.currentTarget).children();
+                if (heart.hasClass('fas')) {
+                    var id = heart.attr('id');
+                    axios.delete('/api/favourite/' + id)
+                        .then(function (response) {
+                            heart.toggleClass('fas far').css('color', 'gray');
+                            heart.closest('td').attr('data-search', '0');
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                    });
+                } else {
+                    event_id = $(e.currentTarget).closest('tr').attr('id');
+                    axios.post('/api/favourite', {
+                            event_id: event_id,
+                            user_id: user_id
+                        })
+                        .then(function (response) {
+                            heart.toggleClass('fas far').css('color', 'red');
+                            heart.closest('td').attr('data-search', '1');
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                    });
+                }
             }
             return false;
         });

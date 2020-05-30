@@ -43,7 +43,7 @@
           <p>
             <h4>TeachEm is your online directory of video-based educational content. Find perfectly suited live and pre-recorded content quickly.</h4>
           </p>
-          <p><a class="btn btn-primary btn-lg" href="{{ route('calendar') }}" role="button">Get started &raquo;</a></p>
+          <p><a class="btn btn-primary btn-lg" href="{{ route('calendar') }}" role="button">Search events &raquo;</a></p>
           <p><a class="btn btn-primary-outline btn-lg" href="#" role="button"><i class="fas fa-chevron-down"></i></a></p>
         </div>
       </div>
