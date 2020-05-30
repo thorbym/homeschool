@@ -61,6 +61,7 @@ class HomeController extends Controller
             'events.requires_supervision',
             'categories.category',
             'categories.colour',
+            'categories.font_colour',
             Auth::check() ? DB::raw('(case when favourites.id is null then 0 else favourites.id end) as favourite_id') : DB::raw('0 AS favourite_id')
         );
         $events = $query->get();
@@ -95,6 +96,7 @@ class HomeController extends Controller
             'events.requires_supervision',
             'categories.category',
             'categories.colour',
+            'categories.font_colour',
             Auth::check() ? DB::raw('(case when favourites.id is null then 0 else favourites.id end) as favourite_id') : DB::raw('0 AS favourite_id')
         );
         $events = $query->get();

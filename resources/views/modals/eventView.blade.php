@@ -10,17 +10,16 @@
             <h5><u>Description</u></h5>
             <p>{{ $event->description }}</p>
             <p>
-                <small>Suitable for {{ $event->minimum_age }} to {{ $event->maximum_age }} years old
-                    <br />
-                    @if ($event->dfe_approved)
-                    DfE Approved: &nbsp
-                        <i class="fas fa-check" style="color: green"></i><br />
-                    @endif
-                    @if ($event->requires_supervision)
-                        <i class="fas fa-binoculars fa-lg" style="color: orange"></i> &nbsp
-                        Supervision required!
-                    @endif
-                </small>
+                Suitable for {{ $event->minimum_age }} to {{ $event->maximum_age }} years old
+                <br />
+                @if ($event->dfe_approved)
+                DfE Approved: &nbsp
+                    <i class="fas fa-check" style="color: green"></i><br />
+                @endif
+                @if ($event->requires_supervision)
+                    <i class="fas fa-binoculars fa-lg" style="color: orange"></i> &nbsp
+                    Supervision required!
+                @endif
             </p>
             @if ($event->start_time && $event->start_time != "00:00")
             <br />
@@ -30,17 +29,17 @@
                 {{ $event->start_time }} to {{ $event->end_time }} (UK time), {{ Helper::convertDaysOfWeek($event->days_of_week) }}
             </p>
             <p>
-                @if ($event->live_web_link)
+                @if ($event->live_youtube_link)
                 <a href="{{ $event->live_youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
                     <span class="align-middle">YouTube <i class="fab fa-youtube fa-2x align-middle"></i></span>
                 </a>&nbsp
                 @endif
-                @if ($event->live_web_link)
+                @if ($event->live_facebook_link)
                 <a href="{{ $event->live_facebook_link }}" target="_blank" class="btn btn-sm" style="background-color: #3b5998; color: white">
                     <span class="align-middle">Facebook <i class="fab fa-facebook fa-2x align-middle"></i></span>
                 </a>&nbsp
                 @endif
-                @if ($event->live_web_link)
+                @if ($event->live_instagram_link)
                 <a href="{{ $event->live_instagram_link }}" target="_blank" class="btn btn-sm" style="background-color: #517fa4; color: white">
                     <span class="align-middle">Instagram <i class="fab fa-instagram fa-2x align-middle"></i></span>
                 </a>&nbsp
@@ -56,29 +55,36 @@
             <hr>
             <h5><u>Watch anytime</u></h5><br />
             <p>
-                @if ($event->live_web_link)
-                <a href="{{ $event->live_youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
+                @if ($event->youtube_link)
+                <a href="{{ $event->youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
                     <span class="align-middle">YouTube <i class="fab fa-youtube fa-2x align-middle"></i></span>
                 </a>&nbsp
                 @endif
-                @if ($event->live_web_link)
-                <a href="{{ $event->live_facebook_link }}" target="_blank" class="btn btn-sm" style="background-color: #3b5998; color: white">
+                @if ($event->facebook_link)
+                <a href="{{ $event->facebook_link }}" target="_blank" class="btn btn-sm" style="background-color: #3b5998; color: white">
                     <span class="align-middle">Facebook <i class="fab fa-facebook fa-2x align-middle"></i></span>
                 </a>&nbsp
                 @endif
-                @if ($event->live_web_link)
-                <a href="{{ $event->live_instagram_link }}" target="_blank" class="btn btn-sm" style="background-color: #517fa4; color: white">
+                @if ($event->instagram_link)
+                <a href="{{ $event->instagram_link }}" target="_blank" class="btn btn-sm" style="background-color: #517fa4; color: white">
                     <span class="align-middle">Instagram <i class="fab fa-instagram fa-2x align-middle"></i></span>
                 </a>&nbsp
                 @endif
-                @if ($event->live_web_link)
-                <a href="{{ $event->live_web_link }}" target="_blank" class="btn btn-sm" style="background-color: blue; color: white;">
+                @if ($event->web_link)
+                <a href="{{ $event->web_link }}" target="_blank" class="btn btn-sm" style="background-color: blue; color: white;">
                     <span class="align-middle">Web <i class="fas fa-globe fa-2x align-middle"></i></span>
                 </a>&nbsp
                 @endif
             </p>
         </div>
         <div class="modal-footer">
+            <div id="loginInfo" class="row" style="display: none">
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-8">
+                    <i class="fas fa-exclamation-circle fa-lg align-middle" style="color: red"></i>&nbsp To save your favourites, you will need to <a href="{{ route('register') }}">register</a>. If you have already registered, <a href="{{ route('login') }}">please login</a>.
+                </div>
+            </div>
             <a id="favourite" href="#">
                 @if ($event->favourite_id)
                     <i class="fas fa-heart fa-2x" id="{{ $event->favourite_id }}" style="color: red"></i>
@@ -97,8 +103,8 @@
     var event_id = @json($event->id);
 
     $(document).ready(function(){
-        if (user_id) {
-            $('#favourite').on('click', function(e){
+        $('#favourite').on('click', function(e){
+            if (user_id) {
                 var heart = $(e.currentTarget).children();
                 if (heart.hasClass('fas')) {
                     var id = heart.attr('id');
@@ -129,7 +135,9 @@
                             console.log(error);
                     });
                 }
-            });
-        }
+            } else {
+                $('#loginInfo').toggle();
+            }
+        });
     })
 </script>

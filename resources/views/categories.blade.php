@@ -25,7 +25,7 @@
                         @foreach ($categories as $category)
                             <tr>
                                 <th scope="row">{{ $category->category }}</th>
-                                <td><a href="#" id="{{ $category->category }}" class="btn" style="background-color: {{ $category->colour }}">{{ $category->colour }}</a></td>
+                                <td><a href="#" id="{{ $category->category }}" class="btn" style="background-color: {{ $category->colour }}; color: {{ $category->font_colour }}">{{ $category->colour }}</a></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -54,6 +54,12 @@
                     <label for="title">Colour</label>
                     <input type="text" class="form-control" name="colour" id="colour">
                     <br />
+
+                    <label for="title">Font Colour</label>
+                    <select class="form-control" name="font_colour" id="font_colour">
+                        <option value="white">White</option>
+                        <option value="black">Black</option>
+                    </select>
                 </div>
 
                 <div class="modal-footer">

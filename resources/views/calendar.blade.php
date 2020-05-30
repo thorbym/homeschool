@@ -32,7 +32,7 @@
                     <div class="filters">
                         <div class="subjectFilter" style="display: none; padding: 15px 0px 10px 0px">
                             @foreach ($data['categories'] as $category)
-                                <a href="#" id="{{ str_replace(' ', '', $category->category) }}" class="btn disabled" style="background-color: {{ $category->colour }}; margin: 3px; pointer-events: auto">{{ $category->category }}</a>
+                                <a href="#" id="{{ str_replace(' ', '', $category->category) }}" class="btn disabled" style="background-color: {{ $category->colour }}; color: {{ $category->font_colour }}; margin: 3px; pointer-events: auto">{{ $category->category }}</a>
                             @endforeach
                         </div>
                         <div class="ageFilter" style="display: none; padding: 15px 0px 10px 0px">
@@ -117,7 +117,8 @@
                 // colour the event based on the category's colour
                 $(info.el).css({
                     'background-color': info.event.extendedProps.colour,
-                    'border-color': info.event.extendedProps.colour
+                    'border-color': info.event.extendedProps.colour,
+                    'color': info.event.extendedProps.font_colour == "black" ? "#212529" : "white"
                 });
 
                 // SUBJECT FILTER

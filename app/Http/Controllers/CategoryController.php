@@ -37,12 +37,14 @@ class CategoryController extends Controller
     {
         $request->validate([
             'category' => 'required',
-            'colour' => 'required'
+            'colour' => 'required',
+            'font_colour' => 'required',
         ]);
 
         $category = new Category([
             'category' => $request->get('category'),
-            'colour' => $request->get('colour')
+            'colour' => $request->get('colour'),
+            'font_colour' => $request->get('font_colour')
         ]);
         $category->save();
 

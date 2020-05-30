@@ -37,7 +37,7 @@
                     <div class="filters">
                         <div class="subjectFilter" style="display: none; padding: 15px 0px 10px 0px">
                             @foreach ($data['categories'] as $category)
-                                <a href="#" id="{{ str_replace(' ', '', strtolower($category->category)) }}" class="btn disabled" style="background-color: {{ $category->colour }}; margin: 3px; pointer-events: auto">{{ $category->category }}</a>
+                                <a href="#" id="{{ str_replace(' ', '', strtolower($category->category)) }}" class="btn disabled" style="background-color: {{ $category->colour }}; color: {{ $category->font_colour }}; margin: 3px; pointer-events: auto">{{ $category->category }}</a>
                             @endforeach
                         </div>
                         <div class="ageFilter" style="display: none; padding: 15px 0px 10px 0px">
@@ -68,7 +68,7 @@
                                 @foreach ($events as $event)
                                     <tr id="{{ $event->id }}">
                                         <th scope="row">{{ $event->title }}</th>
-                                        <td style="font-size: 1.3rem"><span class="badge badge-pill" style="background-color: {{ $event->colour }}">{{ $event->category }}</span></td>
+                                        <td style="font-size: 1.3rem"><span class="badge badge-pill" style="background-color: {{ $event->colour }}; color: {{ $event->font_colour }}">{{ $event->category }}</span></td>
                                         <td data-min="{{ $event->minimum_age }}" data-max="{{ $event->maximum_age }}">{{ $event->minimum_age }} to {{ $event->maximum_age }}</td>
                                         <td>{!! $event->dfe_approved ? '&#x2714' : '' !!}</td>
                                         <td>{!! $event->requires_supervision ? '<i class="fas fa-binoculars"></i>' : '' !!}</td>
@@ -99,6 +99,24 @@
 </div>
 <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 </div>
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header gray">
+                <h4 class="modal-title">Please login</h4>
+                <button type="button" class="close align-middle" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fas fa-times fa-lg align-middle" style="color: gray"></i></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <i class="fas fa-exclamation-circle fa-lg align-middle" style="color: red"></i>&nbsp To save your favourites, you will need to <a href="{{ route('register') }}">register</a>. If you have already registered, <a href="{{ route('login') }}">please login</a>.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 <script>
@@ -110,7 +128,8 @@
         table = $('#nonLiveList').DataTable({
             "columnDefs": [
                 { "orderable": false, "targets": [3, 4, 5] },
-                { "orderable": true, "targets": [0, 1, 2] }
+                { "orderable": true, "targets": [0, 1, 2] },
+                { "visible": false, "targets": [2, 3, 4] }
             ],
             "language": {
                 searchPlaceholder: "Search title"
@@ -361,6 +380,8 @@
                             console.log(error);
                     });
                 }
+            } else {
+                $('#loginModal').modal();
             }
             return false;
         });
