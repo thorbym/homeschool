@@ -67,7 +67,7 @@
                             <tbody>
                                 @foreach ($events as $event)
                                     <tr id="{{ $event->id }}">
-                                        <th scope="row">{{ $event->title }}</th>
+                                        <td scope="row">{{ $event->title }}</td>
                                         <td style="font-size: 1.3rem"><span class="badge badge-pill" style="background-color: {{ $event->colour }}; color: {{ $event->font_colour }}">{{ $event->category }}</span></td>
                                         <td data-min="{{ $event->minimum_age }}" data-max="{{ $event->maximum_age }}">{{ $event->minimum_age }} to {{ $event->maximum_age }}</td>
                                         <td>{!! $event->dfe_approved ? '&#x2714' : '' !!}</td>

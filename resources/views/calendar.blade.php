@@ -136,12 +136,12 @@
                 if (!$('#ageFilter').hasClass('disabled')) {
                     // if the age filter is engaged, do the following:
                     if (
-                        // if "6 or under" is selected and the event's maximum age is <= 6, allow through
-                        (!$('#littleKids').hasClass('disabled') && info.event.extendedProps.maximum_age <= 6) || 
-                        // if "7 - 12" is selected and the event's min age is => 7 OR max age is <= 11, allow through
-                        (!$('#middleKids').hasClass('disabled') && (info.event.extendedProps.minimum_age >= 7 && info.event.extendedProps.maximum_age <= 11)) || 
-                        // if "12 and over" is selected and the event's minimum age is => 12, allow through
-                        (!$('#bigKids').hasClass('disabled') && info.event.extendedProps.minimum_age >= 12)
+
+                        (!$('#littleKids').hasClass('disabled') && info.event.extendedProps.minimum_age <= 6) || 
+
+                        (!$('#middleKids').hasClass('disabled') && (info.event.extendedProps.minimum_age <= 11 && info.event.extendedProps.maximum_age >= 7)) || 
+
+                        (!$('#bigKids').hasClass('disabled') && info.event.extendedProps.maximum_age >= 12)
                     ) {
                         // these events are to be displayed - done this way for readability
                     } else {
