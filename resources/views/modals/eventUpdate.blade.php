@@ -16,23 +16,58 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="live_youtube_link">LIVE YouTube Link</label>
-                    <input  type="text" class="form-control" name="live_youtube_link" id="live_youtube_link"  value="{{ $event->live_youtube_link }}">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="liveEvent" {{ $event->start_time ? 'checked' : '' }}>
+                        <label class="form-check-label" for="requires_supervision">Live event?</label>
+                    </div>
                 </div>
+                
+                <div id="liveEventInfo" style="display: {{ $event->start_time ? 'auto' : 'none' }}">
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="col">
+                                <label for="start">Start time</label>
+                                <input type="text" class="timepicker form-control" name="start_time" id="start_time" value="{{ $event->start_time ? $event->start_time : '' }}">
+                            </div>
+                            <div class="col">
+                                <label for="end">End time</label>
+                                <input type="text" class="timepicker form-control" name="end_time" id="end_time" value="{{ $event->end_time ? $event->end_time : '' }}">
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="form-group">
-                    <label for="live_facebook_link">LIVE Facebook Link</label>
-                    <input type="text" class="form-control" name="live_facebook_link" id="live_facebook_link"  value="{{ $event->live_facebook_link }}">
-                </div>
+                    <div class="form-group">
+                        <label for="days">Days</label>
+                        <select required multiple class="form-control" name="days_of_week[]" id="days_of_week">
+                            <option value="1" {{ $event->days_of_week && in_array(1, json_decode($event->days_of_week)) ? 'selected' : '' }}>Monday</option>
+                            <option value="2" {{ $event->days_of_week && in_array(2, json_decode($event->days_of_week)) ? 'selected' : '' }}>Tuesday</option>
+                            <option value="3" {{ $event->days_of_week && in_array(3, json_decode($event->days_of_week)) ? 'selected' : '' }}>Wednesday</option>
+                            <option value="4" {{ $event->days_of_week && in_array(4, json_decode($event->days_of_week)) ? 'selected' : '' }}>Thursday</option>
+                            <option value="5" {{ $event->days_of_week && in_array(5, json_decode($event->days_of_week)) ? 'selected' : '' }}>Friday</option>
+                            <option value="6" {{ $event->days_of_week && in_array(6, json_decode($event->days_of_week)) ? 'selected' : '' }}>Saturday</option>
+                            <option value="0" {{ $event->days_of_week && in_array(7, json_decode($event->days_of_week)) ? 'selected' : '' }}>Sunday</option>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label for="live_instagram_link">LIVE Instagram Link</label>
-                    <input type="text" class="form-control" name="live_instagram_link" id="live_instagram_link"  value="{{ $event->live_instagram_link }}">
-                </div>
+                    <div class="form-group">
+                        <label for="live_youtube_link">LIVE YouTube Link</label>
+                        <input  type="text" class="form-control" name="live_youtube_link" id="live_youtube_link"  value="{{ $event->live_youtube_link }}">
+                    </div>
 
-                <div class="form-group">
-                    <label for="live_web_link">LIVE Web Link</label>
-                    <input type="text" class="form-control" name="live_web_link" id="live_web_link"  value="{{ $event->live_web_link }}">
+                    <div class="form-group">
+                        <label for="live_facebook_link">LIVE Facebook Link</label>
+                        <input type="text" class="form-control" name="live_facebook_link" id="live_facebook_link"  value="{{ $event->live_facebook_link }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="live_instagram_link">LIVE Instagram Link</label>
+                        <input type="text" class="form-control" name="live_instagram_link" id="live_instagram_link"  value="{{ $event->live_instagram_link }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="live_web_link">LIVE Web Link</label>
+                        <input type="text" class="form-control" name="live_web_link" id="live_web_link"  value="{{ $event->live_web_link }}">
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -53,32 +88,6 @@
                 <div class="form-group">
                     <label for="web_link">Web Link</label>
                     <input type="text" class="form-control" name="web_link" id="web_link"  value="{{ $event->web_link }}">
-                </div>
-
-                <div class="form-group">
-                    <div class="form-row">
-                        <div class="col">
-                            <label for="start">Start time</label>
-                            <input type="text" class="timepicker form-control" name="start_time" id="start_time" value="{{ $event->start_time }}">
-                        </div>
-                        <div class="col">
-                            <label for="end">End time</label>
-                            <input type="text" class="timepicker form-control" name="end_time" id="end_time" value="{{ $event->end_time }}">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="days">Days</label>
-                    <select required multiple class="form-control" name="days_of_week[]" id="days_of_week">
-                        <option value="1" {{ in_array(1, json_decode($event->days_of_week)) ? 'selected' : '' }}>Monday</option>
-                        <option value="2" {{ in_array(2, json_decode($event->days_of_week)) ? 'selected' : '' }}>Tuesday</option>
-                        <option value="3" {{ in_array(3, json_decode($event->days_of_week)) ? 'selected' : '' }}>Wednesday</option>
-                        <option value="4" {{ in_array(4, json_decode($event->days_of_week)) ? 'selected' : '' }}>Thursday</option>
-                        <option value="5" {{ in_array(5, json_decode($event->days_of_week)) ? 'selected' : '' }}>Friday</option>
-                        <option value="6" {{ in_array(6, json_decode($event->days_of_week)) ? 'selected' : '' }}>Saturday</option>
-                        <option value="0" {{ in_array(7, json_decode($event->days_of_week)) ? 'selected' : '' }}>Sunday</option>
-                    </select>
                 </div>
 
                 <div class="form-group">
@@ -137,6 +146,16 @@
             interval: 30,
             zindex: 9999999
         });
+
+        $('#liveEvent').on('click', function(e){
+            $('#liveEventInfo').toggle();
+            if ($(e.currentTarget).not(':checked')) {
+                $('[id^=live_]').val('');
+                $('#days_of_week option').prop('selected', false);
+                $('#start_time').val('');
+                $('#end_time').val('');
+            }
+        })
 
     });
 </script>

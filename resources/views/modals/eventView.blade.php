@@ -22,34 +22,34 @@
                 @endif
             </p>
             @if ($event->start_time && $event->start_time != "00:00")
-            <br />
-            <hr>
-            <h5><u>Watch live</u></h5><br />
-            <p>
-                {{ $event->start_time }} to {{ $event->end_time }} (UK time), {{ Helper::convertDaysOfWeek($event->days_of_week) }}
-            </p>
-            <p>
-                @if ($event->live_youtube_link)
-                <a href="{{ $event->live_youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
-                    <span class="align-middle">YouTube <i class="fab fa-youtube fa-2x align-middle"></i></span>
-                </a>&nbsp
-                @endif
-                @if ($event->live_facebook_link)
-                <a href="{{ $event->live_facebook_link }}" target="_blank" class="btn btn-sm" style="background-color: #3b5998; color: white">
-                    <span class="align-middle">Facebook <i class="fab fa-facebook fa-2x align-middle"></i></span>
-                </a>&nbsp
-                @endif
-                @if ($event->live_instagram_link)
-                <a href="{{ $event->live_instagram_link }}" target="_blank" class="btn btn-sm" style="background-color: #517fa4; color: white">
-                    <span class="align-middle">Instagram <i class="fab fa-instagram fa-2x align-middle"></i></span>
-                </a>&nbsp
-                @endif
-                @if ($event->live_web_link)
-                <a href="{{ $event->live_web_link }}" target="_blank" class="btn btn-sm" style="background-color: blue; color: white;">
-                    <span class="align-middle">Web <i class="fas fa-globe fa-2x align-middle"></i></span>
-                </a>&nbsp
-                @endif
-            </p>
+                <br />
+                <hr>
+                <h5><u>Watch live</u></h5><br />
+                <p>
+                    {{ $event->start_time }} to {{ $event->end_time }} (UK time), {{ Helper::convertDaysOfWeek($event->days_of_week) }}
+                </p>
+                <p>
+                    @if ($event->live_youtube_link)
+                    <a href="{{ $event->live_youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
+                        <span class="align-middle">YouTube <i class="fab fa-youtube fa-2x align-middle"></i></span>
+                    </a>&nbsp
+                    @endif
+                    @if ($event->live_facebook_link)
+                    <a href="{{ $event->live_facebook_link }}" target="_blank" class="btn btn-sm" style="background-color: #3b5998; color: white">
+                        <span class="align-middle">Facebook <i class="fab fa-facebook fa-2x align-middle"></i></span>
+                    </a>&nbsp
+                    @endif
+                    @if ($event->live_instagram_link)
+                    <a href="{{ $event->live_instagram_link }}" target="_blank" class="btn btn-sm" style="background-color: #517fa4; color: white">
+                        <span class="align-middle">Instagram <i class="fab fa-instagram fa-2x align-middle"></i></span>
+                    </a>&nbsp
+                    @endif
+                    @if ($event->live_web_link)
+                    <a href="{{ $event->live_web_link }}" target="_blank" class="btn btn-sm" style="background-color: blue; color: white;">
+                        <span class="align-middle">Web <i class="fas fa-globe fa-2x align-middle"></i></span>
+                    </a>&nbsp
+                    @endif
+                </p>
             @endif
             <br />
             <hr>

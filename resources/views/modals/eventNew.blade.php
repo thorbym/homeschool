@@ -12,7 +12,7 @@
 
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea class="form-control" rows="3" name="description" id="description"></textarea>
+                    <textarea required class="form-control" rows="3" name="description" id="description"></textarea>
                 </div>
 
                 <div class="form-group">
@@ -59,11 +59,11 @@
                     <div class="form-row">
                         <div class="col">
                             <label for="start">Start time</label>
-                            <input required type="text" class="timepicker form-control" name="start_time" id="start_time">
+                            <input type="text" class="timepicker form-control" name="start_time" id="start_time">
                         </div>
                         <div class="col">
                             <label for="end">End time</label>
-                            <input required type="text" class="timepicker form-control" name="end_time" id="end_time">
+                            <input type="text" class="timepicker form-control" name="end_time" id="end_time">
                         </div>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
 
                 <div class="form-group">
                     <label for="category_id">Category</label>
-                    <select class="form-control" name="category_id" id="category_id">
+                    <select required class="form-control" name="category_id" id="category_id">
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->category }}</option>
                         @endforeach
@@ -94,11 +94,11 @@
                     <div class="row">
                         <div class="col">
                             <label for="minimum_age">Minimum age</label>
-                            <input type="number" class="form-control" name="minimum_age" id="minimum_age" min=0 max=16>
+                            <input required type="number" class="form-control" name="minimum_age" id="minimum_age" min=0 max=16>
                         </div>
                         <div class="col">
                             <label for="maximum_age">Maximum age</label>
-                            <input type="number" class="form-control" name="maximum_age" id="maximum_age" min=0 max=16>
+                            <input required type="number" class="form-control" name="maximum_age" id="maximum_age" min=0 max=16>
                         </div>
                     </div>
                 </div>
