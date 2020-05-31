@@ -12,7 +12,7 @@
 
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea class="form-control" rows="3" name="description" id="description">{{ $event->description }}</textarea>
+                    <textarea required class="form-control" rows="3" name="description" id="description">{{ $event->description }}</textarea>
                 </div>
 
                 <div class="form-group">
@@ -38,7 +38,7 @@
 
                     <div class="form-group">
                         <label for="days">Days</label>
-                        <select required multiple class="form-control" name="days_of_week[]" id="days_of_week">
+                        <select multiple class="form-control" name="days_of_week[]" id="days_of_week">
                             <option value="1" {{ $event->days_of_week && in_array(1, json_decode($event->days_of_week)) ? 'selected' : '' }}>Monday</option>
                             <option value="2" {{ $event->days_of_week && in_array(2, json_decode($event->days_of_week)) ? 'selected' : '' }}>Tuesday</option>
                             <option value="3" {{ $event->days_of_week && in_array(3, json_decode($event->days_of_week)) ? 'selected' : '' }}>Wednesday</option>
@@ -92,7 +92,7 @@
 
                 <div class="form-group">
                     <label for="category_id">Category</label>
-                    <select class="form-control" name="category_id" id="category_id">
+                    <select required class="form-control" name="category_id" id="category_id">
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}" {{ $event->category_id == $category->id ? 'selected' : '' }}>{{ $category->category }}</option>
                         @endforeach
