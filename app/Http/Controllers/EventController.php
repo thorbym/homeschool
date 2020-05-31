@@ -65,7 +65,7 @@ class EventController extends Controller
         ]);
         $event->save();
 
-        return redirect('calendar');
+        return redirect()->back();
     }
 
     /**
@@ -187,7 +187,7 @@ class EventController extends Controller
 
         $event->save();
 
-        return redirect('calendar');
+        return redirect()->back();
     }
 
     /**
