@@ -64,7 +64,7 @@
                         </li>
                         @if (Auth::check() && Auth::user()->isAdmin())
                             <li class="nav-item">
-                                <a class="nav-link {{ last(request()->segments()) == 'categories' ? 'active' : '' }}" href="{{ route('categories') }}">Categories</a>
+                                <a class="nav-link {{ last(request()->segments()) == 'categories' ? 'active' : '' }}" href="{{ url('categories') }}">Categories</a>
                             </li>
                         @endif
                     </ul>
