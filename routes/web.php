@@ -15,17 +15,16 @@
     return view('calendar');
 });*/
 
-Auth::routes();
+Auth::routes(['reset' => false]);
 Route::view('/terms', 'terms')->name('terms');
 Route::view('/privacyPolicy', 'privacyPolicy')->name('privacyPolicy');
 Route::get('protected', ['middleware' => ['auth', 'admin'], function() {
-    return "this page requires that you be logged in and an Admin";
+    Route::get('/categories', 'HomeController@listCategories')->name('categories');
 }]);
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/calendar', 'HomeController@showCalendar')->name('calendar');
 Route::get('/list', 'HomeController@showList')->name('list');
-Route::get('/categories', 'HomeController@listCategories')->name('categories');
 Route::post('/event', 'EventController@store')->name('storeEvent');
 Route::post('/event/{id}', 'EventController@update')->name('updateEvent');
 Route::post('/category', 'CategoryController@store')->name('category');
