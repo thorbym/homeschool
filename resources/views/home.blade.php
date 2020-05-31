@@ -2,8 +2,8 @@
 
   <body style="padding-top: 4.4rem">
 
-    <nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: #A5E8FD; height: 4.4rem">
-      <a class="navbar-brand" href="#">TEACHEM!</a>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" style="height: 4.4rem">
+      <a class="navbar-brand" href="#"><img height="50" src="{{ asset('img/Logo_Blue_no Strapliine.png') }}"></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -51,19 +51,28 @@
       <div class="container">
         <!-- Example row of columns -->
         <div class="row">
-          <div class="col-md-4">
-            <h2>Heading</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <div class="col-md-4" style="text-align: center">
+            <img src="{{ asset('img/002-expert.png') }}" style="max-width:50%; max-height:50%"><br /><br />
+            <h2>Expert help</h2>
+            <p>
+              Benefit from the expertise of passionate and experienced professionals
+            </p>
             <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
           </div>
-          <div class="col-md-4">
-            <h2>Heading</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <div class="col-md-4" style="text-align: center">
+            <img src="{{ asset('img/003-radio.png') }}" style="max-width:50%; max-height:50%"><br /><br />
+            <h2>Live sessions</h2>
+            <p>
+              Know exactly when all your favourite sessions are happening, and tune in
+            </p>
             <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
           </div>
-          <div class="col-md-4">
-            <h2>Heading</h2>
-            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <div class="col-md-4" style="text-align: center">
+            <img src="{{ asset('img/004-past.png') }}" style="max-width:49%; max-height:49%"><br /><br />
+            <h2>Catch up</h2>
+            <p>
+              Missed a session? Search through and catch up in your own time
+            </p>
             <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
           </div>
         </div>
@@ -73,3 +82,17 @@
       </div> <!-- /container -->
 
     </main>
+    <br />
+    <br />
+    <footer class="section footer-classic context-dark" style="background: #2d3246;">
+        <div class="container">
+            <div>
+                <br />
+                <br />
+                <p style="color: white">
+                    All rights reserved to TeachEm ©2020. You can click to read our <a href="{{ route('privacyPolicy') }}">privacy policy</a> and our <a href="{{ route('terms') }}">terms and conditions</a>.
+                </p>
+                <br />
+            </div>
+        </div>
+    </footer>

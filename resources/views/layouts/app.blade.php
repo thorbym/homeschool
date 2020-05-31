@@ -54,7 +54,7 @@
 
         <main class="py-4">
             <div class="row justify-content-center">
-                <div class="col-md-10">
+                <div class="col-md-11">
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
                             <a class="nav-link {{ last(request()->segments()) == 'calendar' ? 'active' : '' }}" href="{{ route('calendar') }}">Watch live</a>
@@ -74,7 +74,6 @@
             @yield('content')
         </main>
     </div>
-    <br />
     <br />
     <br />
     <footer class="section footer-classic context-dark" style="background: #2d3246;">

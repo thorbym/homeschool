@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <div class="filter-buttons form-inline">
@@ -120,7 +120,8 @@
                 $(info.el).css({
                     'background-color': info.event.extendedProps.colour,
                     'border-color': info.event.extendedProps.colour,
-                    'color': info.event.extendedProps.font_colour == "black" ? "#212529" : "white"
+                    'color': info.event.extendedProps.font_colour == "black" ? "#212529" : "white",
+                    'font-size': '1em',
                 });
 
                 // SUBJECT FILTER
