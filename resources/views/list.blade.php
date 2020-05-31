@@ -53,7 +53,7 @@
                 </div>
                 <div class="card-body">
                     <div id="list">
-                        <table id="nonLiveList" class="table table-hover">
+                        <table id="nonLiveList" class="table table-hover" style="width: 100%; display: none">
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">Title</th>
@@ -132,10 +132,15 @@
                 { "visible": false, "targets": [2, 3, 4] }
             ],
             "language": {
-                searchPlaceholder: "Search title"
+                searchPlaceholder: "Search title",
+                sLengthMenu: "_MENU_",
+                search: ""
             },
             "drawCallback": function() {
                 loadDatatableFunctions();
+            },
+            "initComplete": function() {
+                $('#nonLiveList').show();
             }
         });
 

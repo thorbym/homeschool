@@ -3,12 +3,14 @@
   <body style="padding-top: 4.4rem">
 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" style="height: 4.4rem">
-      <a class="navbar-brand" href="#"><img height="50" src="{{ asset('img/Logo_Blue_no Strapliine.png') }}"></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand" href="#">
+        <img height="40" src="{{ asset('img/logo_blue.png') }}">
+      </a>
+      <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <!--<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active py-2">
             <a class="nav-link" href="#">Watch live</a>
@@ -84,15 +86,18 @@
     </main>
     <br />
     <br />
-    <footer class="section footer-classic context-dark" style="background: #2d3246;">
+    <footer class="section footer-classic context-dark" style="background: #2d3246; position: relative;">
         <div class="container">
             <div>
                 <br />
-                <br />
                 <p style="color: white">
-                    All rights reserved to TeachEm ©2020. You can click to read our <a href="{{ route('privacyPolicy') }}">privacy policy</a> and our <a href="{{ route('terms') }}">terms and conditions</a>.
+                  <small>
+                    All rights reserved to TeachEm ©2020. You can click to read our <a href="{{ route('privacyPolicy') }}">privacy policy</a> and our <a href="{{ route('terms') }}">terms and conditions</a>.<br />
+                    Want to add your event to our app? Or talk to us about advertising? Contact us on teachem.online2020@gmail.com
+                  </small>
                 </p>
                 <br />
             </div>
         </div>
     </footer>
+  </body>

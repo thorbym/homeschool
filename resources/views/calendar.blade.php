@@ -22,10 +22,12 @@
                         <button type="button" class="btn btn-outline-secondary disabled" id="showFavourites">
                             &nbsp<i class="far fa-heart"></i>&nbsp
                         </button>&nbsp&nbsp
-                        <div class="input-group mb-3" style="margin-bottom: 0px !important">
-                            <input type="text" id="search" class="form-control">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary disabled" id="searchBtn" type="button"><i class="fas fa-search"></i></button>
+                        <div class="d-none d-sm-block">
+                            <div class="input-group mb-3" style="margin-bottom: 0px !important">
+                                <input type="text" id="search" class="form-control">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary disabled" id="searchBtn" type="button"><i class="fas fa-search"></i></button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -259,18 +261,25 @@
         $('#search').on('keyup', function(e){
             if ($(e.currentTarget).val() === '') {
                 $("#searchBtn").attr('class', 'btn btn-outline-secondary disabled');
+                calendar.rerenderEvents();
+            }
+            if(e.keyCode === 13) {
+                e.preventDefault();
+                doSearch();
             }
         });
 
         // if the search box is used...
         $("#searchBtn").on('click', function(e){
-            var searchBtn = $(e.currentTarget);
+            doSearch();
+        });
+
+        var doSearch = function(e) {
+            var searchBtn = $("#searchBtn");
             if ($('#search').val() === '') {
                 if (searchBtn.hasClass('disabled')) {
-                    return false;
                 } else {
                     searchBtn.attr('class', 'btn btn-outline-secondary disabled');
-                    return false
                 }
             } else {
                 if (searchBtn.hasClass('disabled')) {
@@ -282,7 +291,7 @@
             }
 
            calendar.rerenderEvents();
-        });
+        }
 
         // if the favourites button is
         $("#showFavourites").on('click', function(e){

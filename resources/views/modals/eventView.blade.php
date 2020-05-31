@@ -7,20 +7,38 @@
             </button>
         </div>
         <div class="modal-body">
-            <h5><u>Description</u></h5>
-            <p>{{ $event->description }}</p>
-            <p>
-                Suitable for {{ $event->minimum_age }} to {{ $event->maximum_age }} years old
-                <br />
-                @if ($event->dfe_approved)
-                DfE Approved: &nbsp
-                    <i class="fas fa-check" style="color: green"></i><br />
-                @endif
-                @if ($event->requires_supervision)
-                    <i class="fas fa-binoculars fa-lg" style="color: orange"></i> &nbsp
-                    Supervision required!
-                @endif
-            </p>
+            <div style="position: relative;">
+                <h5><u>Description</u></h5>
+                <p>{{ $event->description }}</p>
+                <p>
+                    Suitable for {{ $event->minimum_age }} to {{ $event->maximum_age }} years old
+                    <br />
+                    @if ($event->dfe_approved)
+                    DfE Approved: &nbsp
+                        <i class="fas fa-check" style="color: green"></i><br />
+                    @endif
+                    @if ($event->requires_supervision)
+                        <i class="fas fa-binoculars fa-lg" style="color: orange"></i> &nbsp
+                        Supervision required!
+                    @endif
+                </p>
+                <div id="loginInfo" class="row" style="display: none">
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-8">
+                        <i class="fas fa-exclamation-circle fa-lg align-middle" style="color: red"></i>&nbsp To save your favourites, you will need to <a href="{{ route('register') }}">register</a>. If you have already registered, <a href="{{ route('login') }}">please login</a>.
+                    </div>
+                </div>
+                <div style="position: absolute; bottom: -40; right: 20">
+                    <a id="favourite" href="#">
+                        @if ($event->favourite_id)
+                            <i class="fas fa-heart fa-2x" id="{{ $event->favourite_id }}" style="color: red"></i>
+                        @else
+                            <i class="far fa-heart fa-2x" style="color: gray"></i>
+                        @endif
+                    </a>
+                </div>
+            </div>
             @if ($event->start_time && $event->start_time != "00:00")
                 <br />
                 <hr>
@@ -78,21 +96,6 @@
             </p>
         </div>
         <div class="modal-footer">
-            <div id="loginInfo" class="row" style="display: none">
-                <div class="col-md-4">
-                </div>
-                <div class="col-md-8">
-                    <i class="fas fa-exclamation-circle fa-lg align-middle" style="color: red"></i>&nbsp To save your favourites, you will need to <a href="{{ route('register') }}">register</a>. If you have already registered, <a href="{{ route('login') }}">please login</a>.
-                </div>
-            </div>
-            <a id="favourite" href="#">
-                @if ($event->favourite_id)
-                    <i class="fas fa-heart fa-2x" id="{{ $event->favourite_id }}" style="color: red"></i>
-                @else
-                    <i class="far fa-heart fa-2x" style="color: gray"></i>
-                @endif
-            </a>
-            &nbsp&nbsp
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
     </div>
