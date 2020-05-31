@@ -16,7 +16,8 @@
 });*/
 
 Auth::routes();
-
+Route::view('/terms', 'terms')->name('terms');
+Route::view('/privacyPolicy', 'privacyPolicy')->name('privacyPolicy');
 Route::get('protected', ['middleware' => ['auth', 'admin'], function() {
     return "this page requires that you be logged in and an Admin";
 }]);

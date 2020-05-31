@@ -87,6 +87,8 @@
             defaultView: 'timeGridDay',
             minTime: "07:00:00",
             maxTime: "21:00:00",
+            height: 600,
+            displayEventTime: false,
             header: {
                 left: mobileCheck() ? 'prev' : 'prev,next',
                 center: 'title',
@@ -112,7 +114,7 @@
             },
             eventRender: function(info) {
                 // resize the rows
-                $(calendarEl).find('tr[data-time]').css('height', '2.5em');
+                $(calendarEl).find('tr[data-time]').css('height', '3em');
 
                 // colour the event based on the category's colour
                 $(info.el).css({
@@ -294,6 +296,23 @@
             }
             calendar.rerenderEvents();
         });
+
+        function HandleBackFunctionality() {
+            if(window.event) {
+                if (window.event.clientX < 40 && window.event.clientY < 0) {
+                    alert("Browser back button is clicked...");
+                } else {
+                    alert("Browser refresh button is clicked...");
+                }
+            } else {
+                if (event.currentTarget.performance.navigation.type == 1) {
+                    alert("Browser refresh button is clicked...");
+                }
+                if (event.currentTarget.performance.navigation.type == 2) {
+                    alert("Browser back button is clicked...");
+                }
+            }
+        }
 
     });
 </script>

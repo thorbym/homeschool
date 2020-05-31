@@ -64,6 +64,7 @@ class HomeController extends Controller
             'categories.font_colour',
             Auth::check() ? DB::raw('(case when favourites.id is null then 0 else favourites.id end) as favourite_id') : DB::raw('0 AS favourite_id')
         );
+        $query->whereNotNull('events.start_time');
         $events = $query->get();
         $data = [
             'categories' => $categories,
@@ -99,6 +100,10 @@ class HomeController extends Controller
             'categories.font_colour',
             Auth::check() ? DB::raw('(case when favourites.id is null then 0 else favourites.id end) as favourite_id') : DB::raw('0 AS favourite_id')
         );
+        $query->orWhereNotNull('events.youtube_link')
+            ->orWhereNotNull('events.facebook_link')
+            ->orWhereNotNull('events.instagram_link')
+            ->orWhereNotNull('events.web_link');
         $events = $query->get();
         $data = [
             'categories' => $categories,

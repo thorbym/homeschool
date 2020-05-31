@@ -11029,3 +11029,7 @@ a.text-dark:focus {
   }
 }
 
+html {
+    visibility: visible;
+    opacity: 1;
+}

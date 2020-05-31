@@ -36,14 +36,6 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    @if (Auth::user()->isAdmin())
-                                        <a class="dropdown-item" href="{{ route('categories') }}">
-                                            {{ __('Categories') }}
-                                        </a>
-                                    @endif
-                                    <a class="dropdown-item" href="{{ route('list') }}">
-                                        {{ __('Non-live Events') }}
-                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -82,5 +74,20 @@
             @yield('content')
         </main>
     </div>
+    <br />
+    <br />
+    <br />
+    <footer class="section footer-classic context-dark" style="background: #2d3246;">
+        <div class="container">
+            <div>
+                <br />
+                <br />
+                <p style="color: white">
+                    All rights reserved to TeachEm ©2020. You can click to read our <a href="{{ route('privacyPolicy') }}">privacy policy</a> and our <a href="{{ route('terms') }}">terms and conditions</a>.
+                </p>
+                <br />
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
