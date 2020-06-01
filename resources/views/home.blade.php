@@ -59,7 +59,7 @@
             <p>
               Benefit from the expertise of passionate and experienced professionals
             </p>
-            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+            <p><a class="btn btn-secondary" href="{{ route('calendar') }}" role="button">View details &raquo;</a></p>
           </div>
           <div class="col-md-4" style="text-align: center">
             <img src="{{ asset('img/003-radio.png') }}" style="max-width:50%; max-height:50%"><br /><br />
@@ -67,7 +67,7 @@
             <p>
               Know exactly when all your favourite sessions are happening, and tune in
             </p>
-            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+            <p><a class="btn btn-secondary" href="{{ route('calendar') }}" role="button">View details &raquo;</a></p>
           </div>
           <div class="col-md-4" style="text-align: center">
             <img src="{{ asset('img/004-past.png') }}" style="max-width:49%; max-height:49%"><br /><br />
@@ -75,7 +75,7 @@
             <p>
               Missed a session? Search through and catch up in your own time
             </p>
-            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+            <p><a class="btn btn-secondary" href="{{ route('list') }}" role="button">View details &raquo;</a></p>
           </div>
         </div>
 
