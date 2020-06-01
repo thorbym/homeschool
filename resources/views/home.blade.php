@@ -46,11 +46,11 @@
             <h4>TeachEm is your online directory of video-based educational content. Find perfectly suited live and pre-recorded content quickly.</h4>
           </p>
           <p><a class="btn btn-primary btn-lg" href="{{ route('calendar') }}" role="button">Find content &raquo;</a></p>
-          <p><a class="btn btn-primary-outline btn-lg" href="#" role="button"><i class="fas fa-chevron-down"></i></a></p>
+          <p><a class="btn btn-primary-outline btn-lg" href="#" onclick="scrollDiv()" role="button"><i class="fas fa-chevron-down"></i></a></p>
         </div>
       </div>
 
-      <div class="container">
+      <div class="container" id="details">
         <!-- Example row of columns -->
         <div class="row">
           <div class="col-md-4" style="text-align: center">
@@ -101,3 +101,12 @@
         </div>
     </footer>
   </body>
+  <script type="text/javascript">
+    function scrollDiv() {
+      console.log('hi');
+            window.scrollTo({
+          top: 20000,
+          behavior: "smooth"
+        });
+    }
+  </script>
