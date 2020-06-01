@@ -42,9 +42,10 @@
             @if ($event->start_time && $event->start_time != "00:00")
                 <br />
                 <hr>
-                <h5><u>Watch live</u></h5><br />
+                <h5><u>Live event</u></h5><br />
                 <p>
-                    {{ $event->start_time }} to {{ $event->end_time }} (UK time), {{ Helper::convertDaysOfWeek($event->days_of_week) }}
+                    {{ $event->start_time }} to {{ $event->end_time }} (UK time), {{ Helper::convertDaysOfWeek($event->days_of_week) }}<br />
+                    <small><i>Live events only in progress during above times</i></small>
                 </p>
                 <p>
                     @if ($event->live_youtube_link)
