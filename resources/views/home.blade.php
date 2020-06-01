@@ -37,7 +37,7 @@
     <main role="main">
 
       <!-- Main jumbotron for a primary marketing message or call to action -->
-      <div class="jumbotron" style="height: calc(100vh - 4.4rem); background-color: #A5E8FD; min-height: calc(100% - 4.4rem); min-height: calc(100vh - 4.4rem); display: flex; align-items: center; text-align: center">
+      <div class="jumbotron" id="jumbotron" style="height: calc(100vh - 4.4rem); background-color: #A5E8FD; min-height: calc(100% - 4.4rem); min-height: calc(100vh - 4.4rem); display: flex; align-items: center; text-align: center">
         <div class="container">
           <p>
             <h1 class="display-4">Help for busy households</h1>
@@ -103,10 +103,11 @@
   </body>
   <script type="text/javascript">
     function scrollDiv() {
-      console.log('hi');
-            window.scrollTo({
-          top: 20000,
-          behavior: "smooth"
-        });
+      var details = document.getElementById('details');
+      var jumbotron = document.getElementById('jumbotron');
+      window.scrollTo({
+        top: details.offsetTop - (jumbotron.offsetTop + 20),
+        behavior: "smooth"
+      });
     }
   </script>

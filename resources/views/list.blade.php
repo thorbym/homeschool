@@ -123,6 +123,8 @@
 
     var events = @json($data['events']);
     var table = false;
+    var user_id = @json(Auth::check() ? Auth::user()->id : 0);
+
     document.addEventListener('DOMContentLoaded', function() {
 
         table = $('#nonLiveList').DataTable({
@@ -311,24 +313,28 @@
 
          // if the favourites filter is clicked
         $("#showFavourites").on('click', function(e){
-            var favouritesBtn = $(e.currentTarget);
-            var heart = favouritesBtn.children();
-            if (favouritesBtn.hasClass('disabled')) {
-                favouritesBtn.attr('class', 'btn btn-success');
-                heart.toggleClass('fas far').css('color', 'red');
-                table
-                .column(5)
-                .search('1')
-                .draw();
+            if (user_id) {
+                var favouritesBtn = $(e.currentTarget);
+                var heart = favouritesBtn.children();
+                if (favouritesBtn.hasClass('disabled')) {
+                    favouritesBtn.attr('class', 'btn btn-success');
+                    heart.toggleClass('fas far').css('color', 'red');
+                    table
+                    .column(5)
+                    .search('1')
+                    .draw();
+                } else {
+                    favouritesBtn.attr('class', 'btn btn-outline-secondary disabled');
+                    heart.toggleClass('fas far').css('color', 'gray');
+                    table
+                    .column(5)
+                    .search('')
+                    .draw();
+                }
+                loadDatatableFunctions();
             } else {
-                favouritesBtn.attr('class', 'btn btn-outline-secondary disabled');
-                heart.toggleClass('fas far').css('color', 'gray');
-                table
-                .column(5)
-                .search('')
-                .draw();
+                $('#loginModal').modal();
             }
-            loadDatatableFunctions();
         });
 
         loadDatatableFunctions();
@@ -355,8 +361,6 @@
                     console.log(error);
             });
         });
-
-        var user_id = @json(Auth::check() ? Auth::user()->id : 0);
 
         $('.favourite').off('click').on('click', function(e){
             if (user_id) {

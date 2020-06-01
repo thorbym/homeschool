@@ -65,12 +65,31 @@
 </div>
 <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 </div>
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header gray">
+                <h4 class="modal-title">Please login</h4>
+                <button type="button" class="close align-middle" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fas fa-times fa-lg align-middle" style="color: gray"></i></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <i class="fas fa-exclamation-circle fa-lg align-middle" style="color: red"></i>&nbsp To save your favourites, you will need to <a href="{{ route('register') }}">register</a>. If you have already registered, <a href="{{ route('login') }}">please login</a>.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 <script>
 
     var isAdmin = @json(Auth::check() ? Auth::user()->isAdmin() : 0);
     var events = @json($data['events']);
+    var user_id = @json(Auth::check() ? Auth::user()->id : 0);
 
     document.addEventListener('DOMContentLoaded', function() {
 
@@ -295,16 +314,20 @@
 
         // if the favourites button is
         $("#showFavourites").on('click', function(e){
-            var favouritesBtn = $(e.currentTarget);
-            var heart = favouritesBtn.children();
-            if (favouritesBtn.hasClass('disabled')) {
-                favouritesBtn.attr('class', 'btn btn-success');
-                heart.toggleClass('fas far').css('color', 'red');
+            if (user_id) {
+                var favouritesBtn = $(e.currentTarget);
+                var heart = favouritesBtn.children();
+                if (favouritesBtn.hasClass('disabled')) {
+                    favouritesBtn.attr('class', 'btn btn-success');
+                    heart.toggleClass('fas far').css('color', 'red');
+                } else {
+                    favouritesBtn.attr('class', 'btn btn-outline-secondary disabled');
+                    heart.toggleClass('fas far').css('color', 'gray');
+                }
+                calendar.rerenderEvents();
             } else {
-                favouritesBtn.attr('class', 'btn btn-outline-secondary disabled');
-                heart.toggleClass('fas far').css('color', 'gray');
+                $('#loginModal').modal();
             }
-            calendar.rerenderEvents();
         });
 
         function HandleBackFunctionality() {
