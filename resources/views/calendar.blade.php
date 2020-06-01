@@ -142,9 +142,14 @@
                     'background-color': info.event.extendedProps.colour,
                     'border-color': info.event.extendedProps.colour,
                     'color': info.event.extendedProps.font_colour == "black" ? "#212529" : "white",
-                    'font-size': '1em'
+                    'font-size': '1em',
                 }).hover(function(){
                     $(this).css('cursor', 'pointer');
+                }).tooltip({
+                    title: info.event.extendedProps.description.substring(0, 30) + '...',
+                    placement: "top",
+                    trigger: "hover",
+                    container: "body"
                 });
 
                 // SUBJECT FILTER
