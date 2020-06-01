@@ -146,7 +146,7 @@
                 }).hover(function(){
                     $(this).css('cursor', 'pointer');
                 }).tooltip({
-                    title: info.event.extendedProps.description.substring(0, 30) + '...',
+                    title: info.event.extendedProps.description.substring(0, 40) + ' ... click for info ...',
                     placement: "top",
                     trigger: "hover",
                     container: "body"
