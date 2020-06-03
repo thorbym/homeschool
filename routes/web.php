@@ -25,6 +25,7 @@ Route::get('protected', ['middleware' => ['auth', 'admin'], function() {
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/calendar', 'HomeController@showCalendar')->name('calendar');
+Route::get('/calendar/quickStart', 'HomeController@showCalendarWithQuickStart')->name('calendarQuickStart');
 Route::get('/list', 'HomeController@showList')->name('list');
 Route::post('/event', 'EventController@store')->name('storeEvent');
 Route::post('/event/{id}', 'EventController@update')->name('updateEvent');
