@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+
+@include('layouts.navbar')
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -95,7 +98,7 @@
                     </div>
                     <div class="quickStartAgeFilter" style="display: none; padding: 15px 0px 10px 0px">
                         <p>
-                            Pick a suitable age group:
+                            Pick one or more age groups:
                         </p>
                         <p>
                             <a href="#" id="littleKids_quickStart" class="btn btn-warning disabled" style="margin: 3px; pointer-events: auto">6 and under</a>

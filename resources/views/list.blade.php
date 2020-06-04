@@ -2,6 +2,8 @@
 
 @section('content')
 
+@include('layouts.navbar')
+
 @php
     $events = $data['events']
 @endphp
