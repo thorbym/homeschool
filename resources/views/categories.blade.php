@@ -7,11 +7,13 @@
             <h2>
                 Categories
             </h2>
-            <div class="col-sm-offset-3 col-sm-6">
-                <button type="submit" class="btn btn-success" onclick="$('#editModal').modal()">
-                    <i class="fa fa-plus"></i>
-                </button>
-            </div>
+            @if (Auth::check() && Auth::user()->isAdmin())
+                <div class="col-sm-offset-3 col-sm-6">
+                    <button type="submit" class="btn btn-success" onclick="$('#editModal').modal()">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+            @endif
             <br />
             @if ($categories)
                 <table class="table table-striped">

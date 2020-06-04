@@ -18,10 +18,8 @@
 Auth::routes(['reset' => false]);
 Route::view('/terms', 'terms')->name('terms');
 Route::view('/privacyPolicy', 'privacyPolicy')->name('privacyPolicy');
-Route::get('protected', ['middleware' => ['auth', 'admin'], function() {
-    Route::get('/categories', 'HomeController@listCategories')->name('categories');
-    Route::post('/category', 'CategoryController@store')->name('category');
-}]);
+Route::get('/categories', 'HomeController@listCategories')->name('categories');
+Route::post('/category', 'CategoryController@store')->name('category');
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/calendar', 'HomeController@showCalendar')->name('calendar');
