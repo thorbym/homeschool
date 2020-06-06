@@ -15,7 +15,7 @@
     return view('calendar');
 });*/
 
-Auth::routes(['reset' => false]);
+Auth::routes();
 Route::view('/terms', 'terms')->name('terms');
 Route::view('/privacyPolicy', 'privacyPolicy')->name('privacyPolicy');
 Route::get('/categories', 'HomeController@listCategories')->name('categories');
