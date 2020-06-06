@@ -49,24 +49,25 @@
                 </p>
                 <p>
                     @if ($event->live_youtube_link)
-                    <a href="{{ $event->live_youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
                         <span class="align-middle">YouTube <i class="fab fa-youtube fa-2x align-middle"></i></span>
-                    </a>&nbsp
+                        <a href="{{ $event->live_youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
+                            <span class="align-middle">YouTube <i class="fab fa-youtube fa-2x align-middle"></i></span>
+                        </a>&nbsp
                     @endif
                     @if ($event->live_facebook_link)
-                    <a href="{{ $event->live_facebook_link }}" target="_blank" class="btn btn-sm" style="background-color: #3b5998; color: white">
-                        <span class="align-middle">Facebook <i class="fab fa-facebook fa-2x align-middle"></i></span>
-                    </a>&nbsp
+                        <a href="{{ $event->live_facebook_link }}" target="_blank" class="btn btn-sm" style="background-color: #3b5998; color: white">
+                            <span class="align-middle">Facebook <i class="fab fa-facebook fa-2x align-middle"></i></span>
+                        </a>&nbsp
                     @endif
                     @if ($event->live_instagram_link)
-                    <a href="{{ $event->live_instagram_link }}" target="_blank" class="btn btn-sm" style="background-color: #517fa4; color: white">
-                        <span class="align-middle">Instagram <i class="fab fa-instagram fa-2x align-middle"></i></span>
-                    </a>&nbsp
+                        <a href="{{ $event->live_instagram_link }}" target="_blank" class="btn btn-sm" style="background-color: #517fa4; color: white">
+                            <span class="align-middle">Instagram <i class="fab fa-instagram fa-2x align-middle"></i></span>
+                        </a>&nbsp
                     @endif
                     @if ($event->live_web_link)
-                    <a href="{{ $event->live_web_link }}" target="_blank" class="btn btn-sm" style="background-color: blue; color: white;">
-                        <span class="align-middle">Web <i class="fas fa-globe fa-2x align-middle"></i></span>
-                    </a>&nbsp
+                        <a href="{{ $event->live_web_link }}" target="_blank" class="btn btn-sm" style="background-color: blue; color: white;">
+                            <span class="align-middle">Web <i class="fas fa-globe fa-2x align-middle"></i></span>
+                        </a>&nbsp
                     @endif
                 </p>
             @endif
@@ -75,24 +76,24 @@
             <h5><u>Watch anytime</u></h5><br />
             <p>
                 @if ($event->youtube_link)
-                <a href="{{ $event->youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
-                    <span class="align-middle">YouTube <i class="fab fa-youtube fa-2x align-middle"></i></span>
-                </a>&nbsp
+                    <a href="{{ $event->youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
+                        <span class="align-middle">YouTube <i class="fab fa-youtube fa-2x align-middle"></i></span>
+                    </a>&nbsp
                 @endif
                 @if ($event->facebook_link)
-                <a href="{{ $event->facebook_link }}" target="_blank" class="btn btn-sm" style="background-color: #3b5998; color: white">
-                    <span class="align-middle">Facebook <i class="fab fa-facebook fa-2x align-middle"></i></span>
-                </a>&nbsp
+                    <a href="{{ $event->facebook_link }}" target="_blank" class="btn btn-sm" style="background-color: #3b5998; color: white">
+                        <span class="align-middle">Facebook <i class="fab fa-facebook fa-2x align-middle"></i></span>
+                    </a>&nbsp
                 @endif
                 @if ($event->instagram_link)
-                <a href="{{ $event->instagram_link }}" target="_blank" class="btn btn-sm" style="background-color: #517fa4; color: white">
-                    <span class="align-middle">Instagram <i class="fab fa-instagram fa-2x align-middle"></i></span>
-                </a>&nbsp
+                    <a href="{{ $event->instagram_link }}" target="_blank" class="btn btn-sm" style="background-color: #517fa4; color: white">
+                        <span class="align-middle">Instagram <i class="fab fa-instagram fa-2x align-middle"></i></span>
+                    </a>&nbsp
                 @endif
                 @if ($event->web_link)
-                <a href="{{ $event->web_link }}" target="_blank" class="btn btn-sm" style="background-color: blue; color: white;">
-                    <span class="align-middle">Web <i class="fas fa-globe fa-2x align-middle"></i></span>
-                </a>&nbsp
+                    <a href="{{ $event->web_link }}" target="_blank" class="btn btn-sm" style="background-color: blue; color: white;">
+                        <span class="align-middle">Web <i class="fas fa-globe fa-2x align-middle"></i></span>
+                    </a>&nbsp
                 @endif
             </p>
         </div>
@@ -101,6 +102,7 @@
         </div>
     </div>
 </div>
+
 <script>
 
     var user_id = @json(Auth::check() ? Auth::user()->id : 0);
@@ -129,7 +131,7 @@
                             user_id: user_id
                         })
                         .then(function (response) {
-                            heart.toggleClass('fas far').css('color', 'red');
+                            heart.toggleClass('fas far').css('color', 'red').attr('id', response.data.id);
                             if ($('table tr#' + event_id + ' td.favouriteTd')) {
                                 var tableIcon = $('table tr#' + event_id + ' td.favouriteTd');
                                 tableIcon.attr('data-search', '1').children().children().toggleClass('fas far').css('color', 'red').attr('id', response.data.id);
