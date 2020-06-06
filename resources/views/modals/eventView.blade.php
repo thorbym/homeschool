@@ -49,7 +49,6 @@
                 </p>
                 <p>
                     @if ($event->live_youtube_link)
-                        <span class="align-middle">YouTube <i class="fab fa-youtube fa-2x align-middle"></i></span>
                         <a href="{{ $event->live_youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
                             <span class="align-middle">YouTube <i class="fab fa-youtube fa-2x align-middle"></i></span>
                         </a>&nbsp
