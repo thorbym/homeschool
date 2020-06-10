@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Category;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,11 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $category = null;
+
+        $view = view('modals.categoryCrud', compact('category'))->render();
+
+        return response()->json($view);
     }
 
     /**
@@ -46,10 +51,10 @@ class CategoryController extends Controller
             'colour' => $request->get('colour'),
             'font_colour' => $request->get('font_colour')
         ]);
+
         $category->save();
 
-        $categories = Category::get();
-        return redirect('categories');
+        return redirect()->back();
     }
 
     /**
@@ -71,7 +76,14 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        if (Auth::check() && Auth::user()->isAdmin()) {
+
+            $category = Category::where('id', $id)->first();
+
+            $view = view('modals.categoryCrud', compact('category'))->render();
+
+            return response()->json($view);
+        }
     }
 
     /**
@@ -83,7 +95,21 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'category' => 'required',
+            'colour' => 'required',
+            'font_colour' => 'required',
+        ]);
+
+        $category = Category::find($id);
+
+        $category->category = $request->get('category');
+        $category->colour = $request->get('colour');
+        $category->font_colour = $request->get('font_colour');
+
+        $category->save();
+
+        return redirect()->back();
     }
 
     /**
@@ -94,6 +120,8 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::destroy($id);
+
+        return redirect()->back();
     }
 }

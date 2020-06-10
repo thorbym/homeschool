@@ -31,8 +31,8 @@
                 </div>
                 <div style="position: absolute; bottom: -40; right: 20">
                     <a id="favourite" href="#">
-                        @if ($event->favourite_id)
-                            <i class="fas fa-heart fa-2x" id="{{ $event->favourite_id }}" style="color: red"></i>
+                        @if ($event->favourite)
+                            <i class="fas fa-heart fa-2x" id="{{ $event->favourite->id }}" style="color: red"></i>
                         @else
                             <i class="far fa-heart fa-2x" style="color: gray"></i>
                         @endif

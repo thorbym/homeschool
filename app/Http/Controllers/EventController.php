@@ -28,7 +28,13 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::get();
+
+        $event = null;
+
+        $view = view('modals.eventCrud', compact('categories', 'event'))->render();
+
+        return response()->json($view);
     }
 
     /**
@@ -39,9 +45,24 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        /*$request->validate([
-            SOMETHING IN HERE
-        ]);*/
+        $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'start_time' => 'present|string|max:5|required_with:live_youtube_link,live_facebook_link,live_instagram_link,live_web_link|nullable',
+            'end_time' => 'present|string|max:5|different:start_time|required_with:live_youtube_link,live_facebook_link,live_instagram_link,live_web_link|nullable',
+            'days_of_week' => 'array|required_with:live_youtube_link,live_facebook_link,live_instagram_link,live_web_link|nullable',
+            'category_id' => 'required|integer',
+            'live_youtube_link' => 'present|url|nullable',
+            'live_facebook_link' => 'present|url|nullable',
+            'live_instagram_link' => 'present|url|nullable',
+            'live_web_link' => 'present|url|nullable',
+            'youtube_link' => 'present|url|nullable',
+            'facebook_link' => 'present|url|nullable',
+            'instagram_link' => 'present|url|nullable',
+            'web_link' => 'present|url|nullable',
+            'minimum_age' => 'required|integer|between:0,16',
+            'maximum_age' => 'required|integer|between:0,16',
+        ]);
 
         $event = new Event([
             'title' => $request->get('title'),
@@ -76,72 +97,13 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Axios route to get one record by ajax
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function get($id)
-    {
-
         $categories = Category::get();
 
-        if ($id > 0) {
-            $query = DB::table('events')
-                ->join('categories', 'categories.id', '=', 'events.category_id');
-            if (Auth::check()) {
-                $query->leftJoin('favourites', function($join) {
-                    $join->on('favourites.event_id', '=', 'events.id');
-                    $join->where('favourites.user_id', '=', Auth::user()->id);
-                });
-            }
-            $query->select(
-                'events.id',
-                'events.title',
-                'events.description',
-                'events.live_youtube_link',
-                'events.live_facebook_link',
-                'events.live_instagram_link',
-                'events.live_web_link',
-                'events.youtube_link',
-                'events.facebook_link',
-                'events.instagram_link',
-                'events.web_link',
-                'events.start_time',
-                'events.end_time',
-                'events.days_of_week',
-                'events.requires_supervision',
-                'events.dfe_approved',
-                'events.minimum_age',
-                'events.maximum_age',
-                'events.category_id',
-                'categories.category',
-                'categories.colour',
-                'categories.font_colour',
-                Auth::check() ? DB::raw('(case when favourites.id is null then 0 else favourites.id end) as favourite_id') : DB::raw('0 AS favourite_id')
-            );
-            $query->where('events.id', '=', $id);
-            $event = $query->first();
+        $event = Event::where('id', $id)->first();
 
-            if (Auth::check() && Auth::user()->isAdmin()) {
-                $view = view('modals.eventUpdate', compact('categories', 'event'))->render();
-            } else {
-                $view = view('modals.eventView', compact('categories', 'event'))->render();
-            }
-
-        } else {
-
-            $view = view('modals.eventNew', compact('categories'))->render();
-
-        }
+        $view = view('modals.eventDetails', compact('categories', 'event'))->render();
 
         return response()->json($view);
-
-        
     }
 
     /**
@@ -152,7 +114,16 @@ class EventController extends Controller
      */
     public function edit($id)
     {
-        //
+        if (Auth::check() && Auth::user()->isAdmin()) {
+
+            $categories = Category::get();
+
+            $event = Event::where('id', $id)->first();
+
+            $view = view('modals.eventCrud', compact('categories', 'event'))->render();
+
+            return response()->json($view);
+        }
     }
 
     /**
@@ -164,6 +135,25 @@ class EventController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'start_time' => 'present|string|max:5|required_with:live_youtube_link,live_facebook_link,live_instagram_link,live_web_link|nullable',
+            'end_time' => 'present|string|max:5|different:start_time|required_with:live_youtube_link,live_facebook_link,live_instagram_link,live_web_link|nullable',
+            'days_of_week' => 'array|required_with:live_youtube_link,live_facebook_link,live_instagram_link,live_web_link|nullable',
+            'category_id' => 'required|integer',
+            'live_youtube_link' => 'present|url|nullable',
+            'live_facebook_link' => 'present|url|nullable',
+            'live_instagram_link' => 'present|url|nullable',
+            'live_web_link' => 'present|url|nullable',
+            'youtube_link' => 'present|url|nullable',
+            'facebook_link' => 'present|url|nullable',
+            'instagram_link' => 'present|url|nullable',
+            'web_link' => 'present|url|nullable',
+            'minimum_age' => 'required|integer|between:0,16',
+            'maximum_age' => 'required|integer|between:0,16',
+        ]);
+
         $event = Event::find($id);
 
         $event->title = $request->get('title');
@@ -198,6 +188,8 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $event = Event::destroy($id);
+
+        return redirect()->back();
     }
 }

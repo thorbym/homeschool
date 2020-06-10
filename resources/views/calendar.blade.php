@@ -47,7 +47,6 @@
                         </div>
                         <div class="otherFilters" style="display: none; padding: 15px 0px 10px 0px">
                             <a href="#" id="dfe_approved" class="btn btn-secondary disabled" style="margin: 3px; pointer-events: auto">DfE approved</a>
-                            <!--<a href="#" id="requires_supervision" class="btn btn-secondary disabled" style="margin: 3px; pointer-events: auto">Require supervision</a>-->
                         </div>
                     </div>
                 </div>
@@ -64,9 +63,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-</div>
-<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 </div>
 <div class="modal fade" id="quickStartModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -270,9 +267,9 @@
             },
             dateClick: function(info) {
                 if (isAdmin) {
-                    axios.get('/api/event/0')
+                    axios.get('/api/event/create')
                         .then(function (response) {
-                            $('#editModal').html(response.data).modal();
+                            $('#eventModal').html(response.data).modal();
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -281,13 +278,25 @@
             },
             eventClick: function(info) {
                 var id = info.event.id;
-                axios.get('/api/event/' + id)
-                    .then(function (response) {
-                        $('#viewModal').html(response.data).modal();
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                });
+                if (isAdmin) {
+                    // admin can edit the events, so get event edit form
+                    axios.get('/api/event/' + id + '/edit')
+                        .then(function (response) {
+                            $('#eventModal').html(response.data).modal();
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                    });
+                } else {
+                    // otherwise it is normal user, so show the "details" modal
+                    axios.get('/api/event/' + id + '/show')
+                        .then(function (response) {
+                            $('#eventModal').html(response.data).modal();
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                    });
+                }
             },
         });
 

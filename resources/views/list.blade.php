@@ -29,12 +29,6 @@
                         <button type="button" class="btn btn-outline-secondary disabled" id="showFavourites">
                             &nbsp<i class="far fa-heart"></i>&nbsp
                         </button>&nbsp&nbsp
-                        <!--<div class="input-group mb-3" style="margin-bottom: 0px !important">
-                            <input type="text" id="search" placeholder="Search title" class="form-control">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary disabled" id="searchBtn" type="button"><i class="fas fa-search"></i></button>
-                            </div>
-                        </div>-->
                     </div>
                     <div class="filters">
                         <div class="subjectFilter" style="display: none; padding: 15px 0px 10px 0px">
@@ -49,7 +43,6 @@
                         </div>
                         <div class="otherFilters" style="display: none; padding: 15px 0px 10px 0px">
                             <a href="#" id="dfe_approved" class="btn btn-secondary disabled" style="margin: 3px; pointer-events: auto">DfE approved</a>
-                            <!--<a href="#" id="requires_supervision" class="btn btn-secondary disabled" style="margin: 3px; pointer-events: auto">Require supervision</a>-->
                         </div>
                     </div>
                 </div>
@@ -355,7 +348,7 @@
 
         $('tbody tr th,td:not(.favouriteTd)').off('click').on('click', function(e){
             var id = $(e.currentTarget).closest('tr').attr('id');
-            axios.get('/api/event/' + id)
+            axios.get('/api/event/' + id + '/show')
                 .then(function (response) {
                     $('#viewModal').html(response.data).modal();
                 })
