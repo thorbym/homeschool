@@ -90,9 +90,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-</div>
-<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 </div>
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -116,6 +114,7 @@
 
 <script>
 
+    var isAdmin = @json(Auth::check() ? Auth::user()->isAdmin() : 0);
     var events = @json($data['events']);
     var table = false;
     var user_id = @json(Auth::check() ? Auth::user()->id : 0);
@@ -348,13 +347,25 @@
 
         $('tbody tr th,td:not(.favouriteTd)').off('click').on('click', function(e){
             var id = $(e.currentTarget).closest('tr').attr('id');
-            axios.get('/api/event/' + id + '/show')
-                .then(function (response) {
-                    $('#viewModal').html(response.data).modal();
-                })
-                .catch(function (error) {
-                    console.log(error);
-            });
+            if (isAdmin) {
+                // admin can edit the events, so get event edit form
+                axios.get('/api/event/' + id + '/edit')
+                    .then(function (response) {
+                        $('#eventModal').html(response.data).modal();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                });
+            } else {
+                // otherwise it is normal user, so show the "details" modal
+                axios.get('/api/event/' + id + '/show')
+                    .then(function (response) {
+                        $('#eventModal').html(response.data).modal();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                });
+            }
         });
 
         $('.favourite').off('click').on('click', function(e){
