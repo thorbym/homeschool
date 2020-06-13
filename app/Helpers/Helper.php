@@ -68,4 +68,46 @@ class Helper
 
         return $weekDays[$dayNumber];
     }
+
+    public static function getNextEvent(string $daysOfWeekString, string $startTime, string $endTime)
+    {
+        $currentDay = date('N');
+        $currentTime = date('Hi');
+        $daysOfWeekArray = json_decode($daysOfWeekString);
+        $eventState = self::getEventState($currentTime, $startTime, $endTime);
+        if (($eventState == 'notStarted' || $eventState == 'notFinished' ) && in_array($currentDay, $daysOfWeekArray)) {
+            // event has not finished, and is on day of request
+            return [
+                'startTime' => date('Y-m-d\T' . $startTime),
+                'endTime' => date('Y-m-d\T' . $endTime)
+            ];
+        }
+        // example [1,2,3] (mon, tue, wed) and current day is 4
+        for ($i = 0; $i <=6; $i++) {
+            if (isset($daysOfWeekArray[$i]) && $daysOfWeekArray[$i] <= $currentDay) {
+                $daysOfWeekArray[$i] = (string)($daysOfWeekArray[$i] + 7);
+            }
+        }
+        // now array has values which are ALL higher than the current day
+        asort($daysOfWeekArray);
+        foreach ($daysOfWeekArray as $nextDay) {
+            break;
+        }
+        $daysToAddOn = $nextDay - $currentDay;
+        return [
+            'startTime' => date('Y-m-d\TH:i', strtotime(date('Y-m-d') . $startTime . ' +' . $daysToAddOn . ' day')),
+            'endTime' => date('Y-m-d\TH:i', strtotime(date('Y-m-d') . $endTime . ' +' . $daysToAddOn . ' day'))
+        ];
+    }
+
+    public static function getEventState($currentTime, $startTime, $endTime)
+    {
+        if ($currentTime < str_replace(':', '', $startTime)) {
+            return 'notStarted';
+        }
+        if ($currentTime < str_replace(':', '', $endTime)) {
+            return 'notFinished';
+        }
+        return false;
+    }
 }

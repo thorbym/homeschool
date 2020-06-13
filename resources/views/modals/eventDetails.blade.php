@@ -44,9 +44,9 @@
                 <hr>
                 <h5><u>Live event</u></h5><br />
                 <p>
-                    {{ $event->start_time }} to {{ $event->end_time }} (UK time), {{ Helper::convertDaysOfWeek($event->days_of_week) }}<br />
-                    <small><i>Live events only in progress during above times</i></small>
+                    {{ $event->start_time }} to {{ $event->end_time }} (UK time), {{ Helper::convertDaysOfWeek($event->days_of_week) }}
                 </p>
+                <p id="eventTiming"></p>
                 <p>
                     @if ($event->live_youtube_link)
                         <a href="{{ $event->live_youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
@@ -106,6 +106,7 @@
 
     var user_id = @json(Auth::check() ? Auth::user()->id : 0);
     var event_id = @json($event->id);
+    var nextEvent = @json(Helper::getNextEvent($event->days_of_week, $event->start_time, $event->end_time));
 
     $(document).ready(function(){
         $('#favourite').on('click', function(e){
@@ -144,5 +145,13 @@
                 $('#loginInfo').toggle();
             }
         });
+
+        var diff = moment(nextEvent.startTime).diff(moment());
+        if (diff < 0) {
+            $("#eventTiming").html('<i><strong>** Event in progress! Finishes ' + moment(nextEvent.endTime).fromNow() + ' **</strong></i>');
+        } else {
+            $("#eventTiming").html('<i>Next live event starts ' + moment(nextEvent.startTime).fromNow() + '</i>');
+        }
+
     })
 </script>

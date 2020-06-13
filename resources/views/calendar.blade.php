@@ -445,6 +445,7 @@
             }
         }
 
+        // reset the url so people don't end up pressing back and getting the quick start again
         if (quickStart) {
             window.history.replaceState(null, null, '/calendar');
             $('#quickStartModal').modal();

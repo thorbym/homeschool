@@ -20,6 +20,7 @@ try {
     require('@fullcalendar/interaction');
     require('@fullcalendar/core/locales/en-gb');
     require('@fullcalendar/bootstrap');
+    require('moment/moment.js');
 } catch (e) {}
 
 /**
@@ -60,3 +61,7 @@ window.Calendar = { Calendar };
 window.timeGridPlugin = timeGridPlugin;
 window.interaction = interaction;
 window.bootstrapPlugin = bootstrapPlugin;
+
+import moment from 'moment';
+
+window.moment = moment;
