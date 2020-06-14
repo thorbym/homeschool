@@ -1,3 +1,7 @@
+@php
+    $nextEvent = false
+@endphp
+
 <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header gray">
@@ -40,6 +44,9 @@
                 </div>
             </div>
             @if ($event->start_time && $event->start_time != "00:00")
+                @php
+                    $nextEvent = Helper::getNextEvent($event->days_of_week, $event->start_time, $event->end_time)
+                @endphp
                 <br />
                 <hr>
                 <h5><u>Live event</u></h5><br />
@@ -106,7 +113,7 @@
 
     var user_id = @json(Auth::check() ? Auth::user()->id : 0);
     var event_id = @json($event->id);
-    var nextEvent = @json(Helper::getNextEvent($event->days_of_week, $event->start_time, $event->end_time));
+    var nextEvent = @json($nextEvent);
 
     $(document).ready(function(){
         $('#favourite').on('click', function(e){
@@ -151,12 +158,13 @@
                 $('#loginInfo').toggle();
             }
         });
-
-        var diff = moment(nextEvent.startTime).diff(moment());
-        if (diff < 0) {
-            $("#eventTiming").html('<i><strong>** Event in progress! Finishes ' + moment(nextEvent.endTime).fromNow() + ' **</strong></i>');
-        } else {
-            $("#eventTiming").html('<i>Next live event starts ' + moment(nextEvent.startTime).fromNow() + '</i>');
+        if (nextEvent) {
+            var diff = moment(nextEvent.startTime).diff(moment());
+            if (diff < 0) {
+                $("#eventTiming").html('<i><strong>** Event in progress! Finishes ' + moment(nextEvent.endTime).fromNow() + ' **</strong></i>');
+            } else {
+                $("#eventTiming").html('<i>Next broadcasting ' + moment(nextEvent.startTime).fromNow() + '</i>');
+            }
         }
 
     })
