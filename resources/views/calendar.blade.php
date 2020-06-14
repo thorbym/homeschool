@@ -151,7 +151,26 @@
 
     var isAdmin = @json(Auth::check() ? Auth::user()->isAdmin() : 0);
     var user_id = @json(Auth::check() ? Auth::user()->id : 0);
-    var quickStart = @json(isset($data['quickStart']) ? 1 : 0)
+    var quickStart = @json(isset($data['quickStart']) ? 1 : 0);
+    var d = new Date();
+    if (d.getHours() >= 21) {
+        var scrollTime = '07:00';
+        d.setDate(d.getDate() + 1);
+    } else {
+        var scrollTime = d.getHours() + ':00';
+    }
+    var month = '' + (d.getMonth() + 1);
+    var day = '' + d.getDate();
+    var year = d.getFullYear();
+
+    if (month.length < 2) {
+        month = '0' + month;
+    } 
+    if (day.length < 2) {
+        day = '0' + day;
+    }
+        
+    var defaultDate = year + '-' + month + '-' + day;
 
     document.addEventListener('DOMContentLoaded', function() {
 
@@ -168,8 +187,10 @@
 
         window.calendar = new Calendar.Calendar(calendarEl, {
             defaultView: 'timeGridDay',
+            defaultDate: defaultDate,
             minTime: "07:00:00",
             maxTime: "21:00:00",
+            scrollTime: scrollTime,
             height: 600,
             displayEventTime: false,
             header: {
@@ -201,12 +222,21 @@
                     columnHeaderFormat: { weekday: 'short', month: 'short', day: 'numeric', omitCommas: true }
                 },
             },
+            slotDuration: '00:15:00',
+            slotLabelInterval: '01:00',
+            slotLabelFormat: {
+                hour: 'numeric',
+                hour12: true,
+                minute: '2-digit',
+                omitZeroMinute: true,
+                meridiem: 'short'
+            },
             navLinkDayClick: function(date, jsEvent) {
                 calendar.changeView('timeGridDay', date);
             },
             eventRender: function(info) {
                 // resize the rows
-                $(calendarEl).find('tr[data-time]').css('height', '3em');
+                $(calendarEl).find('tr[data-time]').css('height', '2em');
 
                 // colour the event based on the category's colour
                 $(info.el).css({
