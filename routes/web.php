@@ -32,6 +32,7 @@ Route::delete('/event/{id}', 'EventController@destroy')->name('destroyEvent');
 Route::get('/api/event/create', 'EventController@create');
 Route::get('/api/event/{id}/edit', 'EventController@edit');
 Route::get('/api/event/{id}/show', 'EventController@show');
+Route::get('/api/events/calendar', 'EventController@getCalendarEvents');
 
 // CATEGORIES
 Route::get('/categories', 'HomeController@listCategories')->name('categories');

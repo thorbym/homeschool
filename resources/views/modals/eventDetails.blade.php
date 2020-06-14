@@ -121,6 +121,9 @@
                                 var tableIcon = $('table tr#' + event_id + ' td.favouriteTd');
                                 tableIcon.attr('data-search', '0').children().children().toggleClass('fas far').css('color', 'gray').remove('id');
                             }
+                            if (calendar) {
+                                calendar.refetchEvents();
+                            }
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -135,6 +138,9 @@
                             if ($('table tr#' + event_id + ' td.favouriteTd')) {
                                 var tableIcon = $('table tr#' + event_id + ' td.favouriteTd');
                                 tableIcon.attr('data-search', '1').children().children().toggleClass('fas far').css('color', 'red').attr('id', response.data.id);
+                            }
+                            if (calendar) {
+                                calendar.refetchEvents();
                             }
                         })
                         .catch(function (error) {

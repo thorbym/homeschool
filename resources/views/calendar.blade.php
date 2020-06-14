@@ -150,7 +150,6 @@
 <script>
 
     var isAdmin = @json(Auth::check() ? Auth::user()->isAdmin() : 0);
-    var events = @json($data['events']);
     var user_id = @json(Auth::check() ? Auth::user()->id : 0);
     var quickStart = @json(isset($data['quickStart']) ? 1 : 0)
 
@@ -167,7 +166,7 @@
         // fullcalendar stuff
         var calendarEl = document.getElementById('calendar');
 
-        var calendar = new Calendar.Calendar(calendarEl, {
+        window.calendar = new Calendar.Calendar(calendarEl, {
             defaultView: 'timeGridDay',
             minTime: "07:00:00",
             maxTime: "21:00:00",
@@ -180,7 +179,16 @@
             },
             plugins: [ bootstrapPlugin, timeGridPlugin, isAdmin ? interaction : '' ],
             themeSystem: 'bootstrap',
-            events: events,
+            events: function(fetchInfo, successCallback, failureCallback) {
+                axios.get('/api/events/calendar')
+                    .then(function (response) {
+                        successCallback(response.data)
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        failureCallback(err)
+                    });
+            },
             editable: isAdmin ? true : false,
             nowIndicator: true,
             slotEventOverlap: false,
@@ -410,7 +418,7 @@
            calendar.rerenderEvents();
         }
 
-        // if the favourites button is
+        // if the show favourites button is clicked
         $("#showFavourites").on('click', function(e){
             if (user_id) {
                 var favouritesBtn = $(e.currentTarget);
@@ -427,23 +435,6 @@
                 $('#loginModal').modal();
             }
         });
-
-        function HandleBackFunctionality() {
-            if(window.event) {
-                if (window.event.clientX < 40 && window.event.clientY < 0) {
-                    alert("Browser back button is clicked...");
-                } else {
-                    alert("Browser refresh button is clicked...");
-                }
-            } else {
-                if (event.currentTarget.performance.navigation.type == 1) {
-                    alert("Browser refresh button is clicked...");
-                }
-                if (event.currentTarget.performance.navigation.type == 2) {
-                    alert("Browser back button is clicked...");
-                }
-            }
-        }
 
         // reset the url so people don't end up pressing back and getting the quick start again
         if (quickStart) {

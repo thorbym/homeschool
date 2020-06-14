@@ -4,10 +4,6 @@
 
 @include('layouts.navbar')
 
-@php
-    $events = $data['events']
-@endphp
-
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -32,7 +28,7 @@
                     </div>
                     <div class="filters">
                         <div class="subjectFilter" style="display: none; padding: 15px 0px 10px 0px">
-                            @foreach ($data['categories'] as $category)
+                            @foreach ($categories as $category)
                                 <a href="#" id="{{ str_replace(' ', '', strtolower($category->category)) }}" class="btn disabled" style="background-color: {{ $category->colour }}; color: {{ $category->font_colour }}; margin: 3px; pointer-events: auto">{{ $category->category }}</a>
                             @endforeach
                         </div>
@@ -115,7 +111,6 @@
 <script>
 
     var isAdmin = @json(Auth::check() ? Auth::user()->isAdmin() : 0);
-    var events = @json($data['events']);
     var table = false;
     var user_id = @json(Auth::check() ? Auth::user()->id : 0);
 
