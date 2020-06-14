@@ -226,8 +226,7 @@
             slotLabelInterval: '01:00',
             slotLabelFormat: {
                 hour: 'numeric',
-                hour12: true,
-                minute: '2-digit',
+                hourCycle: 'h12',
                 omitZeroMinute: true,
                 meridiem: 'short'
             },
@@ -236,14 +235,14 @@
             },
             eventRender: function(info) {
                 // resize the rows
-                $(calendarEl).find('tr[data-time]').css('height', '2em');
+                $(calendarEl).find('tr[data-time]').css({'height': '2.2em', 'font-size': '0.9em'});
 
                 // colour the event based on the category's colour
                 $(info.el).css({
                     'background-color': info.event.extendedProps.colour,
                     'border-color': info.event.extendedProps.colour,
                     'color': info.event.extendedProps.font_colour == "black" ? "#212529" : "white",
-                    'font-size': '1em',
+                    'font-size': '0.9em',
                 }).hover(function(){
                     $(this).css('cursor', 'pointer');
                 }).tooltip({
