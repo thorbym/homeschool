@@ -7,10 +7,10 @@
 <div class="jumbotron" id="jumbotron" style="height: calc(100vh - 4.4rem); background-color: #A5E8FD; min-height: calc(100% - 4.4rem); min-height: calc(100vh - 4.4rem); display: flex; align-items: center; text-align: center">
 	<div class="container">
 		<p>
-			<h1 class="display-4">Homeschool help<br /> for busy households</h1>
+			<h1 class="display-4" style="padding-top: 20px">Homeschool help for busy lives</h1>
 		</p>
 		<p>
-			<h4>TeachEm is your online directory of video-based educational content. We'll help you quickly find perfectly suited live and pre-recorded content, for all ages, across a range of subjects.</h4>
+			<h4>TeachEm is your online directory of video-based educational content. Quickly find perfectly suited live and pre-recorded content, for all ages, across a range of subjects.</h4>
 		</p>
 		<p>
 			<a class="btn btn-primary btn-lg" href="{{ route('calendarQuickStart') }}" role="button">Quick start &raquo;</a>
