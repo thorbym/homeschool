@@ -234,8 +234,6 @@
                 calendar.changeView('timeGridDay', date);
             },
             eventRender: function(info) {
-                // resize the rows
-                $(calendarEl).find('tr[data-time]').css({'height': '2.2em', 'font-size': '0.9em'});
 
                 // colour the event based on the category's colour
                 $(info.el).css({
