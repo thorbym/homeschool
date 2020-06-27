@@ -10,7 +10,7 @@
 			<h1 class="display-4" style="padding-top: 20px">Homeschool help for busy lives</h1>
 		</p>
 		<p>
-			<h4>TeachEm is your online directory of video-based educational content. Quickly find perfectly suited live and pre-recorded content, for all ages, across a range of subjects.</h4>
+			<h4>TeachEm is your directory of online educational videos and events. Quickly find perfectly suited live and pre-recorded content, for all ages, across a range of subjects.</h4>
 		</p>
 		<p>
 			<a class="btn btn-primary btn-lg" href="{{ route('calendarQuickStart') }}" role="button">Quick start &raquo;</a>
