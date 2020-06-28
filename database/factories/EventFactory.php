@@ -1,7 +1,7 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\User;
+use App\Event;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
@@ -16,44 +16,34 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(User::class, function (Faker $faker) {
-    return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
-        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        'remember_token' => Str::random(10),
-        'admin' => rand(0, 1)
-    ];
-});
-
-$factory->define(Category::class, function (Faker $faker) {
-    return [
-        'category' => $faker->name,
-        'color' => $faker->hexcolor,
-        'font_color' => array_rand(['black', 'white'] , rand(0, 1))
-    ];
-});
-
 $factory->define(Event::class, function (Faker $faker) {
-	$hour = $faker->time('H', '21');
-	$start_time = $hour . ':00';
-	$end_time = ($hour + 1) . ':00';
+	$start_hour = rand(7, 20);
+	$end_hour = $start_hour + rand(1, 2);
+	if (strlen($start_hour) == 1) {
+		$start_hour = '0' . $start_hour;
+	}
+	if (strlen($end_hour) == 1) {
+		$end_hour = '0' . $end_hour;
+	}
+	$start_time = $start_hour . ':00';
+	$end_time = $end_hour . ':00';
 	$days_of_week_array = [
 		'["1","2","3","4","5","6","0"]',
-		'["1","3","5","0"]'
+		'["1","3","5","0"]',
+		'["1","5"]',
+		'["4"]'
 	];
 	$live = rand(0, 1);
 	$minimum_age = rand(4, 14);
 	$maximum_age = rand($minimum_age, 16);
     return [
 		'title' => $faker->sentence(rand(3,8), true),
-		'category_id' => rand(0,10),
+		'category_id' => rand(1,10),
 		'description' => $faker->paragraph(rand(1,3), true),
 		'live_web_link' => $live ? $faker->url : null,
-		'start_time' => $start_time,
-		'end_time' => $end_time,
-		'days_of_week' => $days_of_week_array[rand(0, 1)],
+		'start_time' => $live ? $start_time : null,
+		'end_time' => $live ? $end_time : null,
+		'days_of_week' => $live ? $days_of_week_array[rand(0, 3)] : null,
 		'requires_supervision' => rand(0, 1),
 		'dfe_approved' => rand(0, 1),
 		'web_link' => $faker->url,
