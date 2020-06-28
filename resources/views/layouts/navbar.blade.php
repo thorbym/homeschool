@@ -17,7 +17,7 @@
                 <a class="nav-link {{ last(request()->segments()) == 'calendar' ? 'active' : '' }}" href="{{ route('calendar') }}">Scheduled events</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ last(request()->segments()) == 'list' ? 'active' : '' }}" href="{{ route('list') }}">Watch any time</a>
+                <a class="nav-link {{ last(request()->segments()) == 'list' ? 'active' : '' }}" href="{{ route('list') }}">All events</a>
             </li>
             @if (Auth::check() && Auth::user()->isAdmin())
                 <li class="nav-item">
