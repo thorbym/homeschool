@@ -130,6 +130,13 @@
                         <label class="form-check-label" for="requires_supervision">Supervision required</label>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="free_content" id="free_content" {{ !$event || $event->free_content ? 'checked' : '' }}>
+                        <label class="form-check-label" for="free_content">Free content</label>
+                    </div>
+                </div>
             </div>
 
             <div class="modal-footer">
