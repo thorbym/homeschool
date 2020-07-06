@@ -55,5 +55,6 @@ $factory->define(Event::class, function (Faker $faker) {
 		'youtube_link' => $faker->url,
 		'facebook_link' => $faker->url,
 		'instagram_link' => $faker->url,
+		'free_content' => rand(0, 1),
     ];
 });

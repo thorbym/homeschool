@@ -83,6 +83,7 @@ class EventController extends Controller
             'web_link' => $request->get('web_link') ? $request->get('web_link') : null,
             'minimum_age' => $request->get('minimum_age'),
             'maximum_age' => $request->get('maximum_age'),
+            'free_content' => $request->get('free_content') ?   1 : 0,
         ]);
         $event->save();
 
@@ -176,7 +177,7 @@ class EventController extends Controller
         }
         $query->select(
             'events.id',
-            'events.title',
+            DB::raw('(case when events.free_content = 0 then CONCAT(events.title, " [PAID]") else events.title end) as title'),
             'events.description',
             'events.start_time AS startTime',
             'events.end_time AS endTime',
@@ -185,6 +186,7 @@ class EventController extends Controller
             'events.maximum_age',
             'events.dfe_approved',
             'events.requires_supervision',
+            'events.free_content',
             'categories.category',
             'categories.colour',
             'categories.font_colour'
@@ -270,7 +272,7 @@ class EventController extends Controller
 
         $query->select(
             'events.id',
-            'events.title',
+            DB::raw('(case when events.free_content = 0 then CONCAT(events.title, " [PAID]") else events.title end) as title'),
             'events.description',
             'events.start_time AS startTime',
             'events.end_time AS endTime',
@@ -279,6 +281,7 @@ class EventController extends Controller
             'events.maximum_age',
             'events.dfe_approved',
             'events.requires_supervision',
+            'events.free_content',
             'categories.category',
             'categories.colour',
             'categories.font_colour',
@@ -365,6 +368,7 @@ class EventController extends Controller
         $event->web_link = $request->get('web_link') ? $request->get('web_link') : null;
         $event->minimum_age = $request->get('minimum_age');
         $event->maximum_age = $request->get('maximum_age');
+        $event->free_content = $request->get('free_content') ? 1 : 0;
 
         $event->save();
 
