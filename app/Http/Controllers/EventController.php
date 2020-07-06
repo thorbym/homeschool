@@ -112,12 +112,64 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getCalendarEvents()
+    public function getCalendarEvents($filters)
     {
+        $filters = json_decode($filters, true);
+
         $query = DB::table('events')
             ->join('categories', 'categories.id', '=', 'events.category_id');
-        if (Auth::check()) {
-            $query->leftJoin('favourites', function($join) {
+
+        if (isset($filters['subjectFilter'])) {
+            $categories = [];
+            foreach ($filters['subjectFilter'] as $category_id => $onOrOff) {
+                if ($onOrOff == "on") {
+                    $categories[] += $category_id;
+                }
+            }
+            $query->whereIn('events.category_id', $categories);
+        }
+
+        if (isset($filters['ageFilter'])) {
+            $minimum_age = false;
+            $maximum_age = false;
+            if ($filters['ageFilter']['middleKids'] == "on" && 
+                $filters['ageFilter']['littleKids'] == "on" && 
+                $filters['ageFilter']['bigKids'] == "on") {
+                // don't do anything - all filters means no filters!
+            } else {
+                if ($filters['ageFilter']['middleKids'] == "on") {
+                    $minimum_age = 11;
+                    $maximum_age = 7;
+                }
+                if ($filters['ageFilter']['littleKids'] == "on") {
+                    if (!$minimum_age) {
+                        $minimum_age = 6;
+                    }
+                }
+                if ($filters['ageFilter']['bigKids'] == "on") {
+                    if (!$maximum_age) {
+                        $maximum_age = 12;
+                    }
+                }
+                if ($minimum_age) {
+                    $query->where('events.minimum_age', '<=', $minimum_age);
+                }
+                if ($maximum_age) {
+                    $query->where('events.maximum_age', '>=', $maximum_age);
+                }
+            }
+        }
+
+        if (isset($filters['otherFilters'])) {
+            foreach ($filters['otherFilters'] as $filterType => $onOrOff) {
+                if ($onOrOff == "on") {
+                    $query->where('events.' . $filterType, 1);
+                }
+            }
+        }
+
+        if (isset($filters['showFavourites']) && Auth::check()) {
+            $query->join('favourites', function($join) {
                 $join->on('favourites.event_id', '=', 'events.id');
                 $join->where('favourites.user_id', '=', Auth::user()->id);
             });
@@ -135,13 +187,109 @@ class EventController extends Controller
             'events.requires_supervision',
             'categories.category',
             'categories.colour',
-            'categories.font_colour',
-            Auth::check() ? DB::raw('(case when favourites.id is null then 0 else favourites.id end) as favourite_id') : DB::raw('0 AS favourite_id')
+            'categories.font_colour'
         );
         $query->whereNotNull('events.start_time');
         $events = $query->get();
 
         return response()->json($events);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getListEvents($filters)
+    {
+        $filters = json_decode($filters, true);
+
+        $query = DB::table('events')
+            ->join('categories', 'categories.id', '=', 'events.category_id');
+
+        if (Auth::check()) {
+            $query->leftJoin('favourites', function($join) {
+                $join->on('favourites.event_id', '=', 'events.id');
+                $join->where('favourites.user_id', '=', Auth::user()->id);
+            });
+        }
+
+        if (isset($filters['subjectFilter'])) {
+            $categories = [];
+            foreach ($filters['subjectFilter'] as $category_id => $onOrOff) {
+                if ($onOrOff == "on") {
+                    $categories[] += $category_id;
+                }
+            }
+            $query->whereIn('events.category_id', $categories);
+        }
+
+        if (isset($filters['ageFilter'])) {
+            $minimum_age = false;
+            $maximum_age = false;
+            if ($filters['ageFilter']['middleKids'] == "on" && 
+                $filters['ageFilter']['littleKids'] == "on" && 
+                $filters['ageFilter']['bigKids'] == "on") {
+                // don't do anything - all filters means no filters!
+            } else {
+                if ($filters['ageFilter']['middleKids'] == "on") {
+                    $minimum_age = 11;
+                    $maximum_age = 7;
+                }
+                if ($filters['ageFilter']['littleKids'] == "on") {
+                    if (!$minimum_age) {
+                        $minimum_age = 6;
+                    }
+                }
+                if ($filters['ageFilter']['bigKids'] == "on") {
+                    if (!$maximum_age) {
+                        $maximum_age = 12;
+                    }
+                }
+                if ($minimum_age) {
+                    $query->where('events.minimum_age', '<=', $minimum_age);
+                }
+                if ($maximum_age) {
+                    $query->where('events.maximum_age', '>=', $maximum_age);
+                }
+            }
+        }
+
+        if (isset($filters['otherFilters'])) {
+            foreach ($filters['otherFilters'] as $filterType => $onOrOff) {
+                if ($onOrOff == "on") {
+                    $query->where('events.' . $filterType, 1);
+                }
+            }
+        }
+
+        if (isset($filters['showFavourites']) && Auth::check()) {
+            $query->whereNotNull('favourites.id');
+        }
+
+        $query->select(
+            'events.id',
+            'events.title',
+            'events.description',
+            'events.start_time AS startTime',
+            'events.end_time AS endTime',
+            'events.days_of_week AS daysOfWeek',
+            'events.minimum_age',
+            'events.maximum_age',
+            'events.dfe_approved',
+            'events.requires_supervision',
+            'categories.category',
+            'categories.colour',
+            'categories.font_colour',
+            Auth::check() ? DB::raw('(case when favourites.id is null then 0 else favourites.id end) as favourite_id') : DB::raw('0 AS favourite_id')
+        );
+
+        $events = $query->get();
+
+        $view = view('layouts.table', compact('events'))->render();
+
+        return response()->json($view);
     }
 
     /**

@@ -32,10 +32,11 @@ Route::delete('/event/{id}', 'EventController@destroy')->name('destroyEvent');
 Route::get('/api/event/create', 'EventController@create');
 Route::get('/api/event/{id}/edit', 'EventController@edit');
 Route::get('/api/event/{id}/show', 'EventController@show');
-Route::get('/api/events/calendar', 'EventController@getCalendarEvents');
+Route::get('/api/events/calendar/{filters}', 'EventController@getCalendarEvents');
+Route::get('/api/events/list/{filters}', 'EventController@getListEvents');
 
 // CATEGORIES
-Route::get('/categories', 'HomeController@listCategories')->name('categories');
+Route::get('/categories', 'HomeController@showCategories')->name('categories');
 Route::post('/category', 'CategoryController@store')->name('storeCategory');
 Route::patch('/category/{id}', 'CategoryController@update')->name('updateCategory');
 Route::delete('/category/{id}', 'CategoryController@destroy')->name('destroyCategory');
@@ -46,3 +47,9 @@ Route::get('/api/category/{id}/edit', 'CategoryController@edit');
 // FAVOURITES API
 Route::post('/api/favourite', 'FavouriteController@store');
 Route::delete('/api/favourite/{id}', 'FavouriteController@destroy');
+
+// QUICKSTART API
+Route::get('/api/quickStart/show', 'HomeController@showQuickStart');
+
+// LOGIN WARNING API
+Route::get('/api/loginWarning/show', 'HomeController@showLoginWarning');
