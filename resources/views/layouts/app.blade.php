@@ -96,11 +96,21 @@
         <main class="py-4" style="margin-top: 3.8rem">
             @yield('content')
         </main>
+        @if (last(request()->segments()) == 'calendar' || last(request()->segments()) == 'list')
+            <a href="#">
+                <div style='position: fixed; right: 20px; bottom: 20px; z-index: 9999999'>
+                    <span class="fa-stack fa-3x">
+                        <i class="fa fa-circle fa-stack-2x" style="color: green"></i>
+                        <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                    </span>
+                </div>
+            </a>
+        @endif
     </div>
     <br />
     <br />
-    <footer class="section footer-classic context-dark" id="footer" style="display: none; background: #2d3246;">
-        <div class="container">
+    <footer class="section footer-classic context-dark" id="footer" style="display: none; background: #2d3246; min-height: 120px;">
+        <div style="margin-bottom: 0; padding-bottom: 0; padding-left: 40px; padding-right: 40px">
             <div>
                 <br />
                 <p style="color: white">
@@ -116,9 +126,18 @@
     </footer>
 </body>
 </html>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById("footer").style.position = "relative";
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        window.onload = function(){
+            var el = $('html');
+            var height = $('#footer').height();
+            var bottomOfHtml = el.position().top + el.offset().top + el.outerHeight(true);
+            var bottomOfViewport = (window.scrollY + window.innerHeight - 120);
+            var bottom = bottomOfHtml > bottomOfViewport ? bottomOfHtml : bottomOfViewport;
+            document.getElementById("footer").style.top = bottom + "px";
             document.getElementById("footer").style.display = "block";
-        });
-    </script>
+            $('#footer').css('bottom', '');
+        }
+    });
+</script>

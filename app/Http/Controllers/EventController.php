@@ -83,7 +83,8 @@ class EventController extends Controller
             'web_link' => $request->get('web_link') ? $request->get('web_link') : null,
             'minimum_age' => $request->get('minimum_age'),
             'maximum_age' => $request->get('maximum_age'),
-            'free_content' => $request->get('free_content') ?   1 : 0,
+            'free_content' => $request->get('free_content') ? 1 : 0,
+            'approved' => $request->get('approved') && Auth::check() && Auth::user()->isAdmin() ? 1 : 0,
         ]);
         $event->save();
 
@@ -100,7 +101,15 @@ class EventController extends Controller
     {
         $categories = Category::get();
 
-        $event = Event::where('id', $id)->first();
+        $query = Event::where('id', $id);
+
+        if (Auth::check() && Auth::user()->isAdmin()) {
+            //
+        } else {
+            $query->where('approved', '=', 1);
+        }
+
+        $event = $query->first();
 
         $view = view('modals.eventDetails', compact('categories', 'event'))->render();
 
@@ -192,6 +201,8 @@ class EventController extends Controller
             'categories.font_colour'
         );
         $query->whereNotNull('events.start_time');
+        $query->where('events.approved', '=', 1);
+
         $events = $query->get();
 
         return response()->json($events);
@@ -287,7 +298,7 @@ class EventController extends Controller
             'categories.font_colour',
             Auth::check() ? DB::raw('(case when favourites.id is null then 0 else favourites.id end) as favourite_id') : DB::raw('0 AS favourite_id')
         );
-
+        $query->where('events.approved', '=', 1);
         $events = $query->get();
 
         $view = view('layouts.table', compact('events'))->render();
@@ -305,16 +316,17 @@ class EventController extends Controller
     {
         $categories = Category::get();
 
-        $event = Event::where('id', $id)->first();
-        
-        if (Auth::check() && Auth::user()->isAdmin()) {
+        $query = Event::where('id', $id);
 
+        if (Auth::check() && Auth::user()->isAdmin()) {
+            $event = $query->first();
             $view = view('modals.eventCrud', compact('categories', 'event'))->render();
 
         } else {
+            $query->where('approved', '=', 1);
+            $event = $query->first();
             // just belt and braces to make sure that non auth user cannot edit
             $view = view('modals.eventDetails', compact('categories', 'event'))->render();
-
         }
 
         return response()->json($view);
@@ -369,6 +381,7 @@ class EventController extends Controller
         $event->minimum_age = $request->get('minimum_age');
         $event->maximum_age = $request->get('maximum_age');
         $event->free_content = $request->get('free_content') ? 1 : 0;
+        $event->approved = $request->get('approved') && Auth::check() && Auth::user()->isAdmin() ? 1 : 0;
 
         $event->save();
 
@@ -383,7 +396,9 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
-        $event = Event::destroy($id);
+        if (Auth::check() && Auth::user()->isAdmin()) {
+            $event = Event::destroy($id);
+        }
 
         return redirect()->back();
     }

@@ -133,10 +133,20 @@
 
                 <div class="form-group">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="free_content" id="free_content" {{ !$event || $event->free_content ? 'checked' : '' }}>
+                        <input class="form-check-input" type="checkbox" name="free_content" id="free_content" {{ $event && $event->free_content ? 'checked' : '' }}>
                         <label class="form-check-label" for="free_content">Free content</label>
                     </div>
                 </div>
+
+                @if (Auth::check() && Auth::user()->isAdmin())
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="approved" id="approved" {{ $event && $event->approved ? 'checked' : '' }}>
+                            <label class="form-check-label" for="approved">Approved</label>
+                        </div>
+                    </div>
+                @endif
+
             </div>
 
             <div class="modal-footer">
