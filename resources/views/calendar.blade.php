@@ -65,13 +65,21 @@
 
     document.addEventListener('DOMContentLoaded', function() {
 
-        function mobileCheck() {
-            if (window.innerWidth >= 768 ) {
-                return false;
-            } else {
+        var isMobile = (window.innerWidth >= 768) ? false : true;
+
+        var isTouchDevice = function() {            
+            var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
+            var mq = function (query) {
+                return window.matchMedia(query).matches;
+            }
+            if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
                 return true;
             }
-        };
+            // include the 'heartz' as a way to have a non matching MQ to help terminate the join
+            // https://git.io/vznFH
+            var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
+            return mq(query);
+        }
 
         // fullcalendar stuff
         var calendarEl = document.getElementById('calendar');
@@ -85,9 +93,9 @@
             height: 600,
             displayEventTime: false,
             header: {
-                left: mobileCheck() ? 'prev' : 'prev,next',
+                left: isMobile ? 'prev' : 'prev,next',
                 center: 'title',
-                right: mobileCheck() ? 'next' : 'timeGridDay,timeGridWeek'
+                right: isMobile ? 'next' : 'timeGridDay,timeGridWeek'
             },
             plugins: [ bootstrapPlugin, timeGridPlugin, isAdmin ? interaction : '' ],
             themeSystem: 'bootstrap',
@@ -149,12 +157,16 @@
                     'font-size': '0.9em',
                 }).hover(function(){
                     $(this).css('cursor', 'pointer');
-                }).tooltip({
-                    title: info.event.extendedProps.description.substring(0, 40) + '... ',
-                    placement: "top",
-                    trigger: "hover",
-                    container: "body"
                 });
+
+                if (!isTouchDevice()) {
+                    $(info.el).tooltip({
+                        title: info.event.extendedProps.description.substring(0, 40) + '... ',
+                        placement: "top",
+                        trigger: "hover",
+                        container: "body"
+                    });
+                }
 
                 // SEARCH BOX
                 var searchTerm = $('#search').val();
