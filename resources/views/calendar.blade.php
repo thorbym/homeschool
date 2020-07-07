@@ -170,7 +170,7 @@
 
                 // SEARCH BOX
                 var searchTerm = $('#search').val();
-                if (searchTerm !== '') {
+                if (searchTerm !== '' && searchTerm !== undefined) {
                     if (info.event.title.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0) {
                         return false;
                     }
