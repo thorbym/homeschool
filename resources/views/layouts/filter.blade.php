@@ -38,6 +38,9 @@
     </div>
     <div class="otherFilters" style="display: none; padding: 15px 0px 10px 0px">
         <a href="#" id="dfe_approved" class="btn btn-secondary disabled" style="margin: 3px; pointer-events: auto">DfE approved</a>
+        @if (Auth::check() && Auth::user()->isAdmin())
+            <a href="#" id="free_content" class="btn btn-secondary disabled" style="margin: 3px; pointer-events: auto">Show only FREE content</a>
+        @endif
     </div>
 </div>
 

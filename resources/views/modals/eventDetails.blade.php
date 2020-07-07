@@ -15,16 +15,21 @@
                 <h5><u>Description</u></h5>
                 <p>{{ $event->description }}</p>
                 <p>
-                    Suitable for {{ $event->minimum_age }} to {{ $event->maximum_age }} years old
-                    <br />
-                    @if ($event->dfe_approved)
-                    DfE Approved: &nbsp
-                        <i class="fas fa-check" style="color: green"></i><br />
-                    @endif
-                    @if ($event->requires_supervision)
-                        <i class="fas fa-binoculars fa-lg" style="color: orange"></i> &nbsp
-                        Supervision required!
-                    @endif
+                    Information:
+                    <ul>
+                        <li>Suitable for {{ $event->minimum_age }} to {{ $event->maximum_age }} years old</li>
+                        @if ($event->dfe_approved)
+                            <li><i class="fas fa-graduation-cap" style="color: green"></i> &nbsp DfE Approved</li>
+                        @endif
+                        @if ($event->requires_supervision)
+                            <li><i class="fas fa-binoculars fa-lg" style="color: orange"></i> &nbsp
+                            Supervision required</li>
+                        @endif
+                        @if (!$event->free_content)
+                            <li>&nbsp<i class="fas fa-dollar-sign fa-lg" style="color: red"></i> &nbsp&nbsp
+                            Content requires payment</li>
+                        @endif
+                    </ul>
                 </p>
                 <div id="loginInfo" class="row" style="display: none">
                     <div class="col-md-4">
