@@ -14,7 +14,7 @@
     <div class="col-md-8">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link {{ last(request()->segments()) == 'calendar' ? 'active' : '' }}" href="{{ route('calendar') }}">Scheduled content</a>
+                <a class="nav-link {{ last(request()->segments()) == 'calendar' || last(request()->segments()) == 'quickStart' ? 'active' : '' }}" href="{{ route('calendar') }}">Scheduled content</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ last(request()->segments()) == 'list' ? 'active' : '' }}" href="{{ route('list') }}">All content</a>
