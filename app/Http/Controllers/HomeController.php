@@ -72,6 +72,13 @@ class HomeController extends Controller
         return response()->json($view);
     }
 
+    public function showAddEventWarning()
+    {        
+        $view = view('modals.addEventWarning')->render();
+
+        return response()->json($view);
+    }
+
     public function showList()
     {
         $categories = Category::get();

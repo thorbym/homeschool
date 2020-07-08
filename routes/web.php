@@ -51,5 +51,6 @@ Route::delete('/api/favourite/{id}', 'FavouriteController@destroy');
 // QUICKSTART API
 Route::get('/api/quickStart/show', 'HomeController@showQuickStart');
 
-// LOGIN WARNING API
+// WARNINGS API
 Route::get('/api/loginWarning/show', 'HomeController@showLoginWarning');
+Route::get('/api/addEventWarning/show', 'HomeController@showAddEventWarning');

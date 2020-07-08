@@ -176,17 +176,6 @@
                     }
                 }
             },
-            dateClick: function(info) {
-                if (isAdmin) {
-                    axios.get('/api/event/create')
-                        .then(function (response) {
-                            $('#eventModal').html(response.data).modal();
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                    });
-                }
-            },
             eventClick: function(info) {
                 var id = info.event.id;
                 if (isAdmin) {

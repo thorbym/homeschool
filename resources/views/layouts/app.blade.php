@@ -95,16 +95,20 @@
 
         <main class="py-4" style="margin-top: 3.8rem">
             @yield('content')
+            <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            </div>
+            <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            </div>
         </main>
-        @if (last(request()->segments()) == 'calendar' || last(request()->segments()) == 'list')
-            <a href="#">
-                <div style='position: fixed; right: 20px; bottom: 20px; z-index: 9999999'>
-                    <span class="fa-stack fa-3x">
+        @if (in_array('calendar', request()->segments())  || in_array('list', request()->segments()))
+            <div style='position: fixed; right: 20px; bottom: 20px; z-index: 999'>
+                <a href="#">
+                    <span class="fa-stack fa-3x" id="addEvent">
                         <i class="fa fa-circle fa-stack-2x" style="color: green"></i>
                         <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
                     </span>
-                </div>
-            </a>
+                </a>
+            </div>
         @endif
     </div>
     <br />
@@ -129,6 +133,9 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+
+        var user_id = @json(Auth::check() ? Auth::user()->id : 0);
+
         window.onload = function(){
             var el = $('html');
             var height = $('#footer').height();
@@ -139,5 +146,26 @@
             document.getElementById("footer").style.display = "block";
             $('#footer').css('bottom', '');
         }
+
+        $('#addEvent').on('click', function(){
+            if (user_id) {
+                axios.get('/api/event/create')
+                    .then(function (response) {
+                        $('#eventModal').html(response.data).modal();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                });
+            } else {
+                axios.get('/api/addEventWarning/show')
+                    .then(function (response) {
+                        $('#addEventModal').html(response.data).modal();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                });
+            }
+        });
+
     });
 </script>

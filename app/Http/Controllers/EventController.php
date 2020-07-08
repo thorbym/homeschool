@@ -62,6 +62,7 @@ class EventController extends Controller
             'web_link' => 'present|url|nullable',
             'minimum_age' => 'required|integer|between:0,16',
             'maximum_age' => 'required|integer|between:0,16',
+            'user_id' => 'required|integer'
         ]);
 
         $event = new Event([
@@ -85,6 +86,7 @@ class EventController extends Controller
             'maximum_age' => $request->get('maximum_age'),
             'free_content' => $request->get('free_content') ? 1 : 0,
             'approved' => $request->get('approved') && Auth::check() && Auth::user()->isAdmin() ? 1 : 0,
+            'user_id' => $request->get('user_id') ? $request->get('user_id') : null,
         ]);
         $event->save();
 

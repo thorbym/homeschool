@@ -26,7 +26,9 @@ class Event extends Model
         'facebook_link',
         'instagram_link',
         'category_id',
-        'free_content'
+        'free_content',
+        'approved',
+        'user_id'
     ];
 
     public function category()

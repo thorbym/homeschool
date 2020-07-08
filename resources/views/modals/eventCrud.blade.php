@@ -8,7 +8,7 @@
     @csrf
         <div class="modal-content">
             <div class="modal-body">
-                <h4>{{ $event ? $event->title : 'New event' }}</h4>
+                <h4>{{ $event ? 'Edit ' . $event->title : 'Add new content' }}</h4>
                 <br />
                 <div class="form-group">
                     <label for="title">Title</label>
@@ -23,7 +23,7 @@
                 <div class="form-group">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="liveEvent" {{ $event && $event->start_time ? 'checked' : '' }}>
-                        <label class="form-check-label" for="requires_supervision">Live event?</label>
+                        <label class="form-check-label" for="requires_supervision">Is this content shown live?</label>
                     </div>
                 </div>
                 
@@ -42,7 +42,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="days">Days</label>
+                        <label for="days">Days <small>(use shift, ctrl or cmd to multi-select)</small></label>
                         <select multiple class="form-control" name="days_of_week[]" id="days_of_week">
                             <option value="1" {{ $event && $event->days_of_week && in_array(1, json_decode($event->days_of_week)) ? 'selected' : '' }}>Monday</option>
                             <option value="2" {{ $event && $event->days_of_week && in_array(2, json_decode($event->days_of_week)) ? 'selected' : '' }}>Tuesday</option>
@@ -76,27 +76,27 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="youtube_link">YouTube Link</label>
+                    <label for="youtube_link">Watch anytime YouTube Link</label>
                     <input type="text" class="form-control" name="youtube_link" id="youtube_link"  value="{{ $event ? $event->youtube_link : '' }}">
                 </div>
 
                 <div class="form-group">
-                    <label for="facebook_link">Facebook Link</label>
+                    <label for="facebook_link">Watch anytime Facebook Link</label>
                     <input type="text" class="form-control" name="facebook_link" id="facebook_link"  value="{{ $event ? $event->facebook_link : '' }}">
                 </div>
 
                 <div class="form-group">
-                    <label for="instagram_link">Instagram Link</label>
+                    <label for="instagram_link">Watch anytime Instagram Link</label>
                     <input type="text" class="form-control" name="instagram_link" id="instagram_link"  value="{{ $event ? $event->instagram_link : '' }}">
                 </div>
 
                 <div class="form-group">
-                    <label for="web_link">Web Link</label>
+                    <label for="web_link">Watch anytime Web Link</label>
                     <input type="text" class="form-control" name="web_link" id="web_link"  value="{{ $event ? $event->web_link : '' }}">
                 </div>
 
                 <div class="form-group">
-                    <label for="category_id">Category</label>
+                    <label for="category_id">Subject</label>
                     <select required class="form-control" name="category_id" id="category_id">
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}" {{ $event && $event->category_id == $category->id ? 'selected' : '' }}>{{ $category->category }}</option>
@@ -107,11 +107,11 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col">
-                            <label for="minimum_age">Minimum age</label>
+                            <label for="minimum_age">Minimum suitable age</label>
                             <input required type="number" class="form-control" name="minimum_age" id="minimum_age" min=0 max=16 value="{{ $event ? $event->minimum_age : '' }}">
                         </div>
                         <div class="col">
-                            <label for="maximum_age">Maximum age</label>
+                            <label for="maximum_age">Maximum suitable age</label>
                             <input required type="number" class="form-control" name="maximum_age" id="maximum_age" min=0 max=16 value="{{ $event ? $event->maximum_age : '' }}">
                         </div>
                     </div>
@@ -133,8 +133,8 @@
 
                 <div class="form-group">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="free_content" id="free_content" {{ $event && $event->free_content ? 'checked' : '' }}>
-                        <label class="form-check-label" for="free_content">Free content</label>
+                        <input class="form-check-input" type="checkbox" name="free_content" id="free_content" {{ !$event || $event->free_content ? 'checked' : '' }}>
+                        <label class="form-check-label" for="free_content">FREE content</label>
                     </div>
                 </div>
 
@@ -147,15 +147,17 @@
                     </div>
                 @endif
 
+                <input type="hidden" name="user_id" id="user_id" value="{{ $event ? $event->user_id : Auth::user()->id }}">
+
             </div>
 
             <div class="modal-footer">
                 <a href="#" class="btn btn-default" data-dismiss="modal">Close</a>
-                @if (Auth::check() && Auth::user()->isAdmin())
-                    @if ($event)
+                @if (Auth::check())
+                    @if ($event && Auth::user()->isAdmin())
                         <button class="btn btn-danger" onclick="changeMethod()">Delete</button>
                     @endif
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary" onclick="return confirm('This content will still need to be assessed by our moderators. Continue?')">Save</button>
                 @endif
             </div>
         </div>
