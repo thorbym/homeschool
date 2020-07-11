@@ -13,7 +13,7 @@
             <p>
                 However, our moderators will need to make sure all content is suitable and reaches the high standards that our users expect.
             </p>
-            <i class="fas fa-exclamation-circle fa-lg align-middle" style="color: red"></i>&nbsp To submit content for consideration by our moderators, you will need to <a href="{{ route('register') }}">register</a>. If you have already registered, <a href="{{ route('login') }}">please login</a> and try this button again.
+            <i class="fas fa-exclamation-circle fa-lg align-middle" style="color: red"></i>&nbsp To submit content for consideration by our moderators, you will need to <a href="/register">register</a>. If you have already registered, <a href="/login">please login</a> and try this button again.
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

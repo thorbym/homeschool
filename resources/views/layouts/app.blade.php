@@ -100,15 +100,17 @@
             <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             </div>
         </main>
-        @if (in_array('calendar', request()->segments())  || in_array('list', request()->segments()))
-            <div style='position: fixed; right: 20px; bottom: 20px; z-index: 999'>
-                <a href="#">
-                    <span class="fa-stack fa-3x" id="addEvent">
-                        <i class="fa fa-circle fa-stack-2x" style="color: green"></i>
-                        <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-                    </span>
-                </a>
-            </div>
+        @if (in_array('calendar', request()->segments()) || in_array('list', request()->segments()))
+            <!--
+                <div style='position: fixed; right: 20px; bottom: 20px; z-index: 999'>
+                    <a href="#">
+                        <span class="fa-stack fa-3x" id="addEvent">
+                            <i class="fa fa-circle fa-stack-2x" style="color: green"></i>
+                            <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </div>
+            -->
         @endif
     </div>
     <br />
@@ -119,7 +121,7 @@
                 <br />
                 <p style="color: white">
                     <small>
-                        All rights reserved to TeachEm ©2020 in the UK. You can click to read our <a href="{{ route('privacyPolicy') }}">privacy policy</a> and our <a href="{{ route('terms') }}">terms and conditions</a>.<br />
+                        All rights reserved to TeachEm ©2020 in the UK. You can read our privacy policy <a href="{{ route('privacyPolicy') }}">here</a> and our terms and conditions <a href="{{ route('terms') }}">here</a>.<br />
                         Want to add your event to our app? Or talk to us about advertising? Contact us on teachem.online2020@gmail.com, or via our twitter &nbsp;<a href="https://twitter.com/teachem2020"><i class="fab fa-twitter fa-lg"></i></a><br />
                         Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
                     </small>
@@ -132,20 +134,10 @@
 </html>
 
 <script>
+
     document.addEventListener('DOMContentLoaded', function() {
 
         var user_id = @json(Auth::check() ? Auth::user()->id : 0);
-
-        window.onload = function(){
-            var el = $('html');
-            var height = $('#footer').height();
-            var bottomOfHtml = el.position().top + el.offset().top + el.outerHeight(true);
-            var bottomOfViewport = (window.scrollY + window.innerHeight - 120);
-            var bottom = bottomOfHtml > bottomOfViewport ? bottomOfHtml : bottomOfViewport;
-            document.getElementById("footer").style.top = bottom + "px";
-            document.getElementById("footer").style.display = "block";
-            $('#footer').css('bottom', '');
-        }
 
         $('#addEvent').on('click', function(){
             if (user_id) {
@@ -166,6 +158,19 @@
                 });
             }
         });
+
+        window.onload = function(){
+            setTimeout(function () {
+                var el = $('html');
+                var height = $('#footer').height();
+                var bottomOfHtml = el.position().top + el.offset().top + el.outerHeight(true);
+                var bottomOfViewport = (window.scrollY + window.innerHeight) - 120;
+                var bottom = bottomOfHtml > bottomOfViewport ? bottomOfHtml : bottomOfViewport;
+                document.getElementById("footer").style.top = bottom + "px";
+                document.getElementById("footer").style.display = "block";
+                $('#footer').css('bottom', '');
+            }, 2000);
+        }
 
     });
 </script>

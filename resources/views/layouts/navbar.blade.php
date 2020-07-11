@@ -14,7 +14,7 @@
     <div class="col-md-8">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link {{ last(request()->segments()) == 'calendar' || last(request()->segments()) == 'quickStart' ? 'active' : '' }}" href="{{ route('calendar') }}">Scheduled content</a>
+                <a class="nav-link {{ in_array('calendar', request()->segments()) ? 'active' : '' }}" href="{{ route('calendar') }}">Scheduled content</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ last(request()->segments()) == 'list' ? 'active' : '' }}" href="{{ route('list') }}">All content</a>
@@ -22,6 +22,9 @@
             @if (Auth::check() && Auth::user()->isAdmin())
                 <li class="nav-item">
                     <a class="nav-link {{ last(request()->segments()) == 'categories' ? 'active' : '' }}" href="{{ url('categories') }}">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ last(request()->segments()) == 'unapprovedList' ? 'active' : '' }}" href="{{ url('unapprovedList') }}">Unapproved content</a>
                 </li>
             @endif
         </ul>

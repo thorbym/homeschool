@@ -15,6 +15,8 @@ class AddUserIdToEventsTable extends Migration
     {
         Schema::table('events', function (Blueprint $table) {
             $table->integer('user_id')->default(2);
+        });
+        Schema::table('events', function (Blueprint $table) {
             $table->integer('user_id')->nullable()->change();
         });
     }

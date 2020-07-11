@@ -88,4 +88,13 @@ class HomeController extends Controller
         return view('list', compact('data'));
     }
 
+    public function showUnapprovedList()
+    {
+        $categories = Category::get();
+        $data = [
+            'categories' => $categories
+        ];
+        return view('unapprovedList', compact('data'));
+    }
+
 }
