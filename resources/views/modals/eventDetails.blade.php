@@ -1,5 +1,5 @@
 @php
-    $nextEvent = false
+    $nextEvent = $eventCalendar ? $eventCalendar : false;
 @endphp
 
 <div class="modal-dialog" role="document">
@@ -48,16 +48,10 @@
                     </a>
                 </div>
             </div>
-            @if ($event->start_time && $event->start_time != "00:00")
-                @php
-                    $nextEvent = Helper::getNextEvent($event->days_of_week, $event->start_time, $event->end_time)
-                @endphp
+            @if ($nextEvent)
                 <br />
                 <hr>
                 <h5><u>Live event</u></h5><br />
-                <p>
-                    {{ $event->start_time }} to {{ $event->end_time }} (UK time), {{ Helper::convertDaysOfWeek($event->days_of_week) }}
-                </p>
                 <p id="eventTiming"></p>
                 <p>
                     @if ($event->live_youtube_link)
@@ -119,6 +113,7 @@
     var user_id = @json(Auth::check() ? Auth::user()->id : 0);
     var event_id = @json($event->id);
     var nextEvent = @json($nextEvent);
+    var fromCalendar = @json($fromCalendar);
 
     $(document).ready(function(){
         $('#favourite').on('click', function(e){
@@ -164,11 +159,15 @@
             }
         });
         if (nextEvent) {
-            var diff = moment(nextEvent.startTime).diff(moment());
-            if (diff < 0) {
-                $("#eventTiming").html('<i><strong>** Event in progress! Finishes ' + moment(nextEvent.endTime).fromNow() + ' **</strong></i>');
+            if (fromCalendar) {
+                $("#eventTiming").html('<i>' + moment(nextEvent.start_utc).format('ddd DD MMM Y HH:mm') + ' (' + moment(nextEvent.start_utc).fromNow() + ')</i>');
             } else {
-                $("#eventTiming").html('<i>Next broadcasting ' + moment(nextEvent.startTime).fromNow() + '</i>');
+                var diff = moment(nextEvent.start_utc).diff(moment());
+                if (diff < 0) {
+                    $("#eventTiming").html('<i><strong>** Event in progress! Finishes ' + moment(nextEvent.end_utc).fromNow() + ' **</strong></i>');
+                } else {
+                    $("#eventTiming").html('<i>Next broadcasting ' + moment(nextEvent.start_utc).format('ddd DD MMM Y HH:mm') + ' (' + moment(nextEvent.start_utc).fromNow() + ')</i>');
+                }
             }
         }
 

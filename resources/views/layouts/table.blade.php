@@ -58,10 +58,10 @@
     var loadDatatableFunctions = function() {
 
         $('tbody tr th,td:not(.favouriteTd)').off('click').on('click', function(e){
-            var id = $(e.currentTarget).closest('tr').attr('id');
+            var eventId = $(e.currentTarget).closest('tr').attr('id');
             if (isAdmin) {
                 // admin can edit the events, so get event edit form
-                axios.get('/api/event/' + id + '/edit')
+                axios.get('/api/event/' + eventId + '/editFromList')
                     .then(function (response) {
                         $('#eventModal').html(response.data).modal();
                     })
@@ -70,7 +70,7 @@
                 });
             } else {
                 // otherwise it is normal user, so show the "details" modal
-                axios.get('/api/event/' + id + '/show')
+                axios.get('/api/event/' + eventId + '/showFromList')
                     .then(function (response) {
                         $('#eventModal').html(response.data).modal();
                     })
