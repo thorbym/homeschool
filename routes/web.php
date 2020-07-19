@@ -30,8 +30,10 @@ Route::patch('/event/{id}', 'EventController@update')->name('updateEvent');
 Route::delete('/event/{id}', 'EventController@destroy')->name('destroyEvent');
 // EVENTS API
 Route::get('/api/event/create', 'EventController@create');
-Route::get('/api/event/{id}/edit', 'EventController@edit');
-Route::get('/api/event/{id}/show', 'EventController@show');
+Route::get('/api/event/{eventCalendarId}/editFromCalendar', 'EventController@editEventFromCalendar');
+Route::get('/api/event/{id}/editFromList', 'EventController@editEventFromList');
+Route::get('/api/event/{eventCalendarId}/showFromCalendar', 'EventController@showEventFromCalendar');
+Route::get('/api/event/{id}/showFromList', 'EventController@showEventFromList');
 Route::get('/api/events/calendar/{filters}', 'EventController@getCalendarEvents');
 Route::get('/api/events/list/{filters}', 'EventController@getListEvents');
 

@@ -55,6 +55,19 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="timezone">Timezone</label>
+                        <select required class="form-control" name="timezone" id="timezone">
+                            @foreach ($timezones as $continent => $timezone)
+                                <optgroup label="{{ $continent }}">
+                                @foreach ($timezone as $tz => $info)
+                                    <option value="{{ $tz }}" {{ $event && $event->timezone == $tz ? 'selected' : '' }}>{{ $info }}</option>
+                                @endforeach
+                                </optgroup>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <label for="live_youtube_link">LIVE YouTube Link</label>
                         <input  type="text" class="form-control" name="live_youtube_link" id="live_youtube_link"  value="{{ $event ? $event->live_youtube_link : '' }}">
                     </div>
@@ -137,6 +150,7 @@
                         <label class="form-check-label" for="free_content">Free content</label>
                     </div>
                 </div>
+
             </div>
 
             <div class="modal-footer">
@@ -153,13 +167,15 @@
 </div>
 <script type="text/javascript">
 
+    var timezone = @json($event && $event->timezone ? 1 : 0);
+
     $(document).ready(function() {
 
         // timepicker for modal
         $('.timepicker').timepicker({
             timeFormat: 'HH:mm',
             minTime: '07:00',
-            maxTime: '18:00',
+            maxTime: '21:00',
             interval: 30,
             zindex: 9999999
         });
@@ -174,6 +190,9 @@
             }
         })
 
+        if (!timezone) {
+            $('#timezone').val(Intl.DateTimeFormat().resolvedOptions().timeZone);
+        }
 
     });
 

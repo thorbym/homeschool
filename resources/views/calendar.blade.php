@@ -100,7 +100,11 @@
             plugins: [ bootstrapPlugin, timeGridPlugin, isAdmin ? interaction : '' ],
             themeSystem: 'bootstrap',
             events: function(fetchInfo, successCallback, failureCallback) {
-                var filtersArr = {}
+                // add in the from and to dates, to get the correct events
+                var filtersArr = {
+                    from: fetchInfo.startStr,
+                    to: fetchInfo.endStr
+                }
                 $(".filter-buttons button").each(function(){
                     if (!$(this).hasClass('disabled')) {
                         var mainFilter = $(this).attr('id');
@@ -188,10 +192,10 @@
                 }
             },
             eventClick: function(info) {
-                var id = info.event.id;
+                var calendarId = info.event.extendedProps.event_calendar_id;
                 if (isAdmin) {
                     // admin can edit the events, so get event edit form
-                    axios.get('/api/event/' + id + '/edit')
+                    axios.get('/api/event/' + calendarId + '/editFromCalendar')
                         .then(function (response) {
                             $('#eventModal').html(response.data).modal();
                         })
@@ -200,7 +204,7 @@
                     });
                 } else {
                     // otherwise it is normal user, so show the "details" modal
-                    axios.get('/api/event/' + id + '/show')
+                    axios.get('/api/event/' + calendarId + '/showFromCalendar')
                         .then(function (response) {
                             $('#eventModal').html(response.data).modal();
                         })

@@ -21,7 +21,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- favicon -->
-    <link rel="icon" href="{{ URL::asset('teachem-favicon-32.png') }}" type="image/x-icon"/>
+    <link rel="icon" href="{{ URL::asset('favicon.ico') }}" type="image/x-icon"/>
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -38,7 +38,7 @@
 </head>
 
 <body>
-    <div id="app">
+    <div>
         <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark shadow-sm" style="min-height: 4.4rem">
                 <a class="navbar-brand" href="{{ url('home') }}">
                 <div class="d-none d-sm-block">
