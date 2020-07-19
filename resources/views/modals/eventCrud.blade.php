@@ -684,6 +684,10 @@
         } else {
             $('#timezone').val(timezone);
         }
+        
+        $('textarea').summernote({
+            height: 200,
+        });
 
     });
 

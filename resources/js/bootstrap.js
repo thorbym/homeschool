@@ -21,6 +21,7 @@ try {
     require('@fullcalendar/core/locales/en-gb');
     require('@fullcalendar/bootstrap');
     require('moment/moment.js');
+    require('summernote');
 } catch (e) {}
 
 /**
@@ -65,3 +66,7 @@ window.bootstrapPlugin = bootstrapPlugin;
 import moment from 'moment';
 
 window.moment = moment;
+
+import summernote from 'summernote';
+
+window.summernote = summernote;

@@ -165,7 +165,7 @@
 
                 if (!isTouchDevice()) {
                     $(info.el).tooltip({
-                        title: info.event.extendedProps.description.substring(0, 40) + '... ',
+                        title: info.event.extendedProps.description.replace(/<(.|\n)*?>/g, '').substring(0, 40) + '... ',
                         placement: "top",
                         trigger: "hover",
                         container: "body"

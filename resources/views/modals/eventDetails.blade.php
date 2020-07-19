@@ -13,7 +13,7 @@
         <div class="modal-body">
             <div style="position: relative;">
                 <h5><u>Description</u></h5>
-                <p>{{ $event->description }}</p>
+                <p>{!! $event->description !!}</p>
                 <p>
                     Information:
                     <ul>
