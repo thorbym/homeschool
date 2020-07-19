@@ -15,8 +15,8 @@ class CreateEventCalendarsTable extends Migration
     public function up()
     {
         // do a backup anyway
-        //DB::statement('CREATE TABLE events_backup LIKE events');
-        //DB::statement('INSERT INTO events_backup SELECT * FROM events');
+        DB::statement('CREATE TABLE events_backup LIKE events');
+        DB::statement('INSERT INTO events_backup SELECT * FROM events');
 
         Schema::table('events', function (Blueprint $table) {
             $table->string('timezone', 64)->nullable();
