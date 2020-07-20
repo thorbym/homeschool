@@ -113,6 +113,7 @@
     var user_id = @json(Auth::check() ? Auth::user()->id : 0);
     var event_id = @json($event->id);
     var nextEvent = @json($nextEvent);
+    var eventTimezone = @json($event->timezone);
     var fromCalendar = @json($fromCalendar);
 
     $(document).ready(function(){
@@ -159,14 +160,17 @@
             }
         });
         if (nextEvent) {
+            var userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            var eventStartDateTime = moment.tz(nextEvent.start, eventTimezone);
+            var convertedStartDateTime = eventStartDateTime.clone().tz(userTimezone);
             if (fromCalendar) {
-                $("#eventTiming").html('<i>' + moment(nextEvent.start_utc).format('ddd DD MMM Y HH:mm') + ' (' + moment(nextEvent.start_utc).fromNow() + ')</i>');
+                $("#eventTiming").html('<i>' + convertedStartDateTime.format('ddd DD MMM Y HH:mm') + ' (' + convertedStartDateTime.fromNow() + ')</i>');
             } else {
-                var diff = moment(nextEvent.start_utc).diff(moment());
+                var diff = convertedStartDateTime.diff(moment());
                 if (diff < 0) {
-                    $("#eventTiming").html('<i><strong>** Event in progress! Finishes ' + moment(nextEvent.end_utc).fromNow() + ' **</strong></i>');
+                    $("#eventTiming").html('<i><strong>** Event in progress! Finishes ' + moment.tz(nextEvent.end, eventTimezone).fromNow() + ' **</strong></i>');
                 } else {
-                    $("#eventTiming").html('<i>Next broadcasting ' + moment(nextEvent.start_utc).format('ddd DD MMM Y HH:mm') + ' (' + moment(nextEvent.start_utc).fromNow() + ')</i>');
+                    $("#eventTiming").html('<i>Next broadcasting ' + convertedStartDateTime.format('ddd DD MMM Y HH:mm') + ' (' + convertedStartDateTime.fromNow() + ')</i>');
                 }
             }
         }

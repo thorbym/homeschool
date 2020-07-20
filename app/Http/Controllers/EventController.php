@@ -104,8 +104,7 @@ class EventController extends Controller
     {
         // start from today
         $date = date('Y-m-d');
-        //use DateTime;
-        //use DateTimeZone;
+
         // loop around 600 "days"
         for ($i = 0; $i < 600; $i++) {
 
