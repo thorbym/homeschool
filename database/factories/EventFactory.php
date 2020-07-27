@@ -33,6 +33,12 @@ $factory->define(Event::class, function (Faker $faker) {
 		'["1","5"]',
 		'["4"]'
 	];
+	$timezone_array = [
+		'Europe/London',
+		'Europe/Berlin',
+		'America/Los_Angeles',
+		'America/New_York'
+	];
 	$live = rand(0, 1);
 	$minimum_age = rand(4, 14);
 	$maximum_age = rand($minimum_age, 16);
@@ -56,5 +62,6 @@ $factory->define(Event::class, function (Faker $faker) {
 		'facebook_link' => $faker->url,
 		'instagram_link' => $faker->url,
 		'free_content' => rand(0, 1),
+		'timezone' => $live ? $timezone_array[rand(0, 3)] : null,
     ];
 });

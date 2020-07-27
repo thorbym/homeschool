@@ -56,6 +56,8 @@ class CreateEventCalendarsTable extends Migration
             for ($i = 0; $i < 600; $i++) {
                 // get the "day of week" number of this particular date
                 $dayNumber = date('N', strtotime($date));
+                // php has sunday as 7, but TeachEm calendar recognises Sunday as 0
+                $dayNumber = $dayNumber == 7 ? 0 : $dayNumber;
                 // if this event has an occurence on this day number, then insert a row
                 if (in_array($dayNumber, $daysOfWeek)) {
 

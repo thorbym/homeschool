@@ -19,7 +19,7 @@ use Faker\Generator as Faker;
 $factory->define(Category::class, function (Faker $faker) {
 	$font_colours = ['black', 'white'];
     return [
-        'category' => $faker->word,
+        'category' => $faker->unique()->word,
         'colour' => $faker->hexcolor,
         'font_colour' => $font_colours[rand(0, 1)]
     ];

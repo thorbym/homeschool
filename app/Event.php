@@ -39,4 +39,10 @@ class Event extends Model
     {
         return $this->belongsTo('App\Favourite', 'id', 'event_id')->where('user_id', Auth::check() ? Auth::user()->id : 0);
     }
+
+    public function eventCalendars()
+    {
+        return $this->hasMany('App\EventCalendar')->whereNotNull('start_time');
+    }
+
 }
