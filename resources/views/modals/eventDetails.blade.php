@@ -53,25 +53,43 @@
                 <hr>
                 <h5><u>Live event</u></h5><br />
                 <p id="eventTiming"></p>
+                <!--
+                    <p>
+                        @php
+                            $link = Link::create(
+                                $event->title,
+                                DateTime::createFromFormat('Y-m-d H:i:s', $eventCalendar->start),
+                                DateTime::createFromFormat('Y-m-d H:i:s', $eventCalendar->end)
+                            )->description($event->description);
+                        @endphp
+                        <select onchange="saveCalendarEvent(this)" style="border: 0px; outline: 0px">
+                            <option value="">* Save to your calendar *</option>
+                            <option value="{{ $link->google() }}">Google</option>
+                            <option value="{{ $link->ics() }}">Outlook Desktop (ics)</option>
+                            <option value="{{ $link->yahoo() }}">Yahoo</option>
+                            <option value="{{ $link->webOutlook() }}">Outlook Web App</option>
+                        </select>
+                    </p>
+                -->
                 <p>
                     @if ($event->live_youtube_link)
                         <a href="{{ $event->live_youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
-                            <span class="align-middle">YouTube <i class="fab fa-youtube fa-2x align-middle"></i></span>
+                            <span class="align-middle"><i class="fab fa-youtube fa-2x align-middle"></i>&nbsp; YouTube</span>
                         </a>&nbsp
                     @endif
                     @if ($event->live_facebook_link)
                         <a href="{{ $event->live_facebook_link }}" target="_blank" class="btn btn-sm" style="background-color: #3b5998; color: white">
-                            <span class="align-middle">Facebook <i class="fab fa-facebook fa-2x align-middle"></i></span>
+                            <span class="align-middle"><i class="fab fa-facebook fa-2x align-middle"></i>&nbsp; Facebook</span>
                         </a>&nbsp
                     @endif
                     @if ($event->live_instagram_link)
                         <a href="{{ $event->live_instagram_link }}" target="_blank" class="btn btn-sm" style="background-color: #517fa4; color: white">
-                            <span class="align-middle">Instagram <i class="fab fa-instagram fa-2x align-middle"></i></span>
+                            <span class="align-middle"><i class="fab fa-instagram fa-2x align-middle"></i>&nbsp; Instagram</span>
                         </a>&nbsp
                     @endif
                     @if ($event->live_web_link)
                         <a href="{{ $event->live_web_link }}" target="_blank" class="btn btn-sm" style="background-color: blue; color: white;">
-                            <span class="align-middle">Web <i class="fas fa-globe fa-2x align-middle"></i></span>
+                            <span class="align-middle"><i class="fas fa-globe fa-2x align-middle"></i>&nbsp; Web</span>
                         </a>&nbsp
                     @endif
                 </p>
@@ -82,22 +100,22 @@
             <p>
                 @if ($event->youtube_link)
                     <a href="{{ $event->youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
-                        <span class="align-middle">YouTube <i class="fab fa-youtube fa-2x align-middle"></i></span>
+                        <span class="align-middle"><i class="fab fa-youtube fa-2x align-middle"></i>&nbsp; YouTube</span>
                     </a>&nbsp
                 @endif
                 @if ($event->facebook_link)
                     <a href="{{ $event->facebook_link }}" target="_blank" class="btn btn-sm" style="background-color: #3b5998; color: white">
-                        <span class="align-middle">Facebook <i class="fab fa-facebook fa-2x align-middle"></i></span>
+                        <span class="align-middle"><i class="fab fa-facebook fa-2x align-middle"></i>&nbsp; Facebook</span>
                     </a>&nbsp
                 @endif
                 @if ($event->instagram_link)
                     <a href="{{ $event->instagram_link }}" target="_blank" class="btn btn-sm" style="background-color: #517fa4; color: white">
-                        <span class="align-middle">Instagram <i class="fab fa-instagram fa-2x align-middle"></i></span>
+                        <span class="align-middle"><i class="fab fa-instagram fa-2x align-middle"></i>&nbsp; Instagram</span>
                     </a>&nbsp
                 @endif
                 @if ($event->web_link)
                     <a href="{{ $event->web_link }}" target="_blank" class="btn btn-sm" style="background-color: blue; color: white;">
-                        <span class="align-middle">Web <i class="fas fa-globe fa-2x align-middle"></i></span>
+                        <span class="align-middle"><i class="fas fa-globe fa-2x align-middle"></i>&nbsp; Web</span>
                     </a>&nbsp
                 @endif
             </p>
@@ -176,4 +194,10 @@
         }
 
     })
+    function saveCalendarEvent(e) {
+        if (e.value) {
+            window.open(e.value);
+        }
+        e.value = "";
+    }
 </script>
