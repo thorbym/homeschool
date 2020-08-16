@@ -6,6 +6,7 @@ use Auth;
 use \DB;
 use App\Category;
 use App\Event;
+use App\EventCalendar;
 use App\Favourite;
 use Illuminate\Http\Request;
 
@@ -62,6 +63,7 @@ class EventController extends Controller
             'web_link' => 'present|url|nullable',
             'minimum_age' => 'required|integer|between:0,16',
             'maximum_age' => 'required|integer|between:0,16',
+            'timezone' => 'present|string|nullable',
             'user_id' => 'required|integer'
         ]);
 
@@ -84,13 +86,87 @@ class EventController extends Controller
             'web_link' => $request->get('web_link') ? $request->get('web_link') : null,
             'minimum_age' => $request->get('minimum_age'),
             'maximum_age' => $request->get('maximum_age'),
+            'timezone' => $request->get('timezone') ? $request->get('timezone') : null,
             'free_content' => $request->get('free_content') ? 1 : 0,
             'approved' => $request->get('approved') && Auth::check() && Auth::user()->isAdmin() ? 1 : 0,
             'user_id' => $request->get('user_id') ? $request->get('user_id') : null,
         ]);
         $event->save();
 
+        // if the event has a start time, then we need to add an event_calendar for it too
+        if ($request->get('start_time')) {
+            self::createEventCalendar($event->id, $request->get('days_of_week'), $request->get('start_time'), $request->get('end_time'), $request->get('timezone'));
+        }
+
         return redirect()->back();
+    }
+
+    public static function createEventCalendar($eventId, $daysOfWeek, $startTime, $endTime, $timezone)
+    {
+        // start from today
+        $date = date('Y-m-d');
+
+        // loop around 600 "days"
+        for ($i = 0; $i < 600; $i++) {
+
+            // get the "day of week" number of this particular date
+            $dayNumber = date('N', strtotime($date));
+
+            // if this event has an occurence on this day number, then insert a row
+            if (in_array($dayNumber, $daysOfWeek)) {
+
+                // calc utc offset by making a UTC DateTime using the datetime in question, and comparing it with the timezone that's passed in (in this case, will always be London)
+                $timezoneCheck = new \DateTime($date . ' ' . $startTime, new \DateTimeZone($timezone));
+                $offset = $timezoneCheck->getOffset();
+
+                // $utc_offset needs to be Z for zero, or convert the seconds (eg. 01:00)
+                if ($offset === 0) {
+                    $utcOffset = "Z";
+                } else if ($offset > 0) {
+                    $utcOffset = "+" . gmdate("H:i", $offset);
+                } else {
+                    $offset = -$offset;
+                    $utcOffset = "-" . gmdate("H:i", $offset);
+                }
+
+                $saveArr = [
+                    'event_id' => $eventId,
+                    'start' => $date . ' ' . $startTime,
+                    'start_utc' => gmdate('Y-m-d H:i', strtotime($date . 'T' . $startTime . $utcOffset)),
+                    'end' => $date . ' ' . $endTime,
+                    'end_utc' => gmdate('Y-m-d H:i', strtotime($date . 'T' . $endTime . $utcOffset)),
+                    'utc_offset' => $utcOffset
+                ];
+
+                EventCalendar::insert($saveArr);
+            }
+
+            // increment the date by a day, and run the whole thing again
+            $date = date('Y-m-d', strtotime($date . ' +1 day'));
+
+            // stop after two years
+            if ($date >= "2022-12-31") {
+                break;
+            }
+        }
+    }
+
+    /**
+     * This comes from the calendar, so we know it has a specific calendar entry
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showEventFromCalendar($eventCalendarId)
+    {
+        $categories = Category::get();
+
+        $eventCalendar = EventCalendar::where('id', $eventCalendarId)->first();
+        $event = $eventCalendar->event;
+        $fromCalendar = true;
+        $view = view('modals.eventDetails', compact('categories', 'event', 'eventCalendar', 'fromCalendar'))->render();
+
+        return response()->json($view);
     }
 
     /**
@@ -99,7 +175,7 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function showEventFromList($id)
     {
         $categories = Category::get();
 
@@ -112,8 +188,19 @@ class EventController extends Controller
         }
 
         $event = $query->first();
+        
+        $eventCalendar = false;
+        
+        if ($event && $event->start_time) {
+            $eventCalendar = EventCalendar::where('event_id', $id)
+                ->where('end_utc', '>', gmdate('Y-m-d H:i'))
+                ->orderBy('end_utc', 'ASC')
+                ->first();
+        }
 
-        $view = view('modals.eventDetails', compact('categories', 'event'))->render();
+        $fromCalendar = false;
+        
+        $view = view('modals.eventDetails', compact('categories', 'event', 'eventCalendar', 'fromCalendar'))->render();
 
         return response()->json($view);
     }
@@ -128,7 +215,8 @@ class EventController extends Controller
     {
         $filters = json_decode($filters, true);
 
-        $query = DB::table('events')
+        $query = DB::table('event_calendars')
+            ->join('events', 'events.id', '=', 'event_calendars.event_id')
             ->join('categories', 'categories.id', '=', 'events.category_id');
 
         if (isset($filters['subjectFilter'])) {
@@ -186,13 +274,14 @@ class EventController extends Controller
                 $join->where('favourites.user_id', '=', Auth::user()->id);
             });
         }
+
         $query->select(
             'events.id',
+            'event_calendars.id AS event_calendar_id',
             DB::raw('(case when events.free_content = 0 then CONCAT(events.title, " [PAID]") else events.title end) as title'),
             'events.description',
-            'events.start_time AS startTime',
-            'events.end_time AS endTime',
-            'events.days_of_week AS daysOfWeek',
+            DB::raw('CONCAT(REPLACE(event_calendars.start," ","T"), utc_offset) as start'),
+            DB::raw('CONCAT(REPLACE(event_calendars.end," ","T"), utc_offset) as end'),
             'events.minimum_age',
             'events.maximum_age',
             'events.dfe_approved',
@@ -202,8 +291,10 @@ class EventController extends Controller
             'categories.colour',
             'categories.font_colour'
         );
-        $query->whereNotNull('events.start_time');
-        $query->where('events.approved', '=', 1);
+
+        $query->where('event_calendars.start_utc', '>', gmdate('Y-m-d H:i', strtotime($filters['from'])))
+            ->where('event_calendars.end_utc', '<', gmdate('Y-m-d H:i', strtotime($filters['to'])))
+            ->where('events.approved', '=', 1);
 
         $events = $query->get();
 
@@ -287,9 +378,6 @@ class EventController extends Controller
             'events.id',
             DB::raw('(case when events.free_content = 0 then CONCAT(events.title, " [PAID]") else events.title end) as title'),
             'events.description',
-            'events.start_time AS startTime',
-            'events.end_time AS endTime',
-            'events.days_of_week AS daysOfWeek',
             'events.minimum_age',
             'events.maximum_age',
             'events.dfe_approved',
@@ -357,7 +445,33 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function editEventFromCalendar($eventCalendarId)
+    {
+        $categories = Category::get();
+
+        $eventCalendar = EventCalendar::where('id', $eventCalendarId)->first();
+
+        $event = $eventCalendar->event;
+
+        if (Auth::check() && Auth::user()->isAdmin()) {
+            $view = view('modals.eventCrud', compact('categories', 'event'))->render();
+
+        } else {
+            // just belt and braces to make sure that non auth user cannot edit
+            $view = view('modals.eventDetails', compact('categories', 'event'))->render();
+
+        }
+
+        return response()->json($view);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function editEventFromList($id)
     {
         $categories = Category::get();
 
@@ -366,8 +480,8 @@ class EventController extends Controller
         if (Auth::check() && Auth::user()->isAdmin()) {
             $event = $query->first();
             $view = view('modals.eventCrud', compact('categories', 'event'))->render();
-
         } else {
+            // make sure event is approved
             $query->where('approved', '=', 1);
             $event = $query->first();
             // just belt and braces to make sure that non auth user cannot edit
@@ -403,6 +517,7 @@ class EventController extends Controller
             'web_link' => 'present|url|nullable',
             'minimum_age' => 'required|integer|between:0,16',
             'maximum_age' => 'required|integer|between:0,16',
+            'timezone' => 'present|string|nullable',
         ]);
 
         $event = Event::find($id);
@@ -426,9 +541,19 @@ class EventController extends Controller
         $event->minimum_age = $request->get('minimum_age');
         $event->maximum_age = $request->get('maximum_age');
         $event->free_content = $request->get('free_content') ? 1 : 0;
+        $event->timezone = $request->get('timezone') ? $request->get('timezone') : null;
         $event->approved = $request->get('approved') && Auth::check() && Auth::user()->isAdmin() ? 1 : 0;
 
         $event->save();
+
+        // clear out any existing event_calendars
+        EventCalendar::where('event_id', $id)->delete();
+
+        // if the event has a start time, re-update event_calendars
+        if ($request->get('start_time')) {
+            // update it with new times
+            self::createEventCalendar($id, $request->get('days_of_week'), $request->get('start_time'), $request->get('end_time'), $request->get('timezone'));
+        }
 
         return redirect()->back();
     }
@@ -440,11 +565,15 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
+    {      
         if (Auth::check() && Auth::user()->isAdmin()) {
-            $event = Event::destroy($id);
+            // destroy the event
+            Event::destroy($id);
+            // also destroy any calendar events too
+            EventCalendar::where('event_id', $id)->delete();
         }
 
         return redirect()->back();
     }
+
 }

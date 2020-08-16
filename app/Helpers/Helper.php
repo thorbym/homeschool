@@ -7,13 +7,13 @@ class Helper
     public static function convertDaysOfWeek(string $daysOfWeekString)
     {
         // first test string to see if it's every day, weekdays or weekend
-        if ($daysOfWeekString == '["1", "2", "3", "4", "5", "6", "0"]') {
+        if ($daysOfWeekString == '["1","2","3","4","5","6","0"]') {
             return 'Every day';
         }
-        if ($daysOfWeekString == '["1", "2", "3", "4", "5"]') {
+        if ($daysOfWeekString == '["1","2","3","4","5"]') {
             return 'Weekdays only';
         }
-        if ($daysOfWeekString == '["6", "0"]') {
+        if ($daysOfWeekString == '["6","0"]') {
             return 'Weekends only';
         }
         // string didn't match above cases, so check days and return string

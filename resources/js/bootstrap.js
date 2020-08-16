@@ -21,6 +21,8 @@ try {
     require('@fullcalendar/core/locales/en-gb');
     require('@fullcalendar/bootstrap');
     require('moment/moment.js');
+    require('moment-timezone/moment-timezone.js');
+    require('summernote');
 } catch (e) {}
 
 /**
@@ -62,6 +64,10 @@ window.timeGridPlugin = timeGridPlugin;
 window.interaction = interaction;
 window.bootstrapPlugin = bootstrapPlugin;
 
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 window.moment = moment;
+
+import summernote from 'summernote';
+
+window.summernote = summernote;
