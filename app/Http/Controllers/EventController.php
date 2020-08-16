@@ -64,6 +64,7 @@ class EventController extends Controller
             'minimum_age' => 'required|integer|between:0,16',
             'maximum_age' => 'required|integer|between:0,16',
             'timezone' => 'present|string|nullable',
+            'user_id' => 'required|integer'
         ]);
 
         $event = new Event([
@@ -85,8 +86,10 @@ class EventController extends Controller
             'web_link' => $request->get('web_link') ? $request->get('web_link') : null,
             'minimum_age' => $request->get('minimum_age'),
             'maximum_age' => $request->get('maximum_age'),
-            'free_content' => $request->get('free_content') ?   1 : 0,
             'timezone' => $request->get('timezone') ? $request->get('timezone') : null,
+            'free_content' => $request->get('free_content') ? 1 : 0,
+            'approved' => $request->get('approved') && Auth::check() && Auth::user()->isAdmin() ? 1 : 0,
+            'user_id' => $request->get('user_id') ? $request->get('user_id') : null,
         ]);
         $event->save();
 
@@ -176,15 +179,27 @@ class EventController extends Controller
     {
         $categories = Category::get();
 
-        $event = Event::where('id', $id)->first();
+        $query = Event::where('id', $id);
+
+        if (Auth::check() && Auth::user()->isAdmin()) {
+            //
+        } else {
+            $query->where('approved', '=', 1);
+        }
+
+        $event = $query->first();
+        
         $eventCalendar = false;
-        if ($event->start_time) {
+        
+        if ($event && $event->start_time) {
             $eventCalendar = EventCalendar::where('event_id', $id)
                 ->where('end_utc', '>', gmdate('Y-m-d H:i'))
                 ->orderBy('end_utc', 'ASC')
                 ->first();
         }
+
         $fromCalendar = false;
+        
         $view = view('modals.eventDetails', compact('categories', 'event', 'eventCalendar', 'fromCalendar'))->render();
 
         return response()->json($view);
@@ -278,8 +293,9 @@ class EventController extends Controller
         );
 
         $query->where('event_calendars.start_utc', '>', gmdate('Y-m-d H:i', strtotime($filters['from'])))
-            ->where('event_calendars.end_utc', '<', gmdate('Y-m-d H:i', strtotime($filters['to'])));
-        
+            ->where('event_calendars.end_utc', '<', gmdate('Y-m-d H:i', strtotime($filters['to'])))
+            ->where('events.approved', '=', 1);
+
         $events = $query->get();
 
         return response()->json($events);
@@ -372,7 +388,50 @@ class EventController extends Controller
             'categories.font_colour',
             Auth::check() ? DB::raw('(case when favourites.id is null then 0 else favourites.id end) as favourite_id') : DB::raw('0 AS favourite_id')
         );
+        $query->where('events.approved', '=', 1);
+        $events = $query->get();
 
+        $view = view('layouts.table', compact('events'))->render();
+
+        return response()->json($view);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getUnapprovedListEvents()
+    {
+        $query = DB::table('events')
+            ->join('categories', 'categories.id', '=', 'events.category_id');
+
+        if (Auth::check()) {
+            $query->leftJoin('favourites', function($join) {
+                $join->on('favourites.event_id', '=', 'events.id');
+                $join->where('favourites.user_id', '=', Auth::user()->id);
+            });
+        }
+
+        $query->select(
+            'events.id',
+            DB::raw('(case when events.free_content = 0 then CONCAT(events.title, " [PAID]") else events.title end) as title'),
+            'events.description',
+            'events.start_time AS startTime',
+            'events.end_time AS endTime',
+            'events.days_of_week AS daysOfWeek',
+            'events.minimum_age',
+            'events.maximum_age',
+            'events.dfe_approved',
+            'events.requires_supervision',
+            'events.free_content',
+            'categories.category',
+            'categories.colour',
+            'categories.font_colour',
+            Auth::check() ? DB::raw('(case when favourites.id is null then 0 else favourites.id end) as favourite_id') : DB::raw('0 AS favourite_id')
+        );
+        $query->where('events.approved', '=', 0);
         $events = $query->get();
 
         $view = view('layouts.table', compact('events'))->render();
@@ -416,15 +475,17 @@ class EventController extends Controller
     {
         $categories = Category::get();
 
-        $event = Event::where('id', $id)->first();
-        
-        if (Auth::check() && Auth::user()->isAdmin()) {
-            $view = view('modals.eventCrud', compact('categories', 'event'))->render();
+        $query = Event::where('id', $id);
 
+        if (Auth::check() && Auth::user()->isAdmin()) {
+            $event = $query->first();
+            $view = view('modals.eventCrud', compact('categories', 'event'))->render();
         } else {
+            // make sure event is approved
+            $query->where('approved', '=', 1);
+            $event = $query->first();
             // just belt and braces to make sure that non auth user cannot edit
             $view = view('modals.eventDetails', compact('categories', 'event'))->render();
-
         }
 
         return response()->json($view);
@@ -481,6 +542,7 @@ class EventController extends Controller
         $event->maximum_age = $request->get('maximum_age');
         $event->free_content = $request->get('free_content') ? 1 : 0;
         $event->timezone = $request->get('timezone') ? $request->get('timezone') : null;
+        $event->approved = $request->get('approved') && Auth::check() && Auth::user()->isAdmin() ? 1 : 0;
 
         $event->save();
 
@@ -503,11 +565,13 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        // destroy the event
-        Event::destroy($id);
-        // also destroy any calendar events too
-        EventCalendar::where('event_id', $id)->delete();
+    {      
+        if (Auth::check() && Auth::user()->isAdmin()) {
+            // destroy the event
+            Event::destroy($id);
+            // also destroy any calendar events too
+            EventCalendar::where('event_id', $id)->delete();
+        }
 
         return redirect()->back();
     }

@@ -72,6 +72,13 @@ class HomeController extends Controller
         return response()->json($view);
     }
 
+    public function showAddEventWarning()
+    {        
+        $view = view('modals.addEventWarning')->render();
+
+        return response()->json($view);
+    }
+
     public function showList()
     {
         $categories = Category::get();
@@ -79,6 +86,15 @@ class HomeController extends Controller
             'categories' => $categories
         ];
         return view('list', compact('data'));
+    }
+
+    public function showUnapprovedList()
+    {
+        $categories = Category::get();
+        $data = [
+            'categories' => $categories
+        ];
+        return view('unapprovedList', compact('data'));
     }
 
 }

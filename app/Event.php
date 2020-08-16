@@ -28,6 +28,8 @@ class Event extends Model
         'category_id',
         'free_content',
         'timezone',
+        'approved',
+        'user_id'
     ];
 
     public function category()

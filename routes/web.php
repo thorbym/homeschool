@@ -23,6 +23,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/calendar', 'HomeController@showCalendar')->name('calendar');
 Route::get('/calendar/quickStart', 'HomeController@showCalendarWithQuickStart')->name('calendarQuickStart');
 Route::get('/list', 'HomeController@showList')->name('list');
+Route::get('/unapprovedList', 'HomeController@showUnapprovedList')->name('unapprovedList');
 
 // EVENTS
 Route::post('/event', 'EventController@store')->name('storeEvent');
@@ -36,6 +37,7 @@ Route::get('/api/event/{eventCalendarId}/showFromCalendar', 'EventController@sho
 Route::get('/api/event/{id}/showFromList', 'EventController@showEventFromList');
 Route::get('/api/events/calendar/{filters}', 'EventController@getCalendarEvents');
 Route::get('/api/events/list/{filters}', 'EventController@getListEvents');
+Route::get('/api/events/unapprovedList', 'EventController@getUnapprovedListEvents');
 
 // CATEGORIES
 Route::get('/categories', 'HomeController@showCategories')->name('categories');
@@ -53,5 +55,6 @@ Route::delete('/api/favourite/{id}', 'FavouriteController@destroy');
 // QUICKSTART API
 Route::get('/api/quickStart/show', 'HomeController@showQuickStart');
 
-// LOGIN WARNING API
+// WARNINGS API
 Route::get('/api/loginWarning/show', 'HomeController@showLoginWarning');
+Route::get('/api/addEventWarning/show', 'HomeController@showAddEventWarning');
