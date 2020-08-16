@@ -53,24 +53,6 @@
                 <hr>
                 <h5><u>Live event</u></h5><br />
                 <p id="eventTiming"></p>
-                <!--
-                    <p>
-                        @php
-                            $link = Link::create(
-                                $event->title,
-                                DateTime::createFromFormat('Y-m-d H:i:s', $eventCalendar->start),
-                                DateTime::createFromFormat('Y-m-d H:i:s', $eventCalendar->end)
-                            )->description($event->description);
-                        @endphp
-                        <select onchange="saveCalendarEvent(this)" style="border: 0px; outline: 0px">
-                            <option value="">* Save to your calendar *</option>
-                            <option value="{{ $link->google() }}">Google</option>
-                            <option value="{{ $link->ics() }}">Outlook Desktop (ics)</option>
-                            <option value="{{ $link->yahoo() }}">Yahoo</option>
-                            <option value="{{ $link->webOutlook() }}">Outlook Web App</option>
-                        </select>
-                    </p>
-                -->
                 <p>
                     @if ($event->live_youtube_link)
                         <a href="{{ $event->live_youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
