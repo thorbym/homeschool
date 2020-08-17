@@ -105,12 +105,14 @@
 		</h5>
 		<br />
 		<p>
-			<em>"This is a really useful tool, thank you. I find it a bit of a minefield with so much content out there <br>- an interactive 'TV Guide' is just great!"</em>
+			<em>"This is a really useful tool, thank you. I find it a bit of a minefield with so much content out there <br>- an interactive 'What's-on Guide' is just great!"</em>
 		</p>
 		<br />
 		<hr>
 		<br />
-		<p>You can find us on twitter here: &nbsp; <a href="https://twitter.com/teachem2020"><i class="fab fa-twitter fa-lg"></i></a>
+		<p>
+			You can find us on twitter here: &nbsp; <a href="https://twitter.com/teachem2020"><i class="fab fa-twitter fa-lg"></i></a><br />
+			And on Facebook here: &nbsp; <a href="https://www.facebook.com/TeachEm2020/"><i class="fab fa-facebook fa-lg"></i></a>
 		</p>
 	</div>
 </div>

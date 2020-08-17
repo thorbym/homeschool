@@ -106,7 +106,7 @@
                 <p style="color: white">
                     <small>
                         All rights reserved to TeachEm ©2020 in the UK. You can click to read our <a href="{{ route('privacyPolicy') }}">privacy policy</a> and our <a href="{{ route('terms') }}">terms and conditions</a>.<br />
-                        Want to add your event to our app? Or talk to us about advertising? Contact us on teachem.online2020@gmail.com, or via our twitter &nbsp;<a href="https://twitter.com/teachem2020"><i class="fab fa-twitter fa-lg"></i></a><br />
+                        Want to add your event to our app? Or talk to us about advertising? Contact us on teachem.online2020@gmail.com, via our twitter &nbsp;<a href="https://twitter.com/teachem2020"><i class="fab fa-twitter fa-lg"></i></a>&nbsp; or via our facebook &nbsp;<a href="https://facebook.com/teachem2020"><i class="fab fa-facebook fa-lg"></i></a><br />
                         Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
                     </small>
                 </p>
