@@ -53,7 +53,7 @@
                 <hr>
                 <h5><u>Live event</u></h5><br />
                 <p id="eventTiming"></p>
-                <!--
+
                     <p>
                         @php
                             $link = Link::create(
@@ -70,7 +70,6 @@
                             <option value="{{ $link->webOutlook() }}">Outlook Web App</option>
                         </select>
                     </p>
-                -->
                 <p>
                     @if ($event->live_youtube_link)
                         <a href="{{ $event->live_youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">

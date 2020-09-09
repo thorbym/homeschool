@@ -24,6 +24,7 @@ Route::get('/calendar', 'HomeController@showCalendar')->name('calendar');
 Route::get('/calendar/quickStart', 'HomeController@showCalendarWithQuickStart')->name('calendarQuickStart');
 Route::get('/list', 'HomeController@showList')->name('list');
 Route::get('/unapprovedList', 'HomeController@showUnapprovedList')->name('unapprovedList');
+Route::get('/pricing', 'HomeController@pricing')->name('pricing');
 
 // EVENTS
 Route::post('/event', 'EventController@store')->name('storeEvent');
@@ -38,6 +39,8 @@ Route::get('/api/event/{id}/showFromList', 'EventController@showEventFromList');
 Route::get('/api/events/calendar/{filters}', 'EventController@getCalendarEvents');
 Route::get('/api/events/list/{filters}', 'EventController@getListEvents');
 Route::get('/api/events/unapprovedList', 'EventController@getUnapprovedListEvents');
+Route::get('/api/payments/loginOrRegister/{package}', 'HomeController@loginOrRegister');
+Route::post('/api/payments/paymentMethod', 'HomeController@fastStore');
 
 // CATEGORIES
 Route::get('/categories', 'HomeController@showCategories')->name('categories');
@@ -58,3 +61,7 @@ Route::get('/api/quickStart/show', 'HomeController@showQuickStart');
 // WARNINGS API
 Route::get('/api/loginWarning/show', 'HomeController@showLoginWarning');
 Route::get('/api/addEventWarning/show', 'HomeController@showAddEventWarning');
+
+// STRIPE
+Route::get('/billingPortal', 'HomeController@billingPortal')->name('billingPortal');
+Route::get('/checkout/{package}', 'HomeController@checkout')->name('checkout');

@@ -78,6 +78,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('billingPortal') }}">
+                                        {{ __('Billing') }}
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -101,16 +104,14 @@
             </div>
         </main>
         @if (in_array('calendar', request()->segments()) || in_array('list', request()->segments()))
-            <!--
-                <div style='position: fixed; right: 20px; bottom: 20px; z-index: 999'>
-                    <a href="#">
-                        <span class="fa-stack fa-3x" id="addEvent">
-                            <i class="fa fa-circle fa-stack-2x" style="color: green"></i>
-                            <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-                        </span>
-                    </a>
-                </div>
-            -->
+            <div style='position: fixed; right: 20px; bottom: 20px; z-index: 999'>
+                <a href="#">
+                    <span class="fa-stack fa-3x" id="addEvent">
+                        <i class="fa fa-circle fa-stack-2x" style="color: green"></i>
+                        <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+            </div>
         @endif
     </div>
     <br />
