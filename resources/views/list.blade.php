@@ -22,11 +22,15 @@
 </div>
 <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 </div>
+<div class="modal fade" id="quickStartModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+</div>
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 </div>
 @endsection
 
 <script>
+
+    var quickStart = @json(isset($data['quickStart']) ? 1 : 0);
 
     document.addEventListener('DOMContentLoaded', function() {
 
@@ -56,6 +60,19 @@
                 });
         }
         drawTable();
+
+        // reset the url so people don't end up pressing back and getting the quick start again
+        if (quickStart) {
+            window.history.replaceState(null, null, '/list');
+            axios.get('/api/quickStart/show')
+                .then(function (response) {
+                    $('#quickStartModal').html(response.data).modal();
+                })
+                .catch(function (error) {
+                    console.log(error);
+            });
+        }
+
     });
 
 </script>

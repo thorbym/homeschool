@@ -56,6 +56,16 @@ class HomeController extends Controller
         return view('calendar', compact('data'));
     }
 
+    public function showListWithQuickStart()
+    {
+        $categories = Category::get();
+        $data = [
+            'categories' => $categories,
+            'quickStart' => true
+        ];
+        return view('list', compact('data'));
+    }
+
     public function showQuickStart()
     {
         $categories = Category::get();

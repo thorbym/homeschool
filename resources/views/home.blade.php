@@ -13,7 +13,7 @@
 			<h4>TeachEm is your directory of online educational videos and events. Quickly find perfectly suited live and pre-recorded content, for all ages, across a range of subjects.</h4>
 		</p>
 		<p>
-			<a class="btn btn-primary btn-lg" href="{{ route('calendarQuickStart') }}" role="button">Quick start &raquo;</a>
+			<a class="btn btn-primary btn-lg" href="{{ route('listQuickStart') }}" role="button">Quick start &raquo;</a>
 		</p>
 		<p>
 			<a href="{{ route('calendar') }}"><small>Just show me all the events</small></a>
