@@ -21,7 +21,7 @@
                     <div class="d-inline-flex justify-content-between align-items-end" style="width: 90%; vertical-align: bottom;">
                         <button type="button" class="btn btn-secondary" onclick="$('.quickStartSubjectFilter').hide(); $('.quickStartAgeFilter').show()">Next</button>
                         <a href="#" data-dismiss="modal">
-                            <small>Skip straight to calendar</small>
+                            <small>Skip straight to list</small>
                         </a>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                     <div class="d-inline-flex justify-content-between align-items-end" style="vertical-align: bottom; width: 90%">
                         <button type="button" class="btn btn-secondary mr-auto" onclick="$('.quickStartAgeFilter').hide(); $('.quickStartConfirm').show()">Next</button>
                         <a href="#" data-dismiss="modal">
-                            <small>Skip straight to calendar</small>
+                            <small>Skip straight to list</small>
                         </a>
                     </div>
                 </div>

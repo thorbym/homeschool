@@ -22,6 +22,7 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/calendar', 'HomeController@showCalendar')->name('calendar');
 Route::get('/calendar/quickStart', 'HomeController@showCalendarWithQuickStart')->name('calendarQuickStart');
+Route::get('/list/quickStart', 'HomeController@showListWithQuickStart')->name('listQuickStart');
 Route::get('/list', 'HomeController@showList')->name('list');
 Route::get('/unapprovedList', 'HomeController@showUnapprovedList')->name('unapprovedList');
 Route::get('/pricing', 'HomeController@pricing')->name('pricing');
