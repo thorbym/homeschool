@@ -53,6 +53,15 @@
                 <hr>
                 <h5><u>Live event</u></h5><br />
                 <p id="eventTiming"></p>
+                <select id="saveCalendarEvent" onchange="saveCalendarEvent(this)" style="border:0px; outline:0px;">
+                    <option value="">Save to your calendar &nbsp;</option>
+                    <option value="{{ $linkToCalendar->google }}">Google</option>
+                    <option value="{{ $linkToCalendar->yahoo }}">Yahoo</option>
+                    <option value="{{ $linkToCalendar->webOutlook }}">Outlook (web)</option>
+                    <option value="{{ $linkToCalendar->ics }}">Outlook (ics file)</option>
+                </select>
+                <br />
+                <br />
                 <p>
                     @if ($event->live_youtube_link)
                         <a href="{{ $event->live_youtube_link }}" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
@@ -179,7 +188,7 @@
     function saveCalendarEvent(e) {
         if (e.value) {
             window.open(e.value);
+            e.value = "";
         }
-        e.value = "";
     }
 </script>

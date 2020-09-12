@@ -8,7 +8,9 @@ use App\Category;
 use App\Event;
 use App\EventCalendar;
 use App\Favourite;
+use DateTime;
 use Illuminate\Http\Request;
+use Spatie\CalendarLinks\Link;
 
 class EventController extends Controller
 {
@@ -178,14 +180,26 @@ class EventController extends Controller
 
         $event = Event::where('id', $id)->first();
         $eventCalendar = false;
+        $linkToCalendar = [];
         if ($event->start_time) {
             $eventCalendar = EventCalendar::where('event_id', $id)
                 ->where('end_utc', '>', gmdate('Y-m-d H:i'))
                 ->orderBy('end_utc', 'ASC')
                 ->first();
+
+            $from = DateTime::createFromFormat('Y-m-d H:i:s', $eventCalendar->start);
+            $to = DateTime::createFromFormat('Y-m-d H:i:s', $eventCalendar->end);
+
+            $linkToCalendar = (object) [
+                'google' => Link::create($event->title, $from, $to)->description($event->description)->google(),
+                'ics' => Link::create($event->title, $from, $to)->description($event->description)->ics(),
+                'yahoo' => Link::create($event->title, $from, $to)->description($event->description)->yahoo(),
+                'webOutlook' => Link::create($event->title, $from, $to)->description($event->description)->webOutlook()
+            ];
         }
+
         $fromCalendar = false;
-        $view = view('modals.eventDetails', compact('categories', 'event', 'eventCalendar', 'fromCalendar'))->render();
+        $view = view('modals.eventDetails', compact('categories', 'event', 'eventCalendar', 'fromCalendar', 'linkToCalendar'))->render();
 
         return response()->json($view);
     }
