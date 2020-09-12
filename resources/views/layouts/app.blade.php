@@ -78,6 +78,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('billingPortal') }}">
+                                        {{ __('Billing') }}
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -95,12 +98,26 @@
 
         <main class="py-4" style="margin-top: 3.8rem">
             @yield('content')
+            <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            </div>
+            <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            </div>
         </main>
+        @if (in_array('calendar', request()->segments()) || in_array('list', request()->segments()))
+            <div style='position: fixed; right: 20px; bottom: 20px; z-index: 999'>
+                <a href="#">
+                    <span class="fa-stack fa-3x" id="addEvent">
+                        <i class="fa fa-circle fa-stack-2x" style="color: green"></i>
+                        <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+            </div>
+        @endif
     </div>
     <br />
     <br />
-    <footer class="section footer-classic context-dark" id="footer" style="display: none; background: #2d3246;">
-        <div class="container">
+    <footer class="section footer-classic context-dark" id="footer" style="display: none; background: #2d3246; min-height: 120px;">
+        <div style="margin-bottom: 0; padding-bottom: 0; padding-left: 40px; padding-right: 40px">
             <div>
                 <br />
                 <p style="color: white">
@@ -116,9 +133,45 @@
     </footer>
 </body>
 </html>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById("footer").style.position = "relative";
-            document.getElementById("footer").style.display = "block";
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+        var user_id = @json(Auth::check() ? Auth::user()->id : 0);
+
+        $('#addEvent').on('click', function(){
+            if (user_id) {
+                axios.get('/api/event/create')
+                    .then(function (response) {
+                        $('#eventModal').html(response.data).modal();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                });
+            } else {
+                axios.get('/api/addEventWarning/show')
+                    .then(function (response) {
+                        $('#addEventModal').html(response.data).modal();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                });
+            }
         });
-    </script>
+
+        window.onload = function(){
+            setTimeout(function () {
+                var el = $('html');
+                var height = $('#footer').height();
+                var bottomOfHtml = el.position().top + el.offset().top + el.outerHeight(true);
+                var bottomOfViewport = (window.scrollY + window.innerHeight) - 120;
+                var bottom = bottomOfHtml > bottomOfViewport ? bottomOfHtml : bottomOfViewport;
+                document.getElementById("footer").style.top = bottom + "px";
+                document.getElementById("footer").style.display = "block";
+                $('#footer').css('bottom', '');
+            }, 2000);
+        }
+
+    });
+</script>
