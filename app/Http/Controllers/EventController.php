@@ -161,9 +161,19 @@ class EventController extends Controller
         $categories = Category::get();
 
         $eventCalendar = EventCalendar::where('id', $eventCalendarId)->first();
+        $from = DateTime::createFromFormat('Y-m-d H:i:s', $eventCalendar->start);
+        $to = DateTime::createFromFormat('Y-m-d H:i:s', $eventCalendar->end);
+
         $event = $eventCalendar->event;
+        $linkToCalendar = (object) [
+            'google' => Link::create($event->title, $from, $to)->description($event->description)->google(),
+            'ics' => Link::create($event->title, $from, $to)->description($event->description)->ics(),
+            'yahoo' => Link::create($event->title, $from, $to)->description($event->description)->yahoo(),
+            'webOutlook' => Link::create($event->title, $from, $to)->description($event->description)->webOutlook()
+        ];
+
         $fromCalendar = true;
-        $view = view('modals.eventDetails', compact('categories', 'event', 'eventCalendar', 'fromCalendar'))->render();
+        $view = view('modals.eventDetails', compact('categories', 'event', 'eventCalendar', 'fromCalendar', 'linkToCalendar'))->render();
 
         return response()->json($view);
     }
