@@ -7,10 +7,10 @@
 <div class="jumbotron" id="jumbotron" style="height: calc(100vh - 4.4rem); background-color: #A5E8FD; min-height: calc(100% - 4.4rem); min-height: calc(100vh - 4.4rem); display: flex; align-items: center; text-align: center">
 	<div class="container">
 		<p>
-			<h1 class="display-4" style="padding-top: 20px">Homeschool help for busy lives</h1>
+			<h1 class="display-4" style="padding-top: 20px">Learn from the experts</h1>
 		</p>
 		<p>
-			<h4>TeachEm is your directory of online educational videos and events. Quickly find perfectly suited live and pre-recorded content, for all ages, across a range of subjects.</h4>
+			<h4>TeachEm is a growing community of educators, sharing their expertise through high quality live streamed and pre-recorded educational video content.</h4>
 		</p>
 		<p>
 			<a class="btn btn-primary btn-lg" href="{{ route('listQuickStart') }}" role="button">Quick start &raquo;</a>
@@ -24,56 +24,23 @@
 	</div>
 </div>
 
-<div class="container" id="details">
-	<br />
-	<!-- Example row of columns -->
-	<div class="row">
-		<div class="col-md-4" style="text-align: center; font-size: 1.1em">
-			<img src="{{ asset('img/002-expert.png') }}" style="max-width:50%; max-height:50%"><br /><br />
-			<h2><strong>Expert help</strong></h2>
-			<p>Benefit from the expertise of passionate and experienced professionals</p>
-			<p>
-				<a class="btn btn-secondary" href="{{ route('calendar') }}" role="button">Find events &raquo;</a>
-			</p>
-		</div>
-		<div class="col-md-4" style="text-align: center; font-size: 1.1em">
-			<img src="{{ asset('img/003-radio.png') }}" style="max-width:50%; max-height:50%"><br /><br />
-			<h2><strong>Live sessions</strong></h2>
-			<p>
-				Know exactly when all your favourite sessions are happening, and tune in
-			</p>
-			<p>
-				<a class="btn btn-secondary" href="{{ route('calendar') }}" role="button">See schedule &raquo;</a>
-			</p>
-		</div>
-		<div class="col-md-4" style="text-align: center; font-size: 1.1em">
-			<img src="{{ asset('img/004-past.png') }}" style="max-width:49%; max-height:49%"><br /><br />
-			<h2><strong>Catch up</strong></h2>
-			<p>
-				Missed a session? Search through and catch up in your own time
-			</p>
-			<p>
-				<a class="btn btn-secondary" href="{{ route('list') }}" role="button">Start searching &raquo;</a>
-			</p>
-		</div>
-	</div>
+<div style="width: 100%; text-align: center; font-size: 1.1em" id="details">
 	<br />
 	<br />
-</div> <!-- /container -->
-
-<div style="background-color: #E8E8E8; width: 100%; text-align: center; font-size: 1.1em">
-	<br />
-	<br />
-	<div class="container" style="padding: 0px 70px 0px 70px">
+	<div class="container">
 		<h2><strong>TeachEm for homeschooling</strong></h2><br />
 		<p>
-			Balancing homeschooling whilst working from home is understandably difficult to manage, not to mention stressful. Meetings are scheduled and deadlines still need to be met, so engaging in focussed, educational activities with your children is not always possible. And sometimes you just need a break.
+			All over the world, more and more families are choosing to homeschool their children and will no doubt have already been overwhelmed by the sheer amount of online resources available.
 		</p>
 		<br />
 		<h5>
-		    <strong>That’s where TeachEm comes in.</strong>
+		    <strong>At TeachEm, we aim to keep things simple.</strong>
 		</h5>
 		<br />
+		<p>
+			TeachEm is your online directory of educational video content only, whether you're looking for a session to join with with LIVE or a new favourite YouTube channel to Subscribe to, you'll find it on TeachEm.
+		</p>
+		<br />   
 		<p>
 			<i class="fas fa-check-square fa-lg" style="color: #A5E8FD"></i> &nbsp; Choose day/week view to see what's on and when
 		</p>
@@ -87,44 +54,99 @@
 		<br />
 	</div>
 </div>
+
+<div style="background-color: #E8E8E8; width: 100%; text-align: center; font-size: 1.1em; padding-top: 30px">
+	<div class="container">
+		<br />
+		<!-- Example row of columns -->
+		<div class="row">
+			<div class="col-md-4" style="text-align: center">
+				<img src="{{ asset('img/002-expert.png') }}" style="max-width:50%; max-height:50%"><br /><br />
+				<h2><strong>Expert help</strong></h2>
+				<p>Benefit from the expertise of passionate and experienced professionals</p>
+				<p>
+					<a class="btn btn-secondary" href="{{ route('calendar') }}" role="button">Find events &raquo;</a>
+				</p>
+			</div>
+			<div class="col-md-4" style="text-align: center">
+				<img src="{{ asset('img/003-radio.png') }}" style="max-width:50%; max-height:50%"><br /><br />
+				<h2><strong>Live sessions</strong></h2>
+				<p>
+					Know exactly when all your favourite sessions are happening, and tune in
+				</p>
+				<p>
+					<a class="btn btn-secondary" href="{{ route('calendar') }}" role="button">See schedule &raquo;</a>
+				</p>
+			</div>
+			<div class="col-md-4" style="text-align: center">
+				<img src="{{ asset('img/004-past.png') }}" style="max-width:49%; max-height:49%"><br /><br />
+				<h2><strong>Catch up</strong></h2>
+				<p>
+					Missed a session? Search through and catch up in your own time
+				</p>
+				<p>
+					<a class="btn btn-secondary" href="{{ route('list') }}" role="button">Start searching &raquo;</a>
+				</p>
+			</div>
+		</div>
+		<br />
+		<br />
+	</div> <!-- /container -->
+</div>
+
 <div style="width: 100%; text-align: center; font-size: 1.1em">
 	<br />
 	<br />
 	<div class="container" style="padding: 0px 90px 0px 90px">
-		<h2><strong>TeachEm for school holidays</strong></h2>
+		<h2><strong>TeachEm for Educators</strong></h2>
 		<br />
 		<p>
-			Keeping the children entertained over the school holidays is a daunting task. Holiday clubs are taking fewer children, and the weather can make outdoor play more difficult.
+			From artists and musicians to scientists and mathematicians, teaching has moved beyond the classroom and people from around the world are now sharing their expertise in a bid to educate others.
 		</p>
 		<p>
-			There's a huge variety of educational content available online to support children’s learning and take some pressure off you, but not all working parents have time to find suitable sessions.
+			Whether you are a YouTuber looking for more subscribers, a teacher looking for more engagement with live-streamed lessons or simply somebody who wants to share their knowledge or expertise, we'd love to welcome you as a TeachEm Contributor.
 		</p>
 		<br />
-		<h5>
-		    <strong>That’s where TeachEm comes in.</strong>
-		</h5>
+		<p>
+			<a class="btn btn-primary btn-lg" href="mailto:teachem2020@gmail.com" role="button">Contact Us</a>
+		</p>
 		<br />
+		<p>
+			<i class="fas fa-check-square fa-lg" style="color: #A5E8FD"></i> &nbsp; Share your content with audiences from around the world
+		</p>
+		<p>
+			<i class="fas fa-check-square fa-lg" style="color: #A5E8FD"></i> &nbsp; Customise your own entries
+		</p>
+		<p>
+			<i class="fas fa-check-square fa-lg" style="color: #A5E8FD"></i> &nbsp; Benefit from user ratings and reviews
+		</p>
+		<br />
+	</div>
+</div>
+<div style="background-color: #E8E8E8; width: 100%; text-align: center; font-size: 1.1em; padding-top: 50px; padding-bottom: 30px">
 		<p>
 			<em>"This is a really useful tool, thank you. I find it a bit of a minefield with so much content out there <br>- an interactive 'What's-on Guide' is just great!"</em>
 		</p>
-		<br />
-		<hr>
+</div>
+<div style="width: 100%; text-align: center; font-size: 1.1em">
 		<br />
 		<p>
 			You can find us on twitter here: &nbsp; <a href="https://twitter.com/teachem2020"><i class="fab fa-twitter fa-lg"></i></a><br />
 			And on Facebook here: &nbsp; <a href="https://www.facebook.com/TeachEm2020/"><i class="fab fa-facebook fa-lg"></i></a>
 		</p>
-	</div>
 </div>
 
 
 <script type="text/javascript">
+
 	function scrollDiv() {
 		var details = document.getElementById('details');
 		var jumbotron = document.getElementById('jumbotron');
+		console.log('scrolling to ' + details.offsetTop - (jumbotron.offsetTop + 20));
 		window.scrollTo({
 			top: details.offsetTop - (jumbotron.offsetTop + 20),
 			behavior: "smooth"
 		});
 	}
+
 </script>
