@@ -110,4 +110,23 @@ class Helper
         }
         return false;
     }
+
+    public static function getRatingStars($rating, $size = 'fa-sm')
+    {
+        $stars = false;
+        foreach (range(1, 5) as $i) {
+            if ($rating > 0) {
+                if ($rating >= $i) {
+                    $stars .= '<i class="fas fa-star ' . $size . '" style="color: #ffbf00"></i>';
+                } else if ($rating >= $i - 0.8) {
+                    $stars .= '<i class="fas fa-star-half-alt ' . $size . '" style="color: #ffbf00"></i>';
+                } else {
+                    $stars .= '<i class="far fa-star ' . $size . '" style="color: #ffbf00"></i>';
+                }
+            } else {
+                $stars .= '<i class="far fa-star ' . $size . '" style="color: #ffbf00"></i>';
+            }
+        }
+        return $stars;
+    }
 }

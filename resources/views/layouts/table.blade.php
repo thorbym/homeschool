@@ -1,29 +1,37 @@
 <table id="nonLiveList" class="table table-hover" style="width: 100%; display: none">
-    <thead class="thead-dark">
-        <tr>
+    <thead class="thead-light">
+        <tr style="display: none">
+            <th scope="col">Image</th>
             <th scope="col">Title</th>
-            <th scope="col">Subject</th>
             <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
         @foreach ($events as $event)
-            <tr id="{{ $event->id }}">
-                <td scope="row">{{ $event->title }}</td>
-                <td style="font-size: 1.3rem"><span class="badge badge-pill" style="background-color: {{ $event->colour }}; color: {{ $event->font_colour }}">{{ $event->category }}</span></td>
-                @if ($event->favourite_id)
-                    <td class="favouriteTd">
-                        <a class="favourite" href="#">
+            <tr data-url="{{ url('/event/' . $event->id . '/showFromList') }}">
+                <td>
+                    @if ($event->image_file_id)
+                        <img width="100" style="border-radius: 10px" src="{{ url('storage/'.$event->image_file_id) }}" alt="no image">
+                    @else
+                        <img width="100" style="border-radius: 10px" src="{{ asset('img/no_image_placeholder.jpg') }}" alt="no image">
+                    @endif
+                </td>
+                <td scope="row">
+                    {{ $event->title }}<br />
+                    @if ($event->average_rating > 0)
+                        {!! Helper::getRatingStars($event->average_rating, 'fa-xs') !!}
+                    @endif
+                </td>
+                <td class="favouriteTd">
+                    <div class="row">
+                        @if ($event->favourite_id)
                             <i class="fas fa-heart" id="{{ $event->favourite_id }}" style="color: red"></i>
-                        </a>
-                    </td>
-                @else
-                    <td class="favouriteTd">
-                        <a class="favourite" href="#">
-                            <i class="far fa-heart" style="color: gray"></i>
-                        </a>
-                    </td>
-                @endif
+                        @endif
+                        @if (Auth::check() && Auth::user()->isAdmin())
+                            <a href="{{ url('/event/' . $event->id . '/edit') }}" class="btn btn-link">Edit</a>
+                        @endif
+                    </div>
+                </td>
             </tr>
         @endforeach
     </tbody>
@@ -37,11 +45,14 @@
 
         $('#nonLiveList').DataTable({
             "columnDefs": [
-                { "orderable": true, "targets": [0, 1] },
-                { "orderable": false, "targets": [2] }
+                { "orderable": true, "targets": [0] },
+                { "orderable": false, "targets": [1, 2] }
+            ],
+            "thead": [
+                {'display': 'none'}
             ],
             "language": {
-                searchPlaceholder: "Search title",
+                searchPlaceholder: "Search events",
                 sLengthMenu: "_MENU_",
                 search: ""
             },
@@ -57,67 +68,9 @@
     
     var loadDatatableFunctions = function() {
 
-        $('tbody tr th,td:not(.favouriteTd)').off('click').on('click', function(e){
-            var eventId = $(e.currentTarget).closest('tr').attr('id');
-            if (isAdmin) {
-                // admin can edit the events, so get event edit form
-                axios.get('/api/event/' + eventId + '/editFromList')
-                    .then(function (response) {
-                        $('#eventModal').html(response.data).modal();
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                });
-            } else {
-                // otherwise it is normal user, so show the "details" modal
-                axios.get('/api/event/' + eventId + '/showFromList')
-                    .then(function (response) {
-                        $('#eventModal').html(response.data).modal();
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                });
-            }
-        });
-
-        $('.favourite').off('click').on('click', function(e){
-            if (user_id) {
-                var heart = $(e.currentTarget).children();
-                if (heart.hasClass('fas')) {
-                    var id = heart.attr('id');
-                    axios.delete('/api/favourite/' + id)
-                        .then(function (response) {
-                            heart.toggleClass('fas far').css('color', 'gray');
-                            if (!$('#showFavourites').hasClass('disabled')) {
-                                $(e.currentTarget).closest('tr').remove();
-                            }
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                    });
-                } else {
-                    event_id = $(e.currentTarget).closest('tr').attr('id');
-                    axios.post('/api/favourite', {
-                            event_id: event_id,
-                            user_id: user_id
-                        })
-                        .then(function (response) {
-                            heart.toggleClass('fas far').css('color', 'red');
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                    });
-                }
-            } else {
-                axios.get('/api/loginWarning/show')
-                    .then(function (response) {
-                        $('#loginModal').html(response.data).modal();
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                });
-            }
-            return false;
+        $('tbody tr').on('click', function(e){
+            var url = $(e.currentTarget).closest('tr').data('url');
+            window.location = url;
         });
     }
 </script>

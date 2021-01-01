@@ -75,9 +75,16 @@ class HomeController extends Controller
         return response()->json($view);
     }
 
-    public function showLoginWarning()
+    public function showLoginWarning($message, $returnUrl)
     {        
-        $view = view('modals.loginWarning')->render();
+        if ($message == "fromRating") {
+            $viewMessage = "To rate or review events";
+        }
+        if ($message == "fromFavourite") {
+            $viewMessage = "To save this event to your favourites";
+        }
+        session()->put('url.intended', base64_decode($returnUrl));
+        $view = view('modals.loginWarning', compact('viewMessage'))->render();
 
         return response()->json($view);
     }

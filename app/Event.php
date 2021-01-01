@@ -4,9 +4,13 @@ namespace App;
 
 use Auth;
 use Illuminate\Database\Eloquent\Model;
+use Codebyray\ReviewRateable\Contracts\ReviewRateable;
+use Codebyray\ReviewRateable\Traits\ReviewRateable as ReviewRateableTrait;
 
-class Event extends Model
+class Event extends Model implements ReviewRateable
 {
+    use ReviewRateableTrait;
+
     protected $fillable = [
         'title',
         'description',
@@ -20,7 +24,6 @@ class Event extends Model
         'live_facebook_link',
         'live_instagram_link',
         'requires_supervision',
-        'dfe_approved',
         'web_link',
         'youtube_link',
         'facebook_link',
@@ -28,6 +31,9 @@ class Event extends Model
         'category_id',
         'free_content',
         'timezone',
+        'average_rating',
+        'image_file_id',
+        'image_link'
     ];
 
     public function category()

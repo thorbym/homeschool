@@ -18,9 +18,6 @@
                     Information:
                     <ul>
                         <li>Suitable for {{ $event->minimum_age }} to {{ $event->maximum_age }} years old</li>
-                        @if ($event->dfe_approved)
-                            <li><i class="fas fa-graduation-cap" style="color: green"></i> &nbsp DfE Approved</li>
-                        @endif
                         @if ($event->requires_supervision)
                             <li><i class="fas fa-binoculars fa-lg" style="color: orange"></i> &nbsp
                             Supervision required</li>

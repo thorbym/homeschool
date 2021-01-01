@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-use App\Favourite;
+use App\ClickThrough;
 use Illuminate\Http\Request;
 
-class FavouriteController extends Controller
+class ClickThroughController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,15 +35,19 @@ class FavouriteController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $favourite = new Favourite([
+
+        $clickthrough = new ClickThrough([
             'event_id' => $request->get('event_id'),
-            'user_id' => Auth::user()->id,
+            'user_id' => $request->get('user_id'),
+            'clicked_link' => base64_decode($request->get('clicked_link')),
+            'platform' => $request->get('platform'),
+            'clicked_time' => $request->get('clicked_time'),
+            'clicked_timezone' => $request->get('clicked_timezone')
         ]);
 
-        $favourite->save();
+        $clickthrough->save();
 
-        return response()->json($favourite);
+        return response()->json($clickthrough);
     }
 
     /**
@@ -87,12 +90,8 @@ class FavouriteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($event_id)
+    public function destroy($id)
     {
-        $favourite = Favourite::where('event_id', $event_id)
-            ->where('user_id', Auth::user()->id)
-            ->delete();
-
-        return response()->json($favourite);
+        //
     }
 }

@@ -29,14 +29,22 @@ Route::get('/list', 'HomeController@showList')->name('list');
 Route::post('/event', 'EventController@store')->name('storeEvent');
 Route::patch('/event/{id}', 'EventController@update')->name('updateEvent');
 Route::delete('/event/{id}', 'EventController@destroy')->name('destroyEvent');
+
+Route::get('/event/{id}/showFromList', 'EventController@showEventFromList');
+Route::get('/event/{id}/showFromCalendar', 'EventController@showEventFromCalendar');
+
 // EVENTS API
-Route::get('/api/event/create', 'EventController@create');
+Route::get('/event/create', 'EventController@create')->name('createEvent');
+Route::get('/event/{id}/edit', 'EventController@edit')->name('editEvent');
 Route::get('/api/event/{eventCalendarId}/editFromCalendar', 'EventController@editEventFromCalendar');
 Route::get('/api/event/{id}/editFromList', 'EventController@editEventFromList');
 Route::get('/api/event/{eventCalendarId}/showFromCalendar', 'EventController@showEventFromCalendar');
 Route::get('/api/event/{id}/showFromList', 'EventController@showEventFromList');
 Route::get('/api/events/calendar/{filters}', 'EventController@getCalendarEvents');
 Route::get('/api/events/list/{filters}', 'EventController@getListEvents');
+
+// REVIEWS
+Route::post('/review/{event_id}', 'EventController@storeReview')->name('storeReview');
 
 // CATEGORIES
 Route::get('/categories', 'HomeController@showCategories')->name('categories');
@@ -49,10 +57,13 @@ Route::get('/api/category/{id}/edit', 'CategoryController@edit');
 
 // FAVOURITES API
 Route::post('/api/favourite', 'FavouriteController@store');
-Route::delete('/api/favourite/{id}', 'FavouriteController@destroy');
+Route::delete('/api/favourite/{event_id}', 'FavouriteController@destroy');
 
 // QUICKSTART API
 Route::get('/api/quickStart/show', 'HomeController@showQuickStart');
 
 // LOGIN WARNING API
-Route::get('/api/loginWarning/show', 'HomeController@showLoginWarning');
+Route::get('/api/loginWarning/show/{message}/{returnUrl}', 'HomeController@showLoginWarning');
+
+// CLICKTHROUGHS API
+Route::post('/api/clickthrough', 'ClickThroughController@store');

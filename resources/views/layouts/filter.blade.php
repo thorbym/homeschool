@@ -7,6 +7,10 @@
         Age 
         <i class="fas fa-caret-down"></i>
     </button>&nbsp&nbsp
+    <button type="button" class="btn btn-outline-secondary disabled" id="ratingsFilter">
+        Ratings 
+        <i class="fas fa-caret-down"></i>
+    </button>&nbsp&nbsp
     <button type="button" class="btn btn-outline-secondary disabled" id="otherFilters">
         Other 
         <i class="fas fa-caret-down"></i>
@@ -36,11 +40,15 @@
         <a href="#" id="middleKids" class="btn disabled" style="margin: 3px; pointer-events: auto; background-color: orange">7 to 11</a>
         <a href="#" id="bigKids" class="btn btn-info disabled" style="margin: 3px; pointer-events: auto">12 and older</a>
     </div>
+    <div class="ratingsFilter" style="display: none; padding: 15px 0px 10px 0px">
+        @foreach (range(4, 1) as $stars)
+            <a href="#" id="{{ $stars }}" class="btn btn-warning disabled" style="margin: 3px; pointer-events: auto; background-color: white; border-color: white">
+                {!! Helper::getRatingStars($stars) !!} & up
+            </a>
+        @endforeach
+    </div>
     <div class="otherFilters" style="display: none; padding: 15px 0px 10px 0px">
-        <a href="#" id="dfe_approved" class="btn btn-secondary disabled" style="margin: 3px; pointer-events: auto">DfE approved</a>
-        @if (Auth::check() && Auth::user()->isAdmin())
-            <a href="#" id="free_content" class="btn btn-secondary disabled" style="margin: 3px; pointer-events: auto">Show only FREE content</a>
-        @endif
+        <a href="#" id="free_content" class="btn btn-secondary disabled" style="margin: 3px; pointer-events: auto">Show only FREE content</a>
     </div>
 </div>
 
@@ -64,7 +72,10 @@
 
                 if (className !== filterDiv) {
                     // hide the div not related to the clicked button
-                    $(this).hide(300);
+                    if ($(this).is(':visible')) {
+                        $('#' + className).children().toggleClass('fa-caret-up fa-caret-down');
+                        $(this).hide(300);
+                    }
                 } else {
                     // toggle the clicked one
                     $(this).toggle(300);
@@ -79,6 +90,7 @@
             // find the relevant button
             var button = $(e.currentTarget);
             var id = button.attr('id');
+            var filterIsOn = false;
             if (button.hasClass('disabled')) {
                 // if it's disabled, reenable and remove blur
                 button.removeClass('disabled').addClass('btn-lg').blur();
@@ -87,13 +99,19 @@
                 button.addClass('disabled').removeClass('btn-lg').css('pointer-events', 'auto').blur();
             }
 
-            var filterIsOn = false;
             var parentDivClassName = button.parent().attr('class');
 
             $('.' + parentDivClassName + ' a').each(function(f){
+
+                // disable the other buttons in the ratings
+                if (parentDivClassName == "ratingsFilter") {
+                    if ($(this).attr('id') !== id) {
+                        $(this).addClass('disabled').removeClass('btn-lg');
+                    }
+                }
+
                 if ($(this).hasClass('disabled') === false) {
                     filterIsOn = true;
-                    return false;
                 }
             });
 
@@ -102,6 +120,8 @@
             } else {
                 $('#' + parentDivClassName).attr('class', 'btn btn-outline-secondary disabled');
             }
+
+            // if it's on the calendar page, refetch calendar events, otherwise it's the list view
             if (typeof calendar !== 'undefined') {
                 calendar.refetchEvents();
             } else {

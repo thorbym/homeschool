@@ -193,25 +193,7 @@
             },
             eventClick: function(info) {
                 var calendarId = info.event.extendedProps.event_calendar_id;
-                if (isAdmin) {
-                    // admin can edit the events, so get event edit form
-                    axios.get('/api/event/' + calendarId + '/editFromCalendar')
-                        .then(function (response) {
-                            $('#eventModal').html(response.data).modal();
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                    });
-                } else {
-                    // otherwise it is normal user, so show the "details" modal
-                    axios.get('/api/event/' + calendarId + '/showFromCalendar')
-                        .then(function (response) {
-                            $('#eventModal').html(response.data).modal();
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                    });
-                }
+                window.location = '/event/' + calendarId + '/showFromCalendar';
             }
         });
 

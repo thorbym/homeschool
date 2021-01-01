@@ -47,7 +47,8 @@
                     <p>You can also:
                         <ul>
                             <li>Click on events for information and times</li>
-                            <li>Save your favourites by clicking the <i class="far fa-heart fa-lg"></i></li>
+                            <li>Save your favourites and find them again easily</li>
+                            <li>Leave reviews to help everyone find the best content</li>
                             <li>View a list of great content you can watch any time</li>
                         </ul>
                     </p>

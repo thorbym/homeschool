@@ -7,7 +7,6 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card">
                 <div class="card-header">
                     @include('layouts.filter')
                 </div>
@@ -16,11 +15,9 @@
                         <!-- table goes in here -->
                     </div>
                 </div>
-            </div>
+
         </div>
     </div>
-</div>
-<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 </div>
 <div class="modal fade" id="quickStartModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 </div>

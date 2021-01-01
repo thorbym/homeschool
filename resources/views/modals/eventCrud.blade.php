@@ -621,13 +621,6 @@
 
                 <div class="form-group">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="dfe_approved" id="dfe_approved" {{ $event && $event->dfe_approved ? 'checked' : '' }}>
-                        <label class="form-check-label" for="dfe_approved">DfE approved</label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="requires_supervision" id="requires_supervision" {{ $event && $event->requires_supervision ? 'checked' : '' }}>
                         <label class="form-check-label" for="requires_supervision">Supervision required</label>
                     </div>

@@ -51,7 +51,6 @@ $factory->define(Event::class, function (Faker $faker) {
 		'end_time' => $live ? $end_time : null,
 		'days_of_week' => $live ? $days_of_week_array[rand(0, 3)] : null,
 		'requires_supervision' => rand(0, 1),
-		'dfe_approved' => rand(0, 1),
 		'web_link' => $faker->url,
 		'minimum_age' => $minimum_age,
 		'maximum_age' => $maximum_age,
@@ -63,5 +62,7 @@ $factory->define(Event::class, function (Faker $faker) {
 		'instagram_link' => $faker->url,
 		'free_content' => rand(0, 1),
 		'timezone' => $live ? $timezone_array[rand(0, 3)] : null,
+		'rating' => rand(1, 5),
+		'image_file_id' => null,
     ];
 });
