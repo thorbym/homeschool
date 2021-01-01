@@ -200,18 +200,17 @@
             </p>
             <p>
                 @foreach (range(5, 1) as $star)
-                    @php $percent = $event->percentPerStar($star) @endphp
                     <div class="row" style="margin-bottom: 5px">
                         <div class="col-md-3">
                             <small>{{ $star }} star</small>
                         </div>
                         <div class="col-md-7">
                             <div class="progress" style="height: 20px">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ $percent }}%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 0%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <small>({{ round($percent) }}%)</small>
+                            <small>(0%)</small>
                         </div>
                     </div>
                 @endforeach
