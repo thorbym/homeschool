@@ -54,7 +54,7 @@
 <div class="container-fluid" style="padding: 20px 40px 20px 40px;">
     <div class="row">
         <div class="col-lg-4 order-1">
-            <div class="image_selected" style="padding-top: 40px">
+            <div class="image_selected">
                 @if ($event->image_file_id)
                     <img width="100%" style="border-radius: 10px" src="{{ url('storage/'.$event->image_file_id) }}" alt="no image">
                 @elseif ($event->video_link)
@@ -68,7 +68,9 @@
                         @php $firstPos = strpos($event->description, '//www.youtube.com/embed/') + 24 @endphp
                         @php $lastPos = strpos($event->description, '"', $firstPos) @endphp
                         @php $youtubeLink = substr($event->description, $firstPos, ($lastPos - $firstPos)) @endphp
-                        <img width="100%" style="border-radius: 10px" src="http://img.youtube.com/vi/{{ $youtubeLink }}/hqdefault.jpg" alt="no image">
+                            <div style="position: relative; display: block; width: 90%; height: 0; margin: auto; padding: 0% 0% 56.25%; overflow: hidden;">
+                                <iframe style="position: absolute; top: 0; bottom: 0; left: 0; width: 100%; height: 100%; border: 0;" src="https://www.youtube.com/embed/{{ $youtubeLink }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                            </div>
                     @elseif (strpos($event->description, 'img src=') !== false)
                         @php $firstPos = strpos($event->description, 'img src=') + 9 @endphp
                         @php $lastPos = strpos($event->description, '"', $firstPos) @endphp
@@ -80,7 +82,7 @@
                 @endif
             </div>
         </div>
-        <div class="col-lg-7 order-3" style="margin-left: 20px">
+        <div class="col-lg-7 order-3" style="margin-left: 20px; margin-top: 20px">
 
             <!-- event title -->
             <h3>{{ $event->title }}</h3>
