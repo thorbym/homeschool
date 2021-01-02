@@ -106,6 +106,8 @@ class EventController extends Controller
                 'free_content' => $request->get('free_content') ?   1 : 0,
                 'timezone' => $request->get('timezone') ? $request->get('timezone') : null,
                 'image_file_id' => $imageFileId ? $imageFileId : null,
+                'image_link' => $request->get('image_link') ? $request->get('image_link') : null,
+                'video_link' => $request->get('video_link') ? $request->get('video_link') : null
             ]);
             $event->save();
 
@@ -419,6 +421,8 @@ class EventController extends Controller
             'events.free_content',
             'events.average_rating',
             'events.image_file_id',
+            'events.image_link',
+            'events.video_link',
             'categories.category',
             'categories.colour',
             'categories.font_colour',
@@ -553,6 +557,8 @@ class EventController extends Controller
         $event->maximum_age = $request->get('maximum_age');
         $event->free_content = $request->get('free_content') ? 1 : 0;
         $event->timezone = $request->get('timezone') ? $request->get('timezone') : null;
+        $event->image_link = $request->get('image_link') ? $request->get('image_link') : null;
+        $event->video_link = $request->get('video_link') ? $request->get('video_link') : null;
 
         $event->save();
 

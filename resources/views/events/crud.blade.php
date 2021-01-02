@@ -45,6 +45,20 @@
                             </div>
                         @endif
 
+                        <div class="form-group row">
+                            <label for="image_link" class="col-sm-2 col-form-label">Image link<br /><small>(whole link)</small></label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="image_link" id="image_link" value="{{ old('image_link', $event->image_link ?? '' ) }}">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="video_link" class="col-sm-2 col-form-label">Video link<br /><small>(ONLY unique code)</small></label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="video_link" id="video_link" value="{{ old('video_link', $event->video_link ?? '' ) }}">
+                            </div>
+                        </div>
+
                         <br /><hr><br />
                         
                         <div class="form-group row">

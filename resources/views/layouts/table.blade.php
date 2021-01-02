@@ -8,29 +8,28 @@
     </thead>
     <tbody>
         @foreach ($events as $event)
-            @php $youtubeLink = false @endphp
-            @if (strpos($event->description, '//www.youtube.com/embed/') !== false)    
-                @php $firstPos = strpos($event->description, '//www.youtube.com/embed/') + 24 @endphp
-                @php $lastPos = strpos($event->description, '"', $firstPos) @endphp
-                @php $youtubeLink = substr($event->description, $firstPos, ($lastPos - $firstPos)) @endphp
-            @endif
-            @php $pictureLink = false @endphp
-            @if (strpos($event->description, 'img src=') !== false)    
-                @php $firstPos = strpos($event->description, 'img src=') + 9 @endphp
-                @php $lastPos = strpos($event->description, '"', $firstPos) @endphp
-                @php $pictureLink = substr($event->description, $firstPos, ($lastPos - $firstPos)) @endphp
-            @endif
-
             <tr data-url="{{ url('/event/' . $event->id . '/showFromList') }}">
                 <td>
-                    @if ($event->image_file_id)
+                    @if ($event->image_link)
+                        <img width="100" style="border-radius: 10px" src="{{ $event->image_link }}" alt="no image">
+                    @elseif ($event->video_link)
+                        <img width="100" style="border-radius: 10px" src="http://img.youtube.com/vi/{{ $event->video_link }}/hqdefault.jpg" alt="no image">
+                    @elseif ($event->image_file_id)
                         <img width="100" style="border-radius: 10px" src="{{ url('storage/'.$event->image_file_id) }}" alt="no image">
-                    @elseif ($youtubeLink)
-                        <img width="100" style="border-radius: 10px" src="http://img.youtube.com/vi/{{ $youtubeLink }}/hqdefault.jpg" alt="no image">
-                    @elseif ($pictureLink)
-                        <img width="100" style="border-radius: 10px" src="{{ $pictureLink }}" alt="no image">
                     @else
-                        <img width="100" style="border-radius: 10px" src="{{ asset('img/no_image_placeholder.jpg') }}" alt="no image">
+                        @if (strpos($event->description, '//www.youtube.com/embed/') !== false)    
+                            @php $firstPos = strpos($event->description, '//www.youtube.com/embed/') + 24 @endphp
+                            @php $lastPos = strpos($event->description, '"', $firstPos) @endphp
+                            @php $youtubeLink = substr($event->description, $firstPos, ($lastPos - $firstPos)) @endphp
+                            <img width="100" style="border-radius: 10px" src="http://img.youtube.com/vi/{{ $youtubeLink }}/hqdefault.jpg" alt="no image">
+                        @elseif (strpos($event->description, 'img src=') !== false)    
+                            @php $firstPos = strpos($event->description, 'img src=') + 9 @endphp
+                            @php $lastPos = strpos($event->description, '"', $firstPos) @endphp
+                            @php $pictureLink = substr($event->description, $firstPos, ($lastPos - $firstPos)) @endphp
+                            <img width="100" style="border-radius: 10px" src="{{ $pictureLink }}" alt="no image">
+                        @else
+                            <img width="100" style="border-radius: 10px" src="{{ asset('img/no_image_placeholder.jpg') }}" alt="no image">
+                        @endif                        
                     @endif
                 </td>
                 <td scope="row">
