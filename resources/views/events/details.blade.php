@@ -292,7 +292,7 @@
                         {!! Helper::getRatingStars($review->rating) !!} &nbsp&nbsp <span class="font-weight-bold">{{ $review->title }}</span>
                     </p>
                     <p>
-                        <small>Review by {{ $review->author->name }} on {{ date('F d Y', strtotime($review->created_at)) }}</small>
+                        <small>by {{ $review->author->name }} on {{ date('F d Y', strtotime($review->created_at)) }}</small>
                     </p>
                     <p>
                         {{ $review->body }}
