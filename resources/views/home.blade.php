@@ -16,7 +16,7 @@
 			<a class="btn btn-primary btn-lg" href="{{ route('listQuickStart') }}" role="button">Quick start &raquo;</a>
 		</p>
 		<p>
-			<a href="{{ route('calendar') }}"><small>Just show me all the events</small></a>
+			<a href="{{ route('list') }}"><small>Just show me all the events</small></a>
 		</p>
 		<p>
 			<a class="btn btn-primary-outline btn-lg" href="#" onclick="scrollDiv()" role="button"><i class="fas fa-chevron-down"></i></a>
