@@ -64,6 +64,7 @@
                 { "orderable": true, "targets": [0] },
                 { "orderable": false, "targets": [1, 2] }
             ],
+            "stateSave": true,
             "thead": [
                 {'display': 'none'}
             ],
