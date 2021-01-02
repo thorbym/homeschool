@@ -9,8 +9,8 @@
 @include('layouts.back')
 
 @php
-    $event->averageRating = $event->averageRating()[0];
-    $event->timesRated = $event->countRating()[0];
+    $event->averageRating = $event->averageRating(true)[0];
+    $event->timesRated = $event->countRating(true)[0];
 @endphp
 <style>
 .rating {
