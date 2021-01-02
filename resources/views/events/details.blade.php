@@ -265,7 +265,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-12">
-                            <button type="submit" class="btn btn-primary">Save your review</button>
+                            <button type="submit" class="btn btn-primary" onclick="return confirm('Your review will need to be approved before it becomes visible. Continue?')">Save your review</button>
                         </div>
                     </div>
                 </div>
