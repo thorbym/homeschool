@@ -289,7 +289,7 @@
                         <small>Review by {{ $review->author->name }} on {{ date('F d Y', strtotime($review->created_at)) }}</small>
                     </p>
                     <p>
-                        {!! $review->body !!}
+                        {{ $review->body }}
                     </p>
                     <br />
                 @endforeach

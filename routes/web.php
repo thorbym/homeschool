@@ -45,6 +45,9 @@ Route::get('/api/events/list/{filters}', 'EventController@getListEvents');
 
 // REVIEWS
 Route::post('/review/{event_id}', 'EventController@storeReview')->name('storeReview');
+Route::get('/review/unapproved', 'EventController@unapproved')->name('approveReviews');
+Route::get('/review/approve/{id}', 'EventController@approveReview');
+Route::get('/review/delete/{id}', 'EventController@deleteReview');
 
 // CATEGORIES
 Route::get('/categories', 'HomeController@showCategories')->name('categories');

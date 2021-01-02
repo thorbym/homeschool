@@ -16,6 +16,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('createEvent') }}">Add Event</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('approveReviews') }}">Approve Reviews</a>
+                </li>
             @endif
         </ul>
     </div>

@@ -437,6 +437,33 @@ class EventController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function unapproved()
+    {
+        $events = Event::get();
+
+        return view('events.reviews', compact('events'));
+    }
+
+    public function approveReview($id)
+    {
+        DB::table('reviews')->where('id', $id)->update(['approved' => 1]);
+
+        return redirect()->back();
+    }
+
+    public function deleteReview($id)
+    {
+        DB::table('reviews')->where('id', $id)->delete();
+
+        return redirect()->back();
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
