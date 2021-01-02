@@ -43,7 +43,7 @@
     var isAdmin = @json(Auth::check() ? Auth::user()->isAdmin() : 0);
     var user_id = @json(Auth::check() ? Auth::user()->id : 0);
     var quickStart = @json(isset($data['quickStart']) ? 1 : 0);
-    var d = new Date();
+    var d = (localStorage.getItem("fcDefaultDate") !== null ? new Date(localStorage.getItem("fcDefaultDate")) : new Date());
     if (d.getHours() >= 21) {
         var scrollTime = '07:00';
         d.setDate(d.getDate() + 1);
@@ -84,8 +84,9 @@
         // fullcalendar stuff
         var calendarEl = document.getElementById('calendar');
 
+        var defaultView = (localStorage.getItem("fcDefaultView") !== null ? localStorage.getItem("fcDefaultView") : 'timeGridDay');
         window.calendar = new Calendar.Calendar(calendarEl, {
-            defaultView: 'timeGridDay',
+            defaultView: defaultView,
             defaultDate: defaultDate,
             minTime: "07:00:00",
             maxTime: "21:00:00",
@@ -150,6 +151,12 @@
             },
             navLinkDayClick: function(date, jsEvent) {
                 calendar.changeView('timeGridDay', date);
+            },
+            viewSkeletonRender: function(info) {
+                localStorage.setItem("fcDefaultView", info.view.type);
+            },
+            datesRender: function(info) {
+                localStorage.setItem("fcDefaultDate", info.view.currentStart);
             },
             eventRender: function(info) {
 
