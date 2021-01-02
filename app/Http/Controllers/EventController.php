@@ -114,7 +114,7 @@ class EventController extends Controller
                 self::createEventCalendar($event->id, $request->get('days_of_week'), $request->get('start_time'), $request->get('end_time'), $request->get('timezone'));
             }
 
-            return redirect()->back();
+            return redirect('/list');
         }
 
     }
@@ -425,7 +425,7 @@ class EventController extends Controller
             Auth::check() ? DB::raw('(case when favourites.id is null then 0 else favourites.id end) as favourite_id') : DB::raw('0 AS favourite_id')
         );
 
-        $events = $query->get();
+        $events = $query->orderBy('title', 'ASC')->get();
 
         $view = view('layouts.table', compact('events'))->render();
 
@@ -579,7 +579,7 @@ class EventController extends Controller
             self::createEventCalendar($id, $request->get('days_of_week'), $request->get('start_time'), $request->get('end_time'), $request->get('timezone'));
         }
 
-        return redirect()->back();
+        return redirect('/list');
         
     }
 
