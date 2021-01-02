@@ -629,7 +629,7 @@ class EventController extends Controller
         // also destroy any calendar events too
         EventCalendar::where('event_id', $id)->delete();
 
-        return redirect()->back();
+        return redirect('/list');
     }
 
     public function storeReview(Request $request, $event_id)
