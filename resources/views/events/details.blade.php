@@ -9,7 +9,7 @@
 @include('layouts.back')
 
 @php
-    $event->averageRating = $event->averageRating(true)[0];
+    $event->averageRating = $event->averageRating(null, true)[0];
     $event->timesRated = $event->countRating(true)[0];
 @endphp
 <style>
@@ -118,9 +118,10 @@
             <hr>
 
             <!-- watch links -->
-            <h5>Live streams</h5>
+            <h5 style="padding-top: 10px">Live streams</h5>
 
             @if ($nextEvent)
+                <p id="eventTiming"></p>
                 <p class="clickthrough">
                     @if ($event->live_youtube_link)
                         <a href="{{ $event->live_youtube_link }}" data-platform="live_youtube_link" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
@@ -160,7 +161,7 @@
                 </p>
             @endif
 
-            <h5>Watch anytime</h5>
+            <h5 style="padding-top: 10px">Watch anytime</h5>
             <p class="clickthrough">
                 @if ($event->youtube_link)
                     <a href="{{ $event->youtube_link }}" data-platform="youtube_link" target="_blank" class="btn btn-sm" style="background-color: red; color: white">
@@ -213,24 +214,29 @@
             <h4>Review info</h4>
             <p>
                 {!! Helper::getRatingStars($event->averageRating, 'fa-lg') !!}
-                &nbsp&nbsp {{ round($event->averageRating,2) }} out of 5
+                &nbsp&nbsp {{ round($event->averageRating, 2) }} out of 5
             </p>
             <p>
                 {{ $event->timesRated }} reviews
             </p>
             <p>
                 @foreach (range(5, 1) as $star)
+                    @if ($event->$star > 0 && $event->timesRated > 0)
+                        @php $percent = round(($event->$star / $event->timesRated) * 100, 2); @endphp
+                    @else
+                        @php $percent = 0; @endphp
+                    @endif
                     <div class="row" style="margin-bottom: 5px">
                         <div class="col-md-3">
                             <small>{{ $star }} star</small>
                         </div>
                         <div class="col-md-7">
                             <div class="progress" style="height: 20px">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: 0%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ $percent  }}%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <small>(0%)</small>
+                            <small>({{ $percent }}%)</small>
                         </div>
                     </div>
                 @endforeach
@@ -307,7 +313,10 @@
 
     var user_id = @json(Auth::check() ? Auth::user()->id : 0);
     var event_id = @json($event->id);
-    var timezone = @json($event && $event->timezone ? $event->timezone : 0);
+    var nextEvent = @json($nextEvent);
+    var eventTimezone = @json($event->timezone);
+    var userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    var fromCalendar = @json($fromCalendar);
 
     document.addEventListener('DOMContentLoaded', function() {
 
@@ -320,12 +329,6 @@
                 $('#end_time').val('');
             }
         })
-
-        if (!timezone) {
-            $('#timezone').val(Intl.DateTimeFormat().resolvedOptions().timeZone);
-        } else {
-            $('#timezone').val(timezone);
-        }
 
         $('.timepicker').timepicker({
             timeFormat: 'HH:mm',
@@ -402,7 +405,7 @@
                     clicked_link: btoa(href),
                     platform: platform,
                     clicked_time: clicked_time,
-                    clicked_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+                    clicked_timezone: userTimezone
                 })
                 .then(function (response) {
                     // done
@@ -412,6 +415,28 @@
             });
         });
 
+        if (nextEvent) {
+            var eventStartDateTime = moment.tz(nextEvent.start, eventTimezone);
+            var convertedStartDateTime = eventStartDateTime.clone().tz(userTimezone);
+            if (fromCalendar) {
+                $("#eventTiming").html('<i>' + convertedStartDateTime.format('ddd DD MMM Y HH:mm') + ' (' + convertedStartDateTime.fromNow() + ')</i>');
+            } else {
+                var diff = convertedStartDateTime.diff(moment());
+                if (diff < 0) {
+                    $("#eventTiming").html('<i><strong>** Event in progress! Finishes ' + moment.tz(nextEvent.end, eventTimezone).fromNow() + ' **</strong></i>');
+                } else {
+                    $("#eventTiming").html('<i>Next broadcasting ' + convertedStartDateTime.format('ddd DD MMM Y HH:mm') + ' (' + convertedStartDateTime.fromNow() + ')</i>');
+                }
+            }
+        }
+
     });
+
+    function saveCalendarEvent(e) {
+        if (e.value) {
+            window.open(e.value);
+            e.value = "";
+        }
+    }
 
 </script>

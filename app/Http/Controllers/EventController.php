@@ -228,6 +228,23 @@ class EventController extends Controller
                 'webOutlook' => Link::create($event->title, $from, $to)->description($event->description)->webOutlook()
             ];
         }
+        foreach (range(5, 1) as $star) {
+            if ($event->average_rating > 0) {
+                $count = DB::table('reviews')
+                    ->where('reviewrateable_id', $event->id)
+                    ->where('rating', $star)
+                    ->where('approved', 1)
+                    ->get()
+                    ->count();
+                if ($count > 0) {
+                    $event->$star = $count;
+                } else {
+                    $event->$star = 0;
+                }
+            } else {
+                $event->$star = 0;
+            }
+        }
 
         $fromCalendar = false;
 
@@ -449,16 +466,24 @@ class EventController extends Controller
         return view('events.reviews', compact('events'));
     }
 
-    public function approveReview($id)
+    public function approveReview($event_id, $id)
     {
         DB::table('reviews')->where('id', $id)->update(['approved' => 1]);
+
+        $event = Event::where('id', $event_id)->first();
+        $event->average_rating = $event->averageRating(null, true)[0];
+        $event->save();
 
         return redirect()->back();
     }
 
-    public function deleteReview($id)
+    public function deleteReview($event_id, $id)
     {
         DB::table('reviews')->where('id', $id)->delete();
+
+        $event = Event::where('id', $event_id)->first();
+        $event->average_rating = $event->averageRating(null, true)[0];
+        $event->save();
 
         return redirect()->back();
     }
@@ -645,9 +670,6 @@ class EventController extends Controller
             'rating' => $request->get('rating'),
             'recommend' => 'Yes'
         ], Auth::user());
-
-        $event->average_rating = $event->averageRating()[0];
-        $event->save();
 
         return redirect()->back();
     }

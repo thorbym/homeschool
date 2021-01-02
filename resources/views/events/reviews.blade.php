@@ -34,8 +34,8 @@
                                         <td>{{ $review->title }}</td>
                                         <td>{{ $review->body }}</td>
                                         <td>{{ $review->rating }}</td>
-                                        <td><a href="{{ url('/review/approve/' . $review->id) }}" class="btn btn-primary btn-sm">Approve</a></td>
-                                        <td><a href="{{ url('/review/delete/' . $review->id) }}" class="btn btn-danger btn-sm">Delete</a></td>
+                                        <td><a href="{{ url('/review/approve/' . $event->id . '/' . $review->id) }}" class="btn btn-primary btn-sm">Approve</a></td>
+                                        <td><a href="{{ url('/review/delete/' . $event->id . '/' . $review->id) }}" class="btn btn-danger btn-sm">Delete</a></td>
                                     </tr>
                                 @endforeach
                             @endif
