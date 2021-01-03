@@ -77,11 +77,14 @@ class HomeController extends Controller
 
     public function showLoginWarning($message, $returnUrl)
     {        
-        if ($message == "fromRating") {
+        if ($message == "addRating") {
             $viewMessage = "To rate or review events";
         }
-        if ($message == "fromFavourite") {
+        if ($message == "addFavourite") {
             $viewMessage = "To save this event to your favourites";
+        }
+        if ($message == "filterFavourites") {
+            $viewMessage = "To filter your favourite events";
         }
         session()->put('url.intended', base64_decode($returnUrl));
         $view = view('modals.loginWarning', compact('viewMessage'))->render();

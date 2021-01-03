@@ -306,6 +306,15 @@ class EventController extends Controller
             }
         }
 
+        if (isset($filters['ratingsFilter'])) {
+            foreach ($filters['ratingsFilter'] as $rating => $onOrOff) {
+                if ($onOrOff == "on") {
+                    $query->where('events.average_rating', '>=', $rating);
+                    break;
+                }
+            }
+        }
+
         if (isset($filters['otherFilters'])) {
             foreach ($filters['otherFilters'] as $filterType => $onOrOff) {
                 if ($onOrOff == "on") {

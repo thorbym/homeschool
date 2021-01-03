@@ -366,7 +366,7 @@
                 }
             } else {
                 var currentUrl = @json(base64_encode(url()->current()));
-                axios.get('/api/loginWarning/show/fromFavourite/' + currentUrl)
+                axios.get('/api/loginWarning/show/addFavourite/' + currentUrl)
                     .then(function (response) {
                         $('#loginModal').html(response.data).modal();
                     })
@@ -382,7 +382,7 @@
                 $('#addReview').toggle('300');
             } else {
                 var currentUrl = @json(base64_encode(url()->current() . '#reviews'));
-                axios.get('/api/loginWarning/show/fromRating/' + currentUrl)
+                axios.get('/api/loginWarning/show/addRating/' + currentUrl)
                     .then(function (response) {
                         $('#loginModal').html(response.data).modal();
                     })

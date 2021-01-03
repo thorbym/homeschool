@@ -32,27 +32,43 @@
 <div class="filters">
     <div class="subjectFilter" style="display: none; padding: 15px 0px 10px 0px">
         @foreach ($data['categories'] as $category)
-            <a href="#" id="{{ $category->id }}" class="btn disabled" style="background-color: {{ $category->colour }}; color: {{ $category->font_colour }}; margin: 3px; pointer-events: auto">{{ $category->category }}</a>
+            <a href="#" id="subjectFilter_{{ $category->id }}" class="btn disabled" style="background-color: {{ $category->colour }}; color: {{ $category->font_colour }}; margin: 3px; pointer-events: auto">{{ $category->category }}</a>
         @endforeach
     </div>
     <div class="ageFilter" style="display: none; padding: 15px 0px 10px 0px">
-        <a href="#" id="littleKids" class="btn btn-warning disabled" style="margin: 3px; pointer-events: auto">6 and under</a>
-        <a href="#" id="middleKids" class="btn disabled" style="margin: 3px; pointer-events: auto; background-color: orange">7 to 11</a>
-        <a href="#" id="bigKids" class="btn btn-info disabled" style="margin: 3px; pointer-events: auto">12 and older</a>
+        <a href="#" id="ageFilter_littleKids" class="btn btn-warning disabled" style="margin: 3px; pointer-events: auto">6 and under</a>
+        <a href="#" id="ageFilter_middleKids" class="btn disabled" style="margin: 3px; pointer-events: auto; background-color: orange">7 to 11</a>
+        <a href="#" id="ageFilter_bigKids" class="btn btn-info disabled" style="margin: 3px; pointer-events: auto">12 and older</a>
     </div>
     <div class="ratingsFilter" style="display: none; padding: 15px 0px 10px 0px">
         @foreach (range(4, 1) as $stars)
-            <a href="#" id="{{ $stars }}" class="btn btn-warning disabled" style="margin: 3px; pointer-events: auto; background-color: white; border-color: white">
+            <a href="#" id="ratingsFilter_{{ $stars }}" class="btn btn-warning disabled" style="margin: 3px; pointer-events: auto; background-color: white; border-color: white">
                 {!! Helper::getRatingStars($stars) !!} & up
             </a>
         @endforeach
     </div>
     <div class="otherFilters" style="display: none; padding: 15px 0px 10px 0px">
-        <a href="#" id="free_content" class="btn btn-secondary disabled" style="margin: 3px; pointer-events: auto">Show only FREE content</a>
+        <a href="#" id="otherFilters_free_content" class="btn btn-secondary disabled" style="margin: 3px; pointer-events: auto">Show only FREE content</a>
     </div>
 </div>
 
 <script>
+    var user_id = @json(Auth::check() ? Auth::user()->id : 0);
+
+
+    function saveFilter(filter, value) {
+        if (localStorage.getItem('filterSettings') === null) {
+            var filterArr = {};
+        } else {
+            var filterArr = JSON.parse(localStorage.getItem('filterSettings'));
+        }
+        filterArr[filter] = value;
+
+        var filterSettingsString = JSON.stringify(filterArr);
+
+        localStorage.setItem('filterSettings', filterSettingsString);
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
 
         // attach event handlers to MAIN filter buttons, to show which one is active etc
@@ -94,9 +110,11 @@
             if (button.hasClass('disabled')) {
                 // if it's disabled, reenable and remove blur
                 button.removeClass('disabled').addClass('btn-lg').blur();
+                saveFilter(id, 'on');
             } else {
                 // if it wasn't disabled, disable it but keep the pointer events (so it's still clickable)
                 button.addClass('disabled').removeClass('btn-lg').css('pointer-events', 'auto').blur();
+                saveFilter(id, 'off');
             }
 
             var parentDivClassName = button.parent().attr('class');
@@ -173,9 +191,11 @@
                 if (favouritesBtn.hasClass('disabled')) {
                     favouritesBtn.attr('class', 'btn btn-success');
                     heart.toggleClass('fas far').css('color', 'red');
+                    saveFilter('showFavourites', 'on');
                 } else {
                     favouritesBtn.attr('class', 'btn btn-outline-secondary disabled');
                     heart.toggleClass('fas far').css('color', 'gray');
+                    saveFilter('showFavourites', 'off');
                 }
                 if (typeof calendar !== 'undefined') {
                     calendar.refetchEvents();
@@ -184,7 +204,8 @@
                 }
 
             } else {
-                axios.get('/api/loginWarning/show')
+                var currentUrl = @json(base64_encode(url()->current()));
+                axios.get('/api/loginWarning/show/filterFavourites/' + currentUrl)
                     .then(function (response) {
                         $('#loginModal').html(response.data).modal();
                     })
@@ -193,6 +214,17 @@
                 });
             }
         });
+
+        setTimeout(() => {
+            if (localStorage.getItem('filterSettings') !== null) {
+                var filterSettings = JSON.parse(localStorage.getItem('filterSettings'));
+                for(var i in filterSettings){
+                    if (filterSettings[i] == "on" && $('#' + i)) {
+                        $('#' + i).trigger("click");
+                    }
+                }
+            }
+        }, 1500);
 
     });
 </script>

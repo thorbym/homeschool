@@ -115,6 +115,7 @@
                             filtersArr[mainFilter] = {};
                             $('.' + mainFilter + ' a').each(function(){
                                 var id = $(this).attr('id');
+                                id = id.replace(mainFilter + '_', '');
                                 filtersArr[mainFilter][id] = $(this).hasClass('disabled') ? 'off' : 'on';
                             });
                         }
