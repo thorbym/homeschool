@@ -55,6 +55,11 @@
 <script>
     var user_id = @json(Auth::check() ? Auth::user()->id : 0);
 
+    // run this ONCE to wipe user's settings (get rid of old broken bits)
+    if (localStorage.getItem('wipedSettings') === null) {
+        localStorage.removeItem('filterSettings');
+        localStorage.setItem('wipedSettings', true);
+    }
 
     function saveFilter(filter, value) {
         if (localStorage.getItem('filterSettings') === null) {
@@ -109,7 +114,7 @@
             var filterIsOn = false;
             if (button.hasClass('disabled')) {
                 // if it's disabled, reenable and remove blur
-                button.removeClass('disabled').addClass('btn-lg').blur();
+                setOtherFiltersOn(button);
                 saveFilter(id, 'on');
             } else {
                 // if it wasn't disabled, disable it but keep the pointer events (so it's still clickable)
@@ -125,6 +130,7 @@
                 if (parentDivClassName == "ratingsFilter") {
                     if ($(this).attr('id') !== id) {
                         $(this).addClass('disabled').removeClass('btn-lg');
+                        saveFilter($(this).attr('id'), 'off');
                     }
                 }
 
@@ -189,8 +195,7 @@
                 var favouritesBtn = $(e.currentTarget);
                 var heart = favouritesBtn.children();
                 if (favouritesBtn.hasClass('disabled')) {
-                    favouritesBtn.attr('class', 'btn btn-success');
-                    heart.toggleClass('fas far').css('color', 'red');
+                    setFavouritesFilterOn(favouritesBtn, heart);
                     saveFilter('showFavourites', 'on');
                 } else {
                     favouritesBtn.attr('class', 'btn btn-outline-secondary disabled');
@@ -215,13 +220,44 @@
             }
         });
 
+        function setFavouritesFilterOn(favouritesBtn, heart){
+            if (!favouritesBtn) {
+                var favouritesBtn = $('#showFavourites');
+                var heart = favouritesBtn.children();
+            }
+            favouritesBtn.attr('class', 'btn btn-success');
+            heart.toggleClass('fas far').css('color', 'red');
+        }
+
+        function setOtherFiltersOn(button, id){
+            if (!button) {
+                var button = $('#' + id);
+            }
+            button.removeClass('disabled').addClass('btn-lg').blur();
+            var parentDivClassName = button.parent().attr('class');
+            $('#' + parentDivClassName).attr('class', 'btn btn-success');
+        }
+
         setTimeout(() => {
             if (localStorage.getItem('filterSettings') !== null) {
                 var filterSettings = JSON.parse(localStorage.getItem('filterSettings'));
                 for(var i in filterSettings){
                     if (filterSettings[i] == "on" && $('#' + i)) {
-                        $('#' + i).trigger("click");
+                        if (i == "showFavourites") {
+                            if (user_id) {
+                                setFavouritesFilterOn();
+                            }
+                            // do nothing with favourites if user not logged in
+                        } else {
+                            setOtherFiltersOn(false, i);
+                        }
                     }
+                }
+                // if it's on the calendar page, refetch calendar events, otherwise it's the list view
+                if (typeof calendar !== 'undefined') {
+                    calendar.refetchEvents();
+                } else {
+                    drawTable();
                 }
             }
         }, 1500);

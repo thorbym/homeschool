@@ -38,7 +38,7 @@
 		</h5>
 		<br />
 		<p>
-			TeachEm is your online directory of educational video content only, whether you're looking for a session to join with with LIVE or a new favourite YouTube channel to Subscribe to, you'll find it on TeachEm.
+			TeachEm is your online directory of educational video content. Whether you're looking for a session to join in with LIVE, or a new favourite YouTube channel to subscribe to, you'll find it on TeachEm.
 		</p>
 		<br />   
 		<p>
