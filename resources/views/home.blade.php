@@ -2,9 +2,8 @@
 
 @section('content')
 
-@include('layouts.navbar')
 <!-- Main jumbotron for a primary marketing message or call to action -->
-<div class="jumbotron" id="jumbotron" style="height: calc(100vh - 4.4rem); background-color: #A5E8FD; min-height: calc(100% - 4.4rem); min-height: calc(100vh - 4.4rem); display: flex; align-items: center; text-align: center">
+<div class="jumbotron" id="jumbotron" style="height: calc(100vh); background-color: #A5E8FD; min-height: 100%; min-height: 100vh; display: flex; align-items: center; text-align: center">
 	<div class="container">
 		<p>
 			<h1 class="display-4" style="padding-top: 20px">Learn from the experts</h1>
@@ -136,15 +135,15 @@
 		</p>
 </div>
 
+@endsection
 
 <script type="text/javascript">
 
 	function scrollDiv() {
 		var details = document.getElementById('details');
 		var jumbotron = document.getElementById('jumbotron');
-		console.log('scrolling to ' + details.offsetTop - (jumbotron.offsetTop + 20));
 		window.scrollTo({
-			top: details.offsetTop - (jumbotron.offsetTop + 20),
+			top: details.offsetTop - (jumbotron.offsetTop + 50),
 			behavior: "smooth"
 		});
 	}

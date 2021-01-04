@@ -1,4 +1,4 @@
-<div class="row justify-content-center" style="margin-bottom: 10px">
+<div class="row justify-content-center" style="margin-bottom: 10px; margin-top: 60px">
     <div class="col-md-1">
     </div>
     <div class="col-md-8">
