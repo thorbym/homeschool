@@ -136,7 +136,6 @@
 		</p>
 </div>
 
-@endsection
 
 <script type="text/javascript">
 
