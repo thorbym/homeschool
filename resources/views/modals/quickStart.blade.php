@@ -14,7 +14,7 @@
                     </p>
                     <p>
                         @foreach ($categories as $category)
-                            <a href="#" id="{{ $category->id }}_quickStart" class="btn disabled" style="background-color: {{ $category->colour }}; color: {{ $category->font_colour }}; margin: 3px; pointer-events: auto">{{ $category->category }}</a>
+                            <a href="#" id="subjectFilter_{{ $category->id }}_quickStart" class="btn disabled" style="background-color: {{ $category->colour }}; color: {{ $category->font_colour }}; margin: 3px; pointer-events: auto">{{ $category->category }}</a>
                         @endforeach
                     </p>
                     <br />
@@ -30,9 +30,9 @@
                         Pick one or more age groups:
                     </p>
                     <p>
-                        <a href="#" id="littleKids_quickStart" class="btn btn-warning disabled" style="margin: 3px; pointer-events: auto">6 and under</a>
-                        <a href="#" id="middleKids_quickStart" class="btn disabled" style="margin: 3px; pointer-events: auto; background-color: orange">7 to 11</a>
-                        <a href="#" id="bigKids_quickStart" class="btn btn-info disabled" style="margin: 3px; pointer-events: auto">12 and older</a>
+                        <a href="#" id="ageFilter_littleKids_quickStart" class="btn btn-warning disabled" style="margin: 3px; pointer-events: auto">6 and under</a>
+                        <a href="#" id="ageFilter_middleKids_quickStart" class="btn disabled" style="margin: 3px; pointer-events: auto; background-color: orange">7 to 11</a>
+                        <a href="#" id="ageFilter_bigKids_quickStart" class="btn btn-info disabled" style="margin: 3px; pointer-events: auto">12 and older</a>
                     </p>
                     <br />
                     <div class="d-inline-flex justify-content-between align-items-end" style="vertical-align: bottom; width: 90%">
