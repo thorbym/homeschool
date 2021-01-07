@@ -90,6 +90,11 @@
                 </div>
         </nav>
 
+        @if (last(request()->segments()) != 'home')
+            <div style="margin-top: 4rem">
+        @endif
+        </div>
+
         <main class="py-4">
             @yield('content')
         </main>

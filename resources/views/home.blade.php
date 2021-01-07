@@ -3,7 +3,7 @@
 @section('content')
 
 <!-- Main jumbotron for a primary marketing message or call to action -->
-<div class="jumbotron" id="jumbotron" style="height: calc(100vh); background-color: #A5E8FD; min-height: 100%; min-height: 100vh; display: flex; align-items: center; text-align: center">
+<div class="jumbotron" id="jumbotron" style="height: 100vh; background-color: #A5E8FD; min-height: 100vh; display: flex; align-items: center; text-align: center; position: inherit;">
 	<div class="container">
 		<p>
 			<h1 class="display-4" style="padding-top: 20px">Learn from the experts</h1>
@@ -24,7 +24,6 @@
 </div>
 
 <div style="width: 100%; text-align: center; font-size: 1.1em" id="details">
-	<br />
 	<br />
 	<div class="container">
 		<h2><strong>TeachEm for homeschooling</strong></h2><br />

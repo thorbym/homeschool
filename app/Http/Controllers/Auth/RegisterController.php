@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/calendar';
+    protected $redirectTo = '/list';
 
     /**
      * Create a new controller instance.

@@ -28,7 +28,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        if (Auth::check()) {
+            return redirect('list');
+        } else {
+            return view('home');
+        }
     }
 
     public function showCategories()
