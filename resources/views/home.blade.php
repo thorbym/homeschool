@@ -9,7 +9,7 @@
 			<h1 class="display-4" style="padding-top: 20px">Learn from the experts</h1>
 		</p>
 		<p>
-			<h4>TeachEm is a growing community of educators, sharing their expertise through high quality live streamed and pre-recorded educational video content.</h4>
+			<h4>Get homeschool help from the largest directory of high quality live-streamed and pre-recorded educational video content.</h4>
 		</p>
 		<p>
 			<a class="btn btn-primary btn-lg" href="{{ route('listQuickStart') }}" role="button">Quick start &raquo;</a>
