@@ -90,7 +90,7 @@
                 </div>
         </nav>
 
-        @if (last(request()->segments()) != 'home')
+        @if (!empty(request()->segments()) && last(request()->segments()) != 'home')
             <div style="margin-top: 4rem">
         @endif
         </div>
