@@ -87,6 +87,20 @@
                             </div>
 
                             <div class="form-group row">
+                                <label for="start_date" class="col-sm-2 col-form-label">Start date</label>
+                                <div class="col-sm-4">
+                                    <input type="date" class="datepicker form-control" name="start_date" id="start_date" value="{{ old('start_date', $event->start_date ?? '') }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="end_date" class="col-sm-2 col-form-label">End date</label>
+                                <div class="col-sm-4">
+                                    <input type="date" class="datepicker form-control" name="end_date" id="end_date" value="{{ old('end_date', $event->end_date ?? '') }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label for="days" class="col-sm-2 col-form-label">Days</label>
                                 <div class="col-sm-4">
                                     <select multiple class="form-control" name="days_of_week[]" id="days_of_week">
@@ -96,7 +110,7 @@
                                         <option value="4" {{ @in_array(4, old('days_of_week', json_decode($event->days_of_week))) ? 'selected' : '' }}>Thursday</option>
                                         <option value="5" {{ @in_array(5, old('days_of_week', json_decode($event->days_of_week))) ? 'selected' : '' }}>Friday</option>
                                         <option value="6" {{ @in_array(6, old('days_of_week', json_decode($event->days_of_week))) ? 'selected' : '' }}>Saturday</option>
-                                        <option value="0" {{ @in_array(7, old('days_of_week', json_decode($event->days_of_week))) ? 'selected' : '' }}>Sunday</option>
+                                        <option value="7" {{ @in_array(7, old('days_of_week', json_decode($event->days_of_week))) ? 'selected' : '' }}>Sunday</option>
                                     </select>
                                 </div>
                             </div>

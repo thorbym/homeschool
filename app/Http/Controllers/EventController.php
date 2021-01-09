@@ -68,6 +68,8 @@ class EventController extends Controller
             'minimum_age' => 'required|integer|between:0,16',
             'maximum_age' => 'required|integer|between:0,16',
             'timezone' => 'present|string|nullable',
+            'start_date' => 'present|date|nullable',
+            'end_date' => 'present|date|nullable',
         ], [
             'required' => 'The :attribute field is required',
             'url' => 'The :attribute link is not a proper url (ie. "https://www.google.com/")'
@@ -107,7 +109,9 @@ class EventController extends Controller
                 'timezone' => $request->get('timezone') ? $request->get('timezone') : null,
                 'image_file_id' => $imageFileId ? $imageFileId : null,
                 'image_link' => $request->get('image_link') ? $request->get('image_link') : null,
-                'video_link' => $request->get('video_link') ? $request->get('video_link') : null
+                'video_link' => $request->get('video_link') ? $request->get('video_link') : null,
+                'start_date' => $request->get('start_time') ? $request->get('start_date') : null,
+                'end_date' => $request->get('end_time') ? $request->get('end_date') : null,
             ]);
             $event->save();
 
@@ -347,8 +351,8 @@ class EventController extends Controller
             'categories.font_colour'
         );
 
-        $query->where('event_calendars.start_utc', '>', gmdate('Y-m-d H:i', strtotime($filters['from'])))
-            ->where('event_calendars.end_utc', '<', gmdate('Y-m-d H:i', strtotime($filters['to'])));
+        $query->whereRaw('IF (events.start_date IS NOT NULL, event_calendars.start_utc > events.start_date, event_calendars.start_utc > "' . gmdate('Y-m-d H:i', strtotime($filters['from'])) . '")')
+            ->whereRaw('IF (events.end_date IS NOT NULL, event_calendars.end_utc < events.end_date, event_calendars.end_utc < "' . gmdate('Y-m-d H:i', strtotime($filters['to'])). '")');
         
         $events = $query->get();
 
@@ -591,6 +595,8 @@ class EventController extends Controller
             'minimum_age' => 'required|integer|between:0,16',
             'maximum_age' => 'required|integer|between:0,16',
             'timezone' => 'present|string|nullable',
+            'start_date' => 'present|date|nullable',
+            'end_date' => 'present|date|nullable',
         ]);
 
         $event = Event::find($id);
@@ -620,6 +626,8 @@ class EventController extends Controller
         $event->timezone = $request->get('timezone') ? $request->get('timezone') : null;
         $event->image_link = $request->get('image_link') ? $request->get('image_link') : null;
         $event->video_link = $request->get('video_link') ? $request->get('video_link') : null;
+        $event->start_date = $request->get('start_date') ? $request->get('start_date') : null;
+        $event->end_date = $request->get('end_date') ? $request->get('end_date') : null;
 
         $event->save();
 

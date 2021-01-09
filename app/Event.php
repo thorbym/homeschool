@@ -34,7 +34,9 @@ class Event extends Model implements ReviewRateable
         'average_rating',
         'image_file_id',
         'image_link',
-        'video_link'
+        'video_link',
+        'start_date',
+        'end_date'
     ];
 
     public function category()
