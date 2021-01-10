@@ -43,13 +43,39 @@
     var isAdmin = @json(Auth::check() ? Auth::user()->isAdmin() : 0);
     var user_id = @json(Auth::check() ? Auth::user()->id : 0);
     var quickStart = @json(isset($data['quickStart']) ? 1 : 0);
-    var d = (localStorage.getItem("fcDefaultDate") !== null ? new Date(localStorage.getItem("fcDefaultDate")) : new Date());
-    if (d.getHours() >= 21) {
-        var scrollTime = '07:00';
-        d.setDate(d.getDate() + 1);
+
+    // get current date
+    var lastVisitDate = @json(date('Y-m-d'));
+    var currentDate = new Date();
+
+    // remember it if A) they don't already have one or B) it doesn't match previous visit
+    if (localStorage.getItem("lastVisitDate") == null || localStorage.getItem("lastVisitDate") != lastVisitDate) {
+        localStorage.setItem("lastVisitDate", lastVisitDate);
+        // if they either haven't visited the site before, or that day, move them onto today's calendar
+        var d = currentDate;
+        setScrollTime();
     } else {
-        var scrollTime = d.getHours() + ':00';
+        // if they have visited it today, check what date they were looking at and that will be our default
+        if (localStorage.getItem("fcDefaultDate") !== null) {
+            var d = new Date(localStorage.getItem("fcDefaultDate"));
+            var scrollTime = currentDate.getHours() + ':00';
+        } else {
+            // if they haven't visited yet, they can default to today
+            var d = currentDate;
+            setScrollTime();
+        }
     }
+
+    // if a user has been booted to today, if it's after 9pm then kick them over to the next day
+    function setScrollTime() {
+        if (d.getHours() >= 21) {
+            var scrollTime = '07:00';
+            d.setDate(d.getDate() + 1);
+        } else {
+            var scrollTime = d.getHours() + ':00';
+        }
+    }
+
     var month = '' + (d.getMonth() + 1);
     var day = '' + d.getDate();
     var year = d.getFullYear();
